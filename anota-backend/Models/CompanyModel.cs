@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using anota_backend.Helper;
 
 namespace anota_backend.Models;
 
@@ -10,4 +11,15 @@ public class CompanyModel
     public string Email { get; set; }
     public string User { get; set; }
     public string Pass { get; set; }
+
+    public bool isValidPass(string pass)
+    {
+        return Pass == pass.generateHash();
+    }
+
+    public void parsePassToHash()
+    {
+        Pass = Pass.generateHash();
+    }
+
 }

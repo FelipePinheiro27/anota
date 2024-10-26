@@ -1,14 +1,99 @@
-using anota_backend.Context;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using anota_backend.Context;
+using anota_backend.Models;
+using System.Threading.Tasks;
 
-namespace anota_backend.Controllers;
-
-public class CompaniesController : Controller
+namespace anota_backend.Controllers
 {
-    private readonly ContextData _context;
-
-    public CompaniesController(ContextData context)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CompaniesController : ControllerBase
     {
-        _context = context;
+        private readonly ContextData _context;
+
+        public CompaniesController(ContextData context)
+        {
+            _context = context;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CompanyModel>>> GetCompanies()
+        {
+            return await _context.Companies.ToListAsync();
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CompanyModel>> GetCompany(long id)
+        {
+            var company = await _context.Companies.FindAsync(id);
+
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            return company;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<CompanyModel>> CreateCompany(CompanyModel company)
+        {
+            company.parsePassToHash();
+            _context.Companies.Add(company);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetCompany), new { id = company.Id }, company);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCompany(long id, CompanyModel company)
+        {
+            if (id != company.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(company).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CompanyExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCompany(long id)
+        {
+            var company = await _context.Companies.FindAsync(id);
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            _context.Companies.Remove(company);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool CompanyExists(long id)
+        {
+            return _context.Companies.Any(e => e.Id == id);
+        }
     }
 }

@@ -9,5 +9,5 @@ public class ContextData : DbContext
         : base(options)
     { }
 
-    public DbSet<CompanyModel> Company { get; set; }
+    public DbSet<CompanyModel> Companies { get; set; }
 }
