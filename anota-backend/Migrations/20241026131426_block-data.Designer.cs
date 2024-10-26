@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using anota_backend.Context;
 
@@ -10,9 +11,11 @@ using anota_backend.Context;
 namespace anota_backend.Migrations
 {
     [DbContext(typeof(ContextData))]
-    partial class ContextDataModelSnapshot : ModelSnapshot
+    [Migration("20241026131426_block-data")]
+    partial class blockdata
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,6 +50,8 @@ namespace anota_backend.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Company_id");
+
                     b.ToTable("Block");
                 });
 
@@ -77,6 +82,17 @@ namespace anota_backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Company");
+                });
+
+            modelBuilder.Entity("anota_backend.Models.BlockModel", b =>
+                {
+                    b.HasOne("anota_backend.Models.CompanyModel", "Company")
+                        .WithMany()
+                        .HasForeignKey("Company_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
                 });
 #pragma warning restore 612, 618
         }

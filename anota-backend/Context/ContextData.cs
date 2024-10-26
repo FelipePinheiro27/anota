@@ -10,4 +10,5 @@ public class ContextData : DbContext
     { }
 
     public DbSet<CompanyModel> Companies { get; set; }
+    public DbSet<BlockModel> Blocks { get; set; }
 }

@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using anota_backend.Context;
 using anota_backend.Models;
-using System.Threading.Tasks;
 
 namespace anota_backend.Controllers
 {
