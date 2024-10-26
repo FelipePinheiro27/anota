@@ -11,8 +11,8 @@ using anota_backend.Context;
 namespace anota_backend.Migrations
 {
     [DbContext(typeof(ContextData))]
-    [Migration("20241025132547_companies-data")]
-    partial class companiesdata
+    [Migration("20241026182706_courts-and-companies")]
+    partial class courtsandcompanies
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,6 +51,35 @@ namespace anota_backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Company");
+                });
+
+            modelBuilder.Entity("anota_backend.Models.CourtModel", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("Company_id")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Image_url")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Modality")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Court");
                 });
 #pragma warning restore 612, 618
         }

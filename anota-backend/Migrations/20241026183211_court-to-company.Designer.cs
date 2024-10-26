@@ -11,8 +11,8 @@ using anota_backend.Context;
 namespace anota_backend.Migrations
 {
     [DbContext(typeof(ContextData))]
-    [Migration("20241026131426_block-data")]
-    partial class blockdata
+    [Migration("20241026183211_court-to-company")]
+    partial class courttocompany
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,37 +23,6 @@ namespace anota_backend.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
-
-            modelBuilder.Entity("anota_backend.Models.BlockModel", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("Company_id")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Image_url")
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("Modality")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Company_id");
-
-                    b.ToTable("Block");
-                });
 
             modelBuilder.Entity("anota_backend.Models.CompanyModel", b =>
                 {
@@ -84,7 +53,38 @@ namespace anota_backend.Migrations
                     b.ToTable("Company");
                 });
 
-            modelBuilder.Entity("anota_backend.Models.BlockModel", b =>
+            modelBuilder.Entity("anota_backend.Models.CourtModel", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("Company_id")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Image_url")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Modality")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Company_id");
+
+                    b.ToTable("Court");
+                });
+
+            modelBuilder.Entity("anota_backend.Models.CourtModel", b =>
                 {
                     b.HasOne("anota_backend.Models.CompanyModel", "Company")
                         .WithMany()
