@@ -16,7 +16,7 @@ public class ReservationModel
     public DateTime Created_date { get; set; }
     public DateTime End_date { get; set; }
 
-    private static string GenerateUniqueId()
+    public static string GenerateUniqueId()
     {
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         var random = new Random();
@@ -29,4 +29,11 @@ public class ReservationModel
 
         return new string(id);
     }
+
+    public override string ToString()
+    {
+        return $"Reservation ID: {Id}, User Name: {User_name}, User Phone: {User_phone}, Court ID: {Court_id}, " +
+               $"Created Date: {Created_date}, End Date: {End_date}, Price: {Price}";
+    }
+
 }
