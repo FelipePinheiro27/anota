@@ -1,14 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import SignInCard from "./Components/SingIn_SingUp/SingInCard";
-import SignUp from './Components/SingIn_SingUp/SingUp';
+import App from "./App";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <SignInCard/>
+    <App />
   </React.StrictMode>
 );
