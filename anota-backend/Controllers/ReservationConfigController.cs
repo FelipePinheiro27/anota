@@ -57,4 +57,28 @@ public class ReservationConfigController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpGet("day/{dayOfWeek}")]
+    public async Task<ActionResult<IEnumerable<DateTime>>> GetHourlySlotsByDayOfWeek(int dayOfWeek)
+    {
+        var reservationConfig = await _context.ReservationsConfig
+            .Where(r => r.Day_of_week == dayOfWeek)
+            .FirstOrDefaultAsync();
+
+        if (reservationConfig == null)
+        {
+            return NotFound();
+        }
+
+        var slots = new List<DateTime>();
+        var currentSlot = reservationConfig.Start_date;
+
+        while (currentSlot < reservationConfig.End_date)
+        {
+            slots.Add(currentSlot);
+            currentSlot = currentSlot.AddHours(1);
+        }
+
+        return Ok(slots);
+    }
 }

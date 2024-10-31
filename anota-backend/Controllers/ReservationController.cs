@@ -78,4 +78,36 @@ public class ReservationController : ControllerBase
         await _context.SaveChangesAsync();
         return NoContent();
     }
+
+    [HttpGet("available-slots/{dayOfWeek}")]
+    public async Task<ActionResult<IEnumerable<DateTime>>> GetAvailableSlots(int dayOfWeek)
+    {
+        var reservationConfig = await _context.ReservationsConfig
+            .Where(r => r.Day_of_week == dayOfWeek)
+            .FirstOrDefaultAsync();
+
+        if (reservationConfig == null)
+        {
+            return NotFound();
+        }
+
+        var slots = new List<DateTime>();
+        var currentSlot = reservationConfig.Start_date;
+
+        while (currentSlot < reservationConfig.End_date)
+        {
+            slots.Add(currentSlot);
+            currentSlot = currentSlot.AddHours(1);
+        }
+
+        var existingReservations = await _context.Reservations
+            .Where(r => r.Created_date >= reservationConfig.Start_date && r.Created_date < reservationConfig.End_date)
+            .Select(r => r.Created_date)
+            .ToListAsync();
+
+        var availableSlots = slots.Except(existingReservations).ToList();
+
+        return Ok(availableSlots);
+    }
+
 }
