@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, List, ListItem } from "@mui/material";
+import { Box, List, ListItem } from "@mui/material";
 import LogoHeader from "../../LogoHeader.svg";
 import ButtonDropDown from "../buttonDropdown/ButtonDropDown";
 

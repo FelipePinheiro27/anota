@@ -5,6 +5,7 @@ import { colors } from "../../constants/Colors";
 import Logo from "../../logo_anota.svg";
 import { CardComponent } from "../card/Card";
 
+
 const SignIn = (props: { disableCustomTheme?: boolean }) => {
   return (
     <div
