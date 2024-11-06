@@ -1,6 +1,5 @@
-// import SignIn from "./components/SingIn_SingUp/SingInCard";
-import SignUp from "./components/SingIn_SingUp/SingUp";
+import Header from "./components/header/Header";
 
 export default function App() {
-  return <SignUp />;
+  return <Header />;
 }
