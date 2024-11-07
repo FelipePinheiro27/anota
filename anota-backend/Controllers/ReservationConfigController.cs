@@ -34,6 +34,34 @@ public class ReservationConfigController : ControllerBase
         return reservation;
     }
 
+    [HttpGet("timeslots/{dayOfWeek}")]
+    public async Task<ActionResult<IEnumerable<string>>> GetHourlySlots(int dayOfWeek)
+    {
+        var configs = await _context.ReservationsConfig
+            .Where(rc => rc.Day_of_week == dayOfWeek)
+            .ToListAsync();
+
+        if (!configs.Any())
+        {
+            return NotFound("Nenhuma configuração encontrada para o dia da semana especificado.");
+        }
+
+        var timeSlots = new List<string>();
+        foreach (var config in configs)
+        {
+            TimeSpan startTime = config.Start_time;
+            TimeSpan endTime = config.End_time;
+
+            while (startTime < endTime)
+            {
+                timeSlots.Add(startTime.ToString(@"hh\:mm"));
+                startTime = startTime.Add(TimeSpan.FromHours(1));
+            }
+        }
+
+        return Ok(timeSlots);
+    }
+
     [HttpPost]
     public async Task<ActionResult<ReservationConfigModel>> CreateReservationConfig(ReservationConfigModel reservationConfig)
     {

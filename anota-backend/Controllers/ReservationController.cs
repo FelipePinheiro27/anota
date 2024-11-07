@@ -78,4 +78,50 @@ public class ReservationController : ControllerBase
         await _context.SaveChangesAsync();
         return NoContent();
     }
+
+    [HttpGet("available/{date}/{courtId}")]
+    public async Task<ActionResult<IEnumerable<object>>> GetAvailableSlots(DateTime date, int courtId)
+    {
+        int dayOfWeek = (int)date.DayOfWeek;
+
+        var configs = await _context.ReservationsConfig
+            .Where(rc => rc.Day_of_week == dayOfWeek)
+            .ToListAsync();
+
+        if (!configs.Any())
+        {
+            return NotFound("Nenhuma configuração de reserva para o dia especificado.");
+        }
+
+        var reservations = await _context.Reservations
+            .Where(r => r.Created_date.Date == date.Date && r.Court_id == courtId)
+            .ToListAsync();
+
+        var availableSlots = new List<object>();
+
+        foreach (var config in configs)
+        {
+            TimeSpan startTime = config.Start_time;
+            TimeSpan endTime = config.End_time;
+
+            while (startTime < endTime)
+            {
+                bool isReserved = reservations.Any(r =>
+                    r.Created_date.TimeOfDay <= startTime && r.End_date.TimeOfDay > startTime);
+
+                if (!isReserved)
+                {
+                    availableSlots.Add(new
+                    {
+                        start = startTime.ToString(@"hh\:mm"),
+                        end = startTime.Add(TimeSpan.FromHours(1)).ToString(@"hh\:mm")
+                    });
+                }
+
+                startTime = startTime.Add(TimeSpan.FromHours(1));
+            }
+        }
+
+        return Ok(availableSlots);
+    }
 }
