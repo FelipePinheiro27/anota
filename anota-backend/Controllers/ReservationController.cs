@@ -97,8 +97,20 @@ public class ReservationController : ControllerBase
             .Where(r => r.Created_date.Date == date.Date && r.Court_id == courtId)
             .ToListAsync();
 
-        var availableSlots = new List<object>();
+        var reservedSlots = new HashSet<string>();
+        foreach (var reservation in reservations)
+        {
+            TimeSpan reservedStartTime = reservation.Created_date.TimeOfDay;
+            TimeSpan reservedEndTime = reservation.End_date.TimeOfDay;
 
+            while (reservedStartTime < reservedEndTime)
+            {
+                reservedSlots.Add(reservedStartTime.ToString(@"hh\:mm"));
+                reservedStartTime = reservedStartTime.Add(TimeSpan.FromHours(1));
+            }
+        }
+
+        var availableSlots = new List<object>();
         foreach (var config in configs)
         {
             TimeSpan startTime = config.Start_time;
@@ -106,14 +118,13 @@ public class ReservationController : ControllerBase
 
             while (startTime < endTime)
             {
-                bool isReserved = reservations.Any(r =>
-                    r.Created_date.TimeOfDay <= startTime && r.End_date.TimeOfDay > startTime);
+                string slotTime = startTime.ToString(@"hh\:mm");
 
-                if (!isReserved)
+                if (!reservedSlots.Contains(slotTime))
                 {
                     availableSlots.Add(new
                     {
-                        start = startTime.ToString(@"hh\:mm"),
+                        start = slotTime,
                         end = startTime.Add(TimeSpan.FromHours(1)).ToString(@"hh\:mm")
                     });
                 }
