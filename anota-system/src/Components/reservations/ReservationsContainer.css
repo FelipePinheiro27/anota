@@ -1,0 +1,9 @@
+@media (max-width: 600px) {
+    .ReservationsContainer {
+        align-items: center;
+        flex-direction: column;
+        gap: 10px !important;
+        margin-top: 40px !important;
+        width: 80%;
+    }
+}

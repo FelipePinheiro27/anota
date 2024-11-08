@@ -1,0 +1,26 @@
+.ReservationsButton {
+    display: flex;
+    height: 70px;
+    padding-left: 50px;
+    padding-right: 50px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;    
+    font-weight: 600;
+    font-size: 14px;
+    color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+@media (max-width: 600px) {
+    .ReservationsButton {
+        display: flex;
+        height: 60px; 
+        width: 90%;
+        cursor: pointer;    
+        font-weight: 600;
+        font-size: 14px; 
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        border-radius: 8px; 
+    }
+}
