@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Button, Menu, MenuItem, Typography } from '@mui/material';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import React, { useState } from "react";
+import { Button, Menu, MenuItem, Typography } from "@mui/material";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { colors } from "../../constants/Colors";
 const ButtonDropDown = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -15,14 +15,20 @@ const ButtonDropDown = () => {
 
   return (
     <div>
-      <Button 
-        variant="text" 
+      <Button
+        variant="text"
         endIcon={<ArrowDropDownIcon />}
         onClick={handleClick}
-        style={{ color: 'black', textTransform: 'none', minWidth: '120px' }} 
+        style={{ color: "black", textTransform: "none", minWidth: "120px" }}
       >
-        <Typography sx={{fontFamily: 'Robot', fontWeight: 700, color: colors.buttonCompany } }>
-          Level Beach
+        <Typography
+          sx={{
+            fontFamily: "Robot",
+            fontWeight: 700,
+            color: colors.buttonCompany,
+          }}
+        >
+          Level Beach Club
         </Typography>
       </Button>
 
@@ -31,11 +37,31 @@ const ButtonDropDown = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
         MenuListProps={{
-          style: { minWidth: anchorEl ? anchorEl : 'auto' },
+          style: { minWidth: anchorEl ? anchorEl : "auto" },
         }}
       >
-        <MenuItem onClick={handleClose} style={{ minWidth: '120px', fontFamily: 'Robot', fontWeight: 500, color: colors.buttonCompany }}>Alterar Dados</MenuItem>
-        <MenuItem onClick={handleClose} style={{ minWidth: '120px', fontFamily: 'Robot', fontWeight: 500, color: "#A12A2A"}}>Sair</MenuItem>
+        <MenuItem
+          onClick={handleClose}
+          style={{
+            minWidth: "120px",
+            fontFamily: "Robot",
+            fontWeight: 500,
+            color: colors.buttonCompany,
+          }}
+        >
+          Alterar Dados
+        </MenuItem>
+        <MenuItem
+          onClick={handleClose}
+          style={{
+            minWidth: "120px",
+            fontFamily: "Robot",
+            fontWeight: 500,
+            color: "#A12A2A",
+          }}
+        >
+          Sair
+        </MenuItem>
       </Menu>
     </div>
   );
