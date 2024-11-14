@@ -2,9 +2,8 @@ import React from "react";
 import TextField from "@mui/material/TextField";
 import { Button, FormControl, FormLabel } from "@mui/material";
 import { colors } from "../../constants/Colors";
-import Logo from "../../logo_anota.svg";
+import Logo from "../../images/logo_anota.svg";
 import { CardComponent } from "../card/Card";
-
 
 const SignIn = (props: { disableCustomTheme?: boolean }) => {
   return (

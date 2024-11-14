@@ -1,0 +1,19 @@
+.ScheduleTime {
+  display: inline-block;
+  cursor: pointer;
+  color: #22303e;
+  padding: 10px 50px;
+  background-color: #fff;
+  border: 1px solid #8b8f93;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 5px;
+
+  &:hover {
+    padding: 9px 49px;
+    border: 2px dotted rgba(127, 17, 224, 0.5);
+  }
+
+  &.selected {
+    border: 1px dotted rgba(127, 17, 224, 1);
+  }
+}

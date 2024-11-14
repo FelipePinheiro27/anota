@@ -1,0 +1,17 @@
+.GeneralButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 17px;
+  background-color: #0c927d;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+
+  svg {
+    position: absolute;
+    right: 5%;
+  }
+}

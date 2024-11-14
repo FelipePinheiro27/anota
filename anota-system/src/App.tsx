@@ -5,12 +5,16 @@ import Home from "./pages/clientsPages/Home";
 import CourtCard from "./components/court/CourtCard";
 import CourtsOptions from "./components/court/courtsOptions/CourtsOptions";
 import Reservation from "./pages/clientsPages/Reservation";
+import Schedules from "./pages/clientsPages/Schedules";
 
 export default function App() {
   return (
     <>
-      {/* <Home />; */}
-      <Reservation />
+      <Header />
+      {/* <SignIn /> */}
+      {/* <Schedules /> */}
+      {/* <Home /> */}
+      {/* <Reservation /> */}
     </>
   );
 }

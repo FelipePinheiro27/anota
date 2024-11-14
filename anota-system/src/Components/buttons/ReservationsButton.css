@@ -1,13 +1,13 @@
 .ReservationsButton {
     display: flex;
-    height: 70px;
-    padding-left: 50px;
-    padding-right: 50px;
+    height: 120px;
+    padding-left: 70px;
+    padding-right: 70px;
     align-items: center;
     justify-content: center;
     cursor: pointer;    
     font-weight: 600;
-    font-size: 14px;
+    font-size: 18px;
     color: #fff;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
@@ -16,7 +16,7 @@
     .ReservationsButton {
         display: flex;
         height: 60px; 
-        width: 90%;
+        width: 70%;
         cursor: pointer;    
         font-weight: 600;
         font-size: 14px; 
