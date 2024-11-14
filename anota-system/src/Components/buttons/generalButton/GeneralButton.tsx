@@ -4,17 +4,26 @@ import { SvgIconTypeMap } from "@mui/material";
 import "./GeneralButton.scss";
 
 interface GeneralButtonProps {
-  onClick?: () => void;
-  text?: string;
+  onClick: () => void;
+  text: string;
   icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
     muiName: string;
   };
+  active?: boolean;
 }
 
-const GeneralButton = ({ onClick, text, icon: Icon }: GeneralButtonProps) => {
+const GeneralButton = ({
+  onClick,
+  text,
+  icon: Icon,
+  active = false,
+}: GeneralButtonProps) => {
   return (
-    <div className="GeneralButton" onClick={onClick}>
-      <span className="text">{text}</span>
+    <div
+      className={`GeneralButton ${active ? "active-color" : ""}`}
+      onClick={onClick}
+    >
+      <span>{text}</span>
       {Icon && <Icon />}
     </div>
   );

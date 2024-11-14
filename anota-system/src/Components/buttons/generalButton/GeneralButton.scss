@@ -4,11 +4,22 @@
   justify-content: center;
   width: 100%;
   padding: 17px;
-  background-color: #0c927d;
-  color: #fff;
   border-radius: 5px;
   cursor: pointer;
   position: relative;
+  color: #22303e;
+  border: 1px solid #8b8f93;
+
+  // &:hover {
+  //   border: none;
+  //   background-color: rgba(12, 146, 125, 0.7);
+  //   color: #fff;
+  // }
+
+  &.active-color {
+    background-color: #0c927d;
+    color: #fff;
+  }
 
   svg {
     position: absolute;

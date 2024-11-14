@@ -1,11 +1,14 @@
 import { Box, Button, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import ClientHeader from "../../components/header/clientHeader/ClientHeader";
 import TimeSlots from "../../components/timeSlots/TimeSlots";
-import DateButton from "../../components/dateButton/DateButton";
-import GeneralButton from "../../components/buttons/generalButton/GeneralButton";
+import ScheduleDate from "../../components/scheduleDate/ScheduleDate";
+import { DateButtonTypes } from "../../types/generalTypes";
+import ModalitiesGroups from "../../components/modalitiesGroups/ModalitiesGroups";
 
 const Schedules = () => {
+  const [dateType, setDateType] = useState<DateButtonTypes>("today");
+
   return (
     <Box sx={{ padding: "30px 40px" }}>
       <ClientHeader />
@@ -18,22 +21,7 @@ const Schedules = () => {
           Quadra 01
         </Typography>
       </Box>
-      <Box display="flex" margin="30px 0" gap="80px">
-        {/* <Button
-          variant="contained"
-          fullWidth
-          sx={{
-            padding: "12px",
-            background: "#0C927D",
-            fontWeight: 550,
-          }}
-          onClick={() => {}}
-        >
-          Hoje
-        </Button> */}
-        <GeneralButton text="HOJE" />
-        <DateButton />
-      </Box>
+      <ScheduleDate dateType={dateType} setDateType={setDateType} />
       <Box margin="30px 0">
         <Typography
           sx={{ fontWeight: 600, letterSpacing: "0.2" }}
@@ -43,7 +31,7 @@ const Schedules = () => {
           Escolha os Horários
         </Typography>
       </Box>
-      <Box margin="0 30px" textAlign="center">
+      <Box margin="0 30px">
         <Typography
           sx={{ fontWeight: 500, letterSpacing: "0.2" }}
           fontSize="14px"
@@ -54,10 +42,22 @@ const Schedules = () => {
         <br />
         <TimeSlots />
       </Box>
-      <Box margin="30px 30px">
+      <br />
+      <Box margin="20px 0">
+        <Typography
+          sx={{ fontWeight: 600, letterSpacing: "0.2" }}
+          fontSize="16px"
+          color="#22303E"
+        >
+          Escolha a Modalidade
+        </Typography>
+      </Box>
+      <Box margin="0 30px">
+        <ModalitiesGroups />
+      </Box>
+      <Box margin="30px 0">
         <Button
           fullWidth
-          disabled
           variant="contained"
           sx={{
             padding: "12px",

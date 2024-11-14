@@ -10,9 +10,9 @@ import Schedules from "./pages/clientsPages/Schedules";
 export default function App() {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       {/* <SignIn /> */}
-      {/* <Schedules /> */}
+      <Schedules />
       {/* <Home /> */}
       {/* <Reservation /> */}
     </>
