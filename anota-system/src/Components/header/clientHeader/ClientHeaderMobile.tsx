@@ -1,29 +1,21 @@
 import { Link } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
-import CompanyLogo from "../../../images/levelBeach.png";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import useIsMobile from "../../../hooks/useIsMobile";
-import ClientHeaderMobile from "./ClientHeaderMobile";
+import CompanyLogo from "../../../images/levelBeach.png";
 
-interface ClientHeaderProps {
-  previewsPage: string;
-}
-
-const ClientHeader = ({ previewsPage }: ClientHeaderProps) => {
-  const isMobile = useIsMobile();
-
-  if (isMobile) {
-    return <ClientHeaderMobile />;
-  }
+const ClientHeaderMobile = () => {
+  const previewsPage = localStorage.getItem("lastPage")?.toString();
 
   return (
     <Box
       sx={{
         display: "flex",
-        justifyContent: "space-between",
+        gap: "20px",
+        boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
         alignItems: "center",
-        padding: "0 40px",
-        marginTop: "30px",
+        background: "#fff",
+        padding: "10px 0 ",
+        width: "100%",
       }}
     >
       <Link
@@ -38,15 +30,14 @@ const ClientHeader = ({ previewsPage }: ClientHeaderProps) => {
             justifyContent: "center",
             textAlign: "center",
             borderRadius: "50%",
+            marginLeft: "10px",
             width: "48px",
             height: "48px",
-            backgroundColor: "#e9e9e9",
           }}
         >
-          <ArrowBackIcon />
+          <ArrowBackIcon sx={{ color: "#22303e", fontWeight: 700 }} />
         </Box>
       </Link>
-
       <Box
         sx={{
           display: "flex",
@@ -54,22 +45,17 @@ const ClientHeader = ({ previewsPage }: ClientHeaderProps) => {
           textAlign: "center",
         }}
       >
-        <img
-          width={isMobile ? 50 : 61}
-          src={CompanyLogo}
-          alt="Level Beach Club"
-        />
+        <img width={50} src={CompanyLogo} alt="Level Beach Club" />
         <Typography
           sx={{ fontWeight: 500, letterSpacing: "0.2" }}
-          fontSize={{ xs: "22px", md: "28px" }}
+          fontSize="20px"
           color="#E45609"
         >
           Level Beach Club
         </Typography>
       </Box>
-      {!isMobile && <Box />}
     </Box>
   );
 };
 
-export default ClientHeader;
+export default ClientHeaderMobile;

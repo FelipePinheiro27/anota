@@ -9,21 +9,23 @@ const Reservation = () => {
   console.log(isMobile);
 
   return (
-    <Box sx={{ padding: "30px 40px" }}>
-      <ClientHeader />
-      <Box margin={"30px 0"}>
-        <Typography
-          sx={{ fontWeight: 600, letterSpacing: "0.2" }}
-          fontSize="18px"
-          color="#22303E"
-        >
-          Escolha uma Opção
-        </Typography>
+    <div>
+      <ClientHeader previewsPage="/" />
+      <Box sx={{ padding: "30px 40px" }}>
+        <Box margin={"30px 0"}>
+          <Typography
+            sx={{ fontWeight: 600, letterSpacing: "0.2" }}
+            fontSize="18px"
+            color="#22303E"
+          >
+            Escolha uma Opção
+          </Typography>
+        </Box>
+        <Box marginTop="40px">
+          <CourtsOptions />
+        </Box>
       </Box>
-      <Box marginTop="40px">
-        <CourtsOptions />
-      </Box>
-    </Box>
+    </div>
   );
 };
 

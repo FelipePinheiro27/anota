@@ -12,10 +12,18 @@ const ReservationsContainer = () => {
       gap="25px"
       marginTop="20px"
     >
-      <Link to="/reservas" style={{ textDecoration: "none", color: "inherit" }}>
+      <Link
+        to="/reservas"
+        style={{ textDecoration: "none", color: "inherit", padding: "0" }}
+      >
         <ReservationsButton text="Novo Agendamento" bgColor="#0C927D" />
       </Link>
-      <ReservationsButton text="Minhas Reservas" bgColor="#7F42D9" />
+      <Link
+        to="/reservas"
+        style={{ textDecoration: "none", color: "inherit", padding: "0" }}
+      >
+        <ReservationsButton text="Minhas Reservas" bgColor="#7F42D9" />
+      </Link>
     </Box>
   );
 };

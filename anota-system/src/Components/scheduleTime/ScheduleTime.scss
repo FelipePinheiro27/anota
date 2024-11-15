@@ -9,26 +9,22 @@
   border-radius: 5px;
 
   &:hover {
-    padding: 9px 49px;
-    border: 2px dotted rgba(228, 86, 9, 0.7);
+    border: 1px solid rgba(228, 86, 9, 0.7);
   }
 
   &.selected {
-    padding: 9px 49px;
-    border: 2px dotted rgba(228, 86, 9, 1);
+    border: 1px solid rgba(228, 86, 9, 1);
   }
 }
 
 @media (max-width: 600px) {
   .ScheduleTime {
-    padding: 10px 25px;
-
+    padding: 10px 20px;
     &:hover {
-      padding: 9px 24px;
+      border: 1px solid #8b8f93;
     }
-
     &.selected {
-      padding: 9px 24px;
+      border: 1px solid rgba(228, 86, 9, 1);
     }
   }
 }
