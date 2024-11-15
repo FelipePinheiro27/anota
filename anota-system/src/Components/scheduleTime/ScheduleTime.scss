@@ -10,10 +10,25 @@
 
   &:hover {
     padding: 9px 49px;
-    border: 2px dotted rgba(127, 17, 224, 0.5);
+    border: 2px dotted rgba(228, 86, 9, 0.7);
   }
 
   &.selected {
-    border: 1px dotted rgba(127, 17, 224, 1);
+    padding: 9px 49px;
+    border: 2px dotted rgba(228, 86, 9, 1);
+  }
+}
+
+@media (max-width: 600px) {
+  .ScheduleTime {
+    padding: 10px 25px;
+
+    &:hover {
+      padding: 9px 24px;
+    }
+
+    &.selected {
+      padding: 9px 24px;
+    }
   }
 }

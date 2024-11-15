@@ -2,15 +2,12 @@ import { Box, Button, Typography } from "@mui/material";
 import React, { useState } from "react";
 import ClientHeader from "../../components/header/clientHeader/ClientHeader";
 import TimeSlots from "../../components/timeSlots/TimeSlots";
-import ScheduleDate from "../../components/scheduleDate/ScheduleDate";
-import { DateButtonTypes } from "../../types/generalTypes";
 import ModalitiesGroups from "../../components/modalitiesGroups/ModalitiesGroups";
+import DateButton from "../../components/dateButton/DateButton";
 
 const Schedules = () => {
-  const [dateType, setDateType] = useState<DateButtonTypes>("today");
-
   return (
-    <Box sx={{ padding: "30px 40px" }}>
+    <Box sx={{ padding: "30px 40px", paddingBottom: "80px" }}>
       <ClientHeader />
       <Box margin="30px 0">
         <Typography
@@ -21,7 +18,9 @@ const Schedules = () => {
           Quadra 01
         </Typography>
       </Box>
-      <ScheduleDate dateType={dateType} setDateType={setDateType} />
+      <Box display="flex" margin="30px 0" gap="80px">
+        <DateButton />
+      </Box>
       <Box margin="30px 0">
         <Typography
           sx={{ fontWeight: 600, letterSpacing: "0.2" }}
@@ -55,7 +54,7 @@ const Schedules = () => {
       <Box margin="0 30px">
         <ModalitiesGroups />
       </Box>
-      <Box margin="30px 0">
+      <Box sx={{ marginTop: { xs: "50px", md: "100px" } }}>
         <Button
           fullWidth
           variant="contained"

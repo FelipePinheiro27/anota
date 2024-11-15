@@ -4,11 +4,20 @@ import "./ReservationsButton.css";
 interface ReservationsButtonProps {
   text: string;
   bgColor: string;
+  onClick?: () => void;
 }
 
-const ReservationsButton = ({ text, bgColor }: ReservationsButtonProps) => {
+const ReservationsButton = ({
+  text,
+  bgColor,
+  onClick,
+}: ReservationsButtonProps) => {
   return (
-    <div style={{ backgroundColor: bgColor }} className="ReservationsButton">
+    <div
+      onClick={onClick}
+      style={{ backgroundColor: bgColor }}
+      className="ReservationsButton"
+    >
       {text}
     </div>
   );
