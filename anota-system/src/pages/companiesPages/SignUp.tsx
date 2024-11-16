@@ -1,11 +1,13 @@
 import React from "react";
+import Button from "@mui/material/Button";
+import FormLabel from "@mui/material/FormLabel";
+import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
-import { Button, FormControl, FormLabel } from "@mui/material";
-import { colors } from "../../constants/Colors";
 import Logo from "../../images/logo_anota.svg";
-import { CardComponent } from "../card/Card";
+import { colors } from "../../constants/Colors";
+import { CardComponent } from "../../components/card/Card";
 
-const SignIn = (props: { disableCustomTheme?: boolean }) => {
+const SignUp = () => {
   return (
     <div
       style={{
@@ -21,6 +23,20 @@ const SignIn = (props: { disableCustomTheme?: boolean }) => {
           alt="Test"
           style={{ width: "170px", height: "170px", margin: "0 auto" }}
         />
+        <FormControl>
+          <FormLabel>Nome da Empresa</FormLabel>
+          <TextField
+            id="empresa"
+            type="text"
+            name="empresa"
+            placeholder="Digite o nome da sua empresa"
+            autoFocus
+            required
+            fullWidth
+            variant="outlined"
+            sx={{ ariaLabel: "empresa" }}
+          />
+        </FormControl>
         <FormControl>
           <FormLabel>Email</FormLabel>
           <TextField
@@ -68,11 +84,11 @@ const SignIn = (props: { disableCustomTheme?: boolean }) => {
           }}
           onClick={() => {}}
         >
-          Entrar
+          Criar Empresa
         </Button>
       </CardComponent>
     </div>
   );
 };
 
-export default SignIn;
+export default SignUp;

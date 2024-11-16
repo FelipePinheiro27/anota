@@ -5,6 +5,8 @@ import Schedules from "../pages/clientsPages/Schedules";
 import Reservation from "../pages/clientsPages/Reservation";
 import Confirmation from "../pages/clientsPages/Confirmation";
 import MyReservations from "../pages/clientsPages/MyReservations";
+import SignIn from "../pages/companiesPages/SignIn";
+import SignUp from "../pages/companiesPages/SignUp";
 
 const AppRoutes = () => {
   return (
@@ -15,6 +17,8 @@ const AppRoutes = () => {
         <Route path="/reservas" element={<Reservation />} />
         <Route path="/confirmacao" element={<Confirmation />} />
         <Route path="/minhas-reservas" element={<MyReservations />} />
+        <Route path="/login" element={<SignIn />} />
+        <Route path="/cadastro" element={<SignUp />} />
       </Routes>
     </Router>
   );
