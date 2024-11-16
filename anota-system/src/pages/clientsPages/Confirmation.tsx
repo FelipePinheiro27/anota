@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import InputMask from "react-input-mask";
 import {
   Box,
@@ -9,8 +10,17 @@ import {
   Typography,
 } from "@mui/material";
 import ClientHeader from "../../components/header/clientHeader/ClientHeader";
+import ConfirmationModal from "../../components/confirmationModal/ConfirmationModal";
 
 const Confirmation = () => {
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const onCloseModal = () => {
+    setOpen(false);
+    navigate("/");
+  };
+
   return (
     <Box>
       <ClientHeader previewsPage="/horarios" />
@@ -77,12 +87,13 @@ const Confirmation = () => {
               },
               fontWeight: 550,
             }}
-            onClick={() => {}}
+            onClick={() => setOpen(true)}
           >
             Confirmar Reserva
           </Button>
         </Box>
       </Box>
+      <ConfirmationModal open={open} closeModal={onCloseModal} />
     </Box>
   );
 };
