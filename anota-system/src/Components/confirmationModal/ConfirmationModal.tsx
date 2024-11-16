@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Box, Modal, Typography, Stack } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { useNavigate } from "react-router-dom";
 
 interface ConfirmationModalProps {
   open: boolean;

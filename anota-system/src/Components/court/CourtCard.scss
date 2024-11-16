@@ -41,3 +41,11 @@
     background-color: rgba(228, 86, 9, 1);
   }
 }
+
+@media (max-width: 600px) {
+  .CourtCard {
+    &-button {
+      background-color: rgba(228, 86, 9, 1);
+    }
+  }
+}

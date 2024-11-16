@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -6,13 +7,23 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
 import ClientHeader from "../../components/header/clientHeader/ClientHeader";
 import ReservationCard from "../../components/reservations/reservationCard/ReservationCard";
 import useIsMobile from "../../hooks/useIsMobile";
+import ConfirmationDeleteModal from "../../components/confirmationModal/ConfirmationDeleteModal";
 
 const MyReservations = () => {
   const isMobile = useIsMobile();
+  const [open, setOpen] = useState(false);
+
+  const onCloseModal = () => {
+    setOpen(false);
+  };
+
+  const onOpenModal = () => {
+    setOpen(true);
+  };
+
   return (
     <Box>
       <ClientHeader previewsPage="/" />
@@ -59,9 +70,10 @@ const MyReservations = () => {
           </Button>
         </Box>
         <Box marginTop="40px">
-          <ReservationCard />
+          <ReservationCard onOpenModal={onOpenModal} />
         </Box>
       </Box>
+      <ConfirmationDeleteModal open={open} closeModal={onCloseModal} />
     </Box>
   );
 };

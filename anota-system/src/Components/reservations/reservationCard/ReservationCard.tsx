@@ -2,7 +2,11 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
-const ReservationCard = () => {
+interface ReservationCardProps {
+  onOpenModal: () => void;
+}
+
+const ReservationCard = ({ onOpenModal }: ReservationCardProps) => {
   return (
     <Box
       display="flex"
@@ -14,15 +18,15 @@ const ReservationCard = () => {
     >
       <Box position="relative">
         <Box marginLeft={{ xs: "10px", md: "20px" }}>
-          <Box position="absolute" top={-30} left={5}>
+          <Box position="absolute" top={-28} left={5}>
             <Typography fontSize={{ xs: "12px", md: "16px" }} fontWeight="600">
               21/10/2024
             </Typography>
           </Box>
-          <Typography fontSize={{ xs: "12px", md: "16px" }} fontWeight="600">
+          <Typography fontSize={{ xs: "12px", md: "18px" }} fontWeight="600">
             Segunda Feira
           </Typography>
-          <Typography fontSize={{ xs: "12px", md: "16px" }}>
+          <Typography fontSize={{ xs: "12px", md: "18px" }}>
             18:00 às 19:00
           </Typography>
         </Box>
@@ -43,7 +47,7 @@ const ReservationCard = () => {
       </Box>
       <Box marginRight={{ xs: "10px", md: "40px" }}>
         <DeleteOutlinedIcon
-          onClick={() => console.log("test")}
+          onClick={onOpenModal}
           sx={{ fontSize: { xs: "22px", md: "34px" }, cursor: "pointer" }}
         />
       </Box>
