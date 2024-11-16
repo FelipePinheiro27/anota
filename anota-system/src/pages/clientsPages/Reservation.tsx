@@ -9,7 +9,7 @@ const Reservation = () => {
   console.log(isMobile);
 
   return (
-    <div>
+    <Box>
       <ClientHeader previewsPage="/" />
       <Box sx={{ padding: "30px 40px" }}>
         <Box margin={"30px 0"}>
@@ -25,7 +25,7 @@ const Reservation = () => {
           <CourtsOptions />
         </Box>
       </Box>
-    </div>
+    </Box>
   );
 };
 

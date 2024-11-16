@@ -2,7 +2,7 @@ import React from "react";
 import { Box } from "@mui/material";
 import ReservationsButton from "../buttons/ReservationsButton";
 import { Link } from "react-router-dom";
-import "./ReservationsContainer.css";
+import "./ReservationsContainer.scss";
 
 const ReservationsContainer = () => {
   return (
@@ -19,7 +19,7 @@ const ReservationsContainer = () => {
         <ReservationsButton text="Novo Agendamento" bgColor="#0C927D" />
       </Link>
       <Link
-        to="/reservas"
+        to="/minhas-reservas"
         style={{ textDecoration: "none", color: "inherit", padding: "0" }}
       >
         <ReservationsButton text="Minhas Reservas" bgColor="#7F42D9" />

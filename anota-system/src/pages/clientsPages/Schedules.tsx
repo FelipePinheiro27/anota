@@ -4,6 +4,7 @@ import ClientHeader from "../../components/header/clientHeader/ClientHeader";
 import TimeSlots from "../../components/timeSlots/TimeSlots";
 import ModalitiesGroups from "../../components/modalitiesGroups/ModalitiesGroups";
 import DateButton from "../../components/dateButton/DateButton";
+import { Link } from "react-router-dom";
 
 const Schedules = () => {
   return (
@@ -56,22 +57,27 @@ const Schedules = () => {
           <ModalitiesGroups />
         </Box>
         <Box sx={{ marginTop: { xs: "50px", md: "100px" } }}>
-          <Button
-            fullWidth
-            variant="contained"
-            sx={{
-              padding: "12px",
-              background: "#0C927D",
-              "&.Mui-disabled": {
-                color: "#fff",
-                background: "#C4C4C4",
-              },
-              fontWeight: 550,
-            }}
-            onClick={() => {}}
+          <Link
+            to={"/confirmacao"}
+            style={{ textDecoration: "none", color: "inherit" }}
           >
-            Prosseguir
-          </Button>
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{
+                padding: "12px",
+                background: "#0C927D",
+                "&.Mui-disabled": {
+                  color: "#fff",
+                  background: "#C4C4C4",
+                },
+                fontWeight: 550,
+              }}
+              onClick={() => {}}
+            >
+              Prosseguir
+            </Button>
+          </Link>
         </Box>
       </Box>
     </Box>
