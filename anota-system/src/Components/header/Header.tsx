@@ -23,7 +23,7 @@ const Header = () => {
     >
       <img
         src={LogoHeader}
-        alt="Test"
+        alt="logo da empresa"
         style={{ width: "40px", height: "40px" }}
       />
       <Box>

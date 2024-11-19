@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import CourtsOptions from "../../components/court/courtsOptions/CourtsOptions";
 import { Box, Typography } from "@mui/material";
-import useIsMobile from "../../hooks/useIsMobile";
 import ClientHeader from "../../components/header/clientHeader/ClientHeader";
+import { ClientReservationContext } from "../../context/ClientReservationProvider";
 
 const Reservation = () => {
-  const isMobile = useIsMobile();
-  console.log(isMobile);
+  const clientReservation = useContext(ClientReservationContext);
+  const { courts, onSelectCourt } = clientReservation || {};
 
   return (
     <Box>
@@ -22,7 +22,7 @@ const Reservation = () => {
           </Typography>
         </Box>
         <Box marginTop="40px">
-          <CourtsOptions />
+          <CourtsOptions courts={courts || []} onSelectCourt={onSelectCourt} />
         </Box>
       </Box>
     </Box>

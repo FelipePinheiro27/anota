@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import ClientHeader from "../../components/header/clientHeader/ClientHeader";
 import TimeSlots from "../../components/timeSlots/TimeSlots";
 import ModalitiesGroups from "../../components/modalitiesGroups/ModalitiesGroups";
 import DateButton from "../../components/dateButton/DateButton";
 import { Link } from "react-router-dom";
+import { ClientReservationContext } from "../../context/ClientReservationProvider";
 
 const Schedules = () => {
+  const clientReservation = useContext(ClientReservationContext);
+  const { selectedCourt } = clientReservation || {};
+  const { name } = selectedCourt || {};
+
   return (
     <Box>
       <ClientHeader previewsPage="/reservas" />
@@ -17,7 +22,7 @@ const Schedules = () => {
             fontSize="18px"
             color="#22303E"
           >
-            Quadra 01
+            {name}
           </Typography>
         </Box>
         <Box display="flex" margin="30px 0" gap="80px">

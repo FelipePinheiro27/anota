@@ -7,6 +7,7 @@ import Confirmation from "../pages/clientsPages/Confirmation";
 import MyReservations from "../pages/clientsPages/MyReservations";
 import SignIn from "../pages/companiesPages/SignIn";
 import SignUp from "../pages/companiesPages/SignUp";
+import Company from "../pages/companiesPages/Company";
 
 const AppRoutes = () => {
   return (
@@ -19,6 +20,7 @@ const AppRoutes = () => {
         <Route path="/minhas-reservas" element={<MyReservations />} />
         <Route path="/login" element={<SignIn />} />
         <Route path="/cadastro" element={<SignUp />} />
+        <Route path="/empresa" element={<Company />} />
       </Routes>
     </Router>
   );

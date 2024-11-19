@@ -2,17 +2,25 @@ import { Link } from "react-router-dom";
 import { Box } from "@mui/material";
 import React from "react";
 import CourtCard from "../CourtCard";
+import { CourtTypes } from "../../../types/generalTypes";
 
-const CourtsOptions = () => {
+interface CourtsOptionsProps {
+  courts: CourtTypes[];
+  onSelectCourt: ((courtId: string | number) => void) | undefined;
+}
+
+const CourtsOptions = ({ courts, onSelectCourt }: CourtsOptionsProps) => {
   return (
     <Box marginLeft="40px" gap="30px" display="flex" flexWrap="wrap">
-      <Link to="/horarios" style={{ textDecoration: "none", color: "inherit" }}>
-        <CourtCard />
-      </Link>
-      <CourtCard />
-      <CourtCard />
-      <CourtCard />
-      <CourtCard />
+      {courts.map((court) => (
+        <Link
+          to="/horarios"
+          onClick={() => onSelectCourt && onSelectCourt(court.courtId)}
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <CourtCard title={court.name} description={court.description} />
+        </Link>
+      ))}
     </Box>
   );
 };

@@ -1,14 +1,17 @@
 import React from "react";
 import "./CourtCard.scss";
 
-const CourtCard = () => {
+interface CourtCardProps {
+  title: string;
+  description: string;
+}
+
+const CourtCard = ({ title, description }: CourtCardProps) => {
   return (
     <div className="CourtCard">
       <div className="CourtCard-info">
-        <div className="CourtCard-info--title">Quadra 01</div>
-        <div className="CourtCard-info--description">
-          Quadra próxima ao bar Quadra próxima ao bar
-        </div>
+        <div className="CourtCard-info--title">{title}</div>
+        <div className="CourtCard-info--description">{description}</div>
       </div>
       <div className="CourtCard-button">SELECIONAR</div>
     </div>

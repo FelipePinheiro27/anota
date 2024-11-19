@@ -40,7 +40,7 @@ const ButtonDropDown = () => {
           style: { minWidth: anchorEl ? anchorEl : "auto" },
         }}
       >
-        <MenuItem
+        {/* <MenuItem
           onClick={handleClose}
           style={{
             minWidth: "120px",
@@ -50,7 +50,7 @@ const ButtonDropDown = () => {
           }}
         >
           Alterar Dados
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem
           onClick={handleClose}
           style={{
