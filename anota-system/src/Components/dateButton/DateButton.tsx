@@ -4,22 +4,18 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs, { Dayjs } from "dayjs";
 
-interface DateButtonProps {}
+interface DateButtonProps {
+  date: Dayjs | null;
+  handleDateChange: (date: Dayjs | null) => void;
+}
 
-const DateButton = ({}: DateButtonProps) => {
-  const handleDateChange = (value: Dayjs | null) => {
-    if (value) {
-      const formattedDate = value.format("YYYY-MM-DD");
-      console.log(formattedDate);
-    }
-  };
-
+const DateButton = ({ date, handleDateChange }: DateButtonProps) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={["DesktopDatePicker"]}>
         <DatePicker
           onChange={handleDateChange}
-          defaultValue={dayjs()}
+          defaultValue={date}
           minDate={dayjs()}
           maxDate={dayjs().add(30, "day")}
           format="DD/MM/YYYY"

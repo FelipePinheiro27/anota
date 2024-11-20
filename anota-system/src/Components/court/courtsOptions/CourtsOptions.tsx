@@ -6,7 +6,7 @@ import { CourtTypes } from "../../../types/generalTypes";
 
 interface CourtsOptionsProps {
   courts: CourtTypes[];
-  onSelectCourt: ((courtId: string | number) => void) | undefined;
+  onSelectCourt: ((court: CourtTypes) => void) | undefined;
 }
 
 const CourtsOptions = ({ courts, onSelectCourt }: CourtsOptionsProps) => {
@@ -15,7 +15,7 @@ const CourtsOptions = ({ courts, onSelectCourt }: CourtsOptionsProps) => {
       {courts.map((court) => (
         <Link
           to="/horarios"
-          onClick={() => onSelectCourt && onSelectCourt(court.courtId)}
+          onClick={() => onSelectCourt && onSelectCourt(court)}
           style={{ textDecoration: "none", color: "inherit" }}
         >
           <CourtCard title={court.name} description={court.description} />

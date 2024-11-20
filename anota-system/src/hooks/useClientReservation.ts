@@ -1,28 +1,25 @@
-import { useEffect, useState } from "react";
-import { CourtTypes } from "../types/generalTypes";
-import { retrieveCourtsByCompany } from "../api/ClientAPI";
+import { useState } from "react";
+import { CourtTypes, ScheduledTimeTypes } from "../types/generalTypes";
 
 export const useClientReservation = () => {
-  const [courts, setCourts] = useState<CourtTypes[]>([]);
   const [selectedCourt, setSelectedCourt] = useState<CourtTypes | null>(null);
+  const [scheduledTime, setScheduledTime] = useState<ScheduledTimeTypes>({
+    time: [],
+    date: "",
+  });
 
-  const onSelectCourt = (courtId: number | string) => {
-    const court = courts.find((ct) => ct.courtId === courtId);
-
-    setSelectedCourt(court || null);
+  const onSelectCourt = (court: CourtTypes) => {
+    setSelectedCourt(court);
   };
 
-  useEffect(() => {
-    const fetchCourts = async () => {
-      setCourts(await retrieveCourtsByCompany());
-    };
-
-    fetchCourts();
-  }, []);
+  const onSelectScheduleTime = (data: ScheduledTimeTypes) => {
+    setScheduledTime(data);
+  };
 
   return {
-    courts,
     selectedCourt,
     onSelectCourt,
+    scheduledTime,
+    onSelectScheduleTime,
   };
 };

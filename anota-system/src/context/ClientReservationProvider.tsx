@@ -1,11 +1,12 @@
 import React, { createContext, ReactNode } from "react";
-import { CourtTypes } from "../types/generalTypes";
+import { CourtTypes, ScheduledTimeTypes } from "../types/generalTypes";
 import { useClientReservation } from "../hooks/useClientReservation";
 
 type ClientReservationContextType = {
-  courts: CourtTypes[];
   selectedCourt: CourtTypes | null;
-  onSelectCourt: (courtId: string | number) => void;
+  onSelectCourt: (court: CourtTypes) => void;
+  scheduledTime: ScheduledTimeTypes;
+  onSelectScheduleTime: (data: ScheduledTimeTypes) => void;
 };
 
 export const ClientReservationContext = createContext<
@@ -19,11 +20,17 @@ interface ClientReservationProviderProps {
 export const ClientReservationProvider = ({
   children,
 }: ClientReservationProviderProps) => {
-  const { courts, selectedCourt, onSelectCourt } = useClientReservation();
+  const { selectedCourt, onSelectCourt, scheduledTime, onSelectScheduleTime } =
+    useClientReservation();
 
   return (
     <ClientReservationContext.Provider
-      value={{ courts, selectedCourt, onSelectCourt }}
+      value={{
+        selectedCourt,
+        onSelectCourt,
+        scheduledTime,
+        onSelectScheduleTime,
+      }}
     >
       {children}
     </ClientReservationContext.Provider>

@@ -1,12 +1,24 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CourtsOptions from "../../components/court/courtsOptions/CourtsOptions";
 import { Box, Typography } from "@mui/material";
 import ClientHeader from "../../components/header/clientHeader/ClientHeader";
 import { ClientReservationContext } from "../../context/ClientReservationProvider";
+import { retrieveCourtsByCompany } from "../../api/ClientAPI";
+import { CourtTypes } from "../../types/generalTypes";
 
 const Reservation = () => {
   const clientReservation = useContext(ClientReservationContext);
-  const { courts, onSelectCourt } = clientReservation || {};
+  const [courts, setCourts] = useState<CourtTypes[]>([]);
+
+  const { onSelectCourt } = clientReservation || {};
+
+  useEffect(() => {
+    const fetchCourts = async () => {
+      setCourts(await retrieveCourtsByCompany());
+    };
+
+    fetchCourts();
+  }, []);
 
   return (
     <Box>

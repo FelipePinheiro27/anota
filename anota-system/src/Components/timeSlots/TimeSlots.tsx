@@ -1,26 +1,26 @@
-import React, { useState } from "react";
-import "./TimeSlots.scss";
+import React from "react";
 import ScheduleTime from "../scheduleTime/ScheduleTime";
+import { ReservationTypes } from "../../types/generalTypes";
+import "./TimeSlots.scss";
 
-const TimeSlots = () => {
-  const [selectedSlots, setSelectedSlots] = useState<string[]>([]);
-  const availableSlots = ["18:00", "19:00", "21:00", "22:00", "23:00"];
+interface TimeSlotsProps {
+  slots: ReservationTypes[];
+  scheduledTime: ReservationTypes[];
+  onSelectSlots: (slot: ReservationTypes) => void;
+}
 
-  const onSelectSlot = (value: string) => {
-    const hasTime = selectedSlots.includes(value);
-
-    if (hasTime) {
-      setSelectedSlots((slots) => slots.filter((slot) => slot !== value));
-    } else setSelectedSlots([...selectedSlots, value]);
-  };
-
+const TimeSlots = ({ slots, onSelectSlots, scheduledTime }: TimeSlotsProps) => {
   return (
     <div className="TimeSlots">
-      {availableSlots.map((slot) => (
+      {slots.map((slot, index) => (
         <ScheduleTime
+          key={index}
           value={slot}
-          onSelectSlot={onSelectSlot}
-          selected={selectedSlots.includes(slot)}
+          onSelectSlot={() => onSelectSlots(slot)}
+          selected={scheduledTime.includes(slot)}
+          disabled={
+            scheduledTime.length > 0 && scheduledTime[0].start !== slot.start
+          }
         />
       ))}
     </div>

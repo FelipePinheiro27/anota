@@ -9,3 +9,16 @@ export type CourtTypes = {
   modality: ModalitiesTypes;
   description: string;
 };
+
+export type ReservationTypes = {
+  start: string;
+  end: string;
+};
+
+export type ScheduledTimeTypes = {
+  time?: ReservationTypes[];
+  date?: string;
+  modality?: number;
+  clientName?: string;
+  clientPhone?: string;
+};

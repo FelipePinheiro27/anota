@@ -15,6 +15,14 @@
   &.selected {
     border: 1px solid rgba(228, 86, 9, 1);
   }
+
+  &.disabled {
+    border: none;
+    cursor: auto;
+    border: 1px solid #8b8f93;
+    background-color: #e9e9e9;
+    box-shadow: none;
+  }
 }
 
 @media (max-width: 600px) {

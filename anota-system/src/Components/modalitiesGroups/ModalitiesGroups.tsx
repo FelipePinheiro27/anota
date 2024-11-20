@@ -4,7 +4,11 @@ import Futvolei from "../../icons/futvolei.svg";
 import Volei from "../../icons/volei.svg";
 import BeachTennis from "../../icons/beachTennis.svg";
 
-const ModalitiesGroups = () => {
+interface ModalitiesGroupsProps {
+  onSelectModality: (modality: number) => void;
+}
+
+const ModalitiesGroups = ({ onSelectModality }: ModalitiesGroupsProps) => {
   return (
     <FormControl>
       <RadioGroup
@@ -13,17 +17,20 @@ const ModalitiesGroups = () => {
         name="row-radio-buttons-group"
       >
         <FormControlLabel
-          value="beachTennis"
+          value={0}
+          onClick={() => onSelectModality(0)}
           control={<RadioSelect label="Beach Tennis" icon={BeachTennis} />}
           label=""
         />
         <FormControlLabel
-          value="futvolei"
+          value={1}
+          onClick={() => onSelectModality(1)}
           control={<RadioSelect label="Futvôlei" icon={Futvolei} />}
           label=""
         />
         <FormControlLabel
-          value="volei"
+          value={2}
+          onClick={() => onSelectModality(2)}
           control={<RadioSelect label="Vôlei" icon={Volei} />}
           label=""
         />

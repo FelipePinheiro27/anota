@@ -1,9 +1,11 @@
 import React from "react";
+import { ReservationTypes } from "../../types/generalTypes";
 import "./ScheduleTime.scss";
 
 interface ScheduleTimeProps {
-  value: string;
+  value: ReservationTypes;
   selected?: boolean;
+  disabled?: boolean;
   onSelectSlot: (value: string) => void;
 }
 
@@ -11,13 +13,16 @@ const ScheduleTime = ({
   value,
   selected = false,
   onSelectSlot,
+  disabled = false,
 }: ScheduleTimeProps) => {
   return (
     <div
-      onClick={() => onSelectSlot(value)}
-      className={`ScheduleTime ${selected ? "selected" : ""}`}
+      onClick={() => !disabled && onSelectSlot(value.start)}
+      className={`ScheduleTime ${selected ? "selected" : ""} ${
+        disabled ? "disabled" : ""
+      } `}
     >
-      {value}
+      {value.start} - {value.end}
     </div>
   );
 };
