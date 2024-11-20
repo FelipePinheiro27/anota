@@ -28,7 +28,6 @@ const Schedules = () => {
       onSelectScheduleTime &&
         onSelectScheduleTime({
           date: date.format("YYYY-MM-DD"),
-          time: [],
         });
     }
   };
@@ -37,19 +36,18 @@ const Schedules = () => {
     const hasTime = scheduledTime?.time?.find(
       (value) => slot.start === value.start
     );
-    const dateFormatted = date.format("YYYY-MM-DD");
 
     if (hasTime && onSelectScheduleTime) {
       const slotsValue = scheduledTime?.time?.filter(
         (value) => slot.start !== value.start
       );
-      onSelectScheduleTime({ date: dateFormatted, time: slotsValue || [] });
+      onSelectScheduleTime({ ...scheduledTime, time: slotsValue || [] });
     } else {
       const slotsValue = scheduledTime?.time || [];
       slotsValue.push(slot);
       onSelectScheduleTime &&
         onSelectScheduleTime({
-          date: dateFormatted,
+          ...scheduledTime,
           time: slotsValue || [],
         });
     }
@@ -151,7 +149,10 @@ const Schedules = () => {
           </Typography>
         </Box>
         <Box margin="0 30px">
-          <ModalitiesGroups onSelectModality={onSelectModality} />
+          <ModalitiesGroups
+            onSelectModality={onSelectModality}
+            modalitySelected={scheduledTime?.modality}
+          />
         </Box>
         <Box sx={{ marginTop: { xs: "50px", md: "100px" } }}>
           <Button

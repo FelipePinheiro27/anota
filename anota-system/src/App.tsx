@@ -4,7 +4,7 @@ import { ClientReservationProvider } from "./context/ClientReservationProvider";
 export default function App() {
   return (
     <ClientReservationProvider>
-      <AppRoutes />;
+      <AppRoutes />
     </ClientReservationProvider>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InputMask from "react-input-mask";
 import {
@@ -11,14 +11,83 @@ import {
 } from "@mui/material";
 import ClientHeader from "../../components/header/clientHeader/ClientHeader";
 import ConfirmationModal from "../../components/confirmationModal/ConfirmationModal";
+import { ClientReservationContext } from "../../context/ClientReservationProvider";
+import { parseReservationDataToPayload } from "../../utils/clientReservationUtil";
+import { createReservation } from "../../api/ReservationsAPI";
+
+const daysOfWeek = [
+  "Domingo",
+  "Segunda Feira",
+  "Terça Feira",
+  "Quarta Feira",
+  "Quinta Feira",
+  "Sexta Feira",
+  "Sábado",
+];
+
+export type FormDataType = {
+  phoneNumer: string;
+  clientName: string;
+};
 
 const Confirmation = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const clientReservation = useContext(ClientReservationContext);
+  const { selectedCourt, scheduledTime } = clientReservation || {};
+  const [formData, setFormData] = useState<FormDataType>({
+    phoneNumer: "",
+    clientName: "",
+  });
 
+  const onChangeNumber = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((form) => ({
+      ...form,
+      phoneNumer: event.target.value,
+    }));
+  };
+
+  const onChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((form) => ({
+      ...form,
+      clientName: event.target.value,
+    }));
+  };
+
+  const isValidPhoneNumber = (phoneNumber: string) => {
+    const numericPhone = phoneNumber.replace(/\D/g, "");
+
+    if (numericPhone.length !== 11) return false;
+
+    const ddd = numericPhone.substring(0, 2);
+    const mainNumber = numericPhone.substring(2);
+
+    if (!/^[1-9][1-9]$/.test(ddd)) return false;
+
+    if (!/^9/.test(mainNumber)) return false;
+
+    return true;
+  };
+
+  const isDisabled =
+    formData.clientName === "" || !isValidPhoneNumber(formData.phoneNumer);
+
+  const date = new Date(scheduledTime?.date || "");
   const onCloseModal = () => {
     setOpen(false);
     navigate("/");
+  };
+
+  const onSubmitReservation = () => {
+    const reservationData = parseReservationDataToPayload(
+      formData,
+      selectedCourt,
+      scheduledTime
+    );
+    setOpen(true);
+    console.log(reservationData, scheduledTime);
+
+    createReservation(reservationData);
   };
 
   return (
@@ -31,7 +100,7 @@ const Confirmation = () => {
             fontSize="18px"
             color="#22303E"
           >
-            Quadra 01
+            {selectedCourt?.name}
           </Typography>
         </Box>
         <Box>
@@ -40,7 +109,10 @@ const Confirmation = () => {
             fontSize="16px"
             color="#22303E"
           >
-            Segunda Feira, 21/10/2024 de 18:00 às 20:00
+            {daysOfWeek[date.getDay()]},{" "}
+            {date.toLocaleDateString("pt-BR", { timeZone: "UTC" })} de{" "}
+            {scheduledTime?.time && scheduledTime?.time[0].start} às{" "}
+            {scheduledTime?.time && scheduledTime?.time[0].end}
           </Typography>
         </Box>
         <Box marginTop="40px">
@@ -51,6 +123,8 @@ const Confirmation = () => {
               type="text"
               fullWidth
               name="name"
+              onChange={onChangeName}
+              value={formData.clientName}
               placeholder=""
               variant="outlined"
             />
@@ -59,7 +133,12 @@ const Confirmation = () => {
         <Box marginTop="20px">
           <FormControl sx={{ width: { xs: "80%", md: "30%" } }}>
             <FormLabel>Número de Contato</FormLabel>
-            <InputMask mask="(99) 99999-9999" maskChar="_">
+            <InputMask
+              mask="(99) 99999-9999"
+              maskChar="_"
+              value={formData.phoneNumer}
+              onChange={onChangeNumber}
+            >
               {(inputProps: any) => (
                 <TextField
                   {...inputProps}
@@ -78,6 +157,7 @@ const Confirmation = () => {
           <Button
             fullWidth
             variant="contained"
+            disabled={isDisabled}
             sx={{
               padding: "12px",
               background: "#0C927D",
@@ -87,7 +167,7 @@ const Confirmation = () => {
               },
               fontWeight: 550,
             }}
-            onClick={() => setOpen(true)}
+            onClick={onSubmitReservation}
           >
             Confirmar Reserva
           </Button>

@@ -12,13 +12,18 @@ interface CourtsOptionsProps {
 const CourtsOptions = ({ courts, onSelectCourt }: CourtsOptionsProps) => {
   return (
     <Box marginLeft="40px" gap="30px" display="flex" flexWrap="wrap">
-      {courts.map((court) => (
+      {courts.map((court, index) => (
         <Link
+          key={index}
           to="/horarios"
           onClick={() => onSelectCourt && onSelectCourt(court)}
           style={{ textDecoration: "none", color: "inherit" }}
         >
-          <CourtCard title={court.name} description={court.description} />
+          <CourtCard
+            key={index}
+            title={court.name}
+            description={court.description}
+          />
         </Link>
       ))}
     </Box>

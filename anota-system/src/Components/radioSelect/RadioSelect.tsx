@@ -3,11 +3,17 @@ import { Box, Radio, Typography } from "@mui/material";
 
 interface RadioSelectProps {
   value?: unknown;
+  checked?: boolean;
   label: string;
   icon?: string;
 }
 
-const RadioSelect = ({ value, label, icon }: RadioSelectProps) => {
+const RadioSelect = ({
+  value,
+  label,
+  icon,
+  checked = false,
+}: RadioSelectProps) => {
   return (
     <Box display="flex" alignItems="center">
       <Radio
@@ -17,6 +23,7 @@ const RadioSelect = ({ value, label, icon }: RadioSelectProps) => {
           },
         }}
         value={value}
+        checked={checked}
       />
       <img
         src={icon}

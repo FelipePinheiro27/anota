@@ -1,4 +1,7 @@
-import { ReservationTypes } from "../types/generalTypes";
+import {
+  ReservationPayloadType,
+  ReservationTypes,
+} from "../types/generalTypes";
 import api from "./api";
 
 export const getReservations = () => api.get("/ReservationConfig");
@@ -15,4 +18,8 @@ export const getAvailableSchedulesByCourtAndDate = async (
     console.error(error);
     return [];
   }
+};
+
+export const createReservation = (payload: ReservationPayloadType) => {
+  api.post("/Reservation", payload);
 };
