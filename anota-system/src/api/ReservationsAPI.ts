@@ -21,5 +21,11 @@ export const getAvailableSchedulesByCourtAndDate = async (
 };
 
 export const createReservation = (payload: ReservationPayloadType) => {
-  api.post("/Reservation", payload);
+  try {
+    api.post("/Reservation", payload);
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
 };

@@ -13,7 +13,7 @@ const ClientHeader = ({ previewsPage }: ClientHeaderProps) => {
   const isMobile = useIsMobile();
 
   if (isMobile) {
-    return <ClientHeaderMobile />;
+    return <ClientHeaderMobile previewsPage={previewsPage} />;
   }
 
   return (

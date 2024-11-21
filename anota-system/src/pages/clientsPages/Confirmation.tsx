@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InputMask from "react-input-mask";
 import {
@@ -72,23 +72,32 @@ const Confirmation = () => {
   const isDisabled =
     formData.clientName === "" || !isValidPhoneNumber(formData.phoneNumer);
 
-  const date = new Date(scheduledTime?.date || "");
+  const date = useMemo(
+    () => new Date(scheduledTime?.date || ""),
+    [scheduledTime?.date]
+  );
+
   const onCloseModal = () => {
     setOpen(false);
     navigate("/");
   };
 
-  const onSubmitReservation = () => {
+  const onSubmitReservation = async () => {
     const reservationData = parseReservationDataToPayload(
       formData,
       selectedCourt,
       scheduledTime
     );
-    setOpen(true);
-    console.log(reservationData, scheduledTime);
 
-    createReservation(reservationData);
+    const reservationCompleted = await createReservation(reservationData);
+    if (reservationCompleted) setOpen(true);
   };
+
+  useEffect(() => {
+    if (!selectedCourt || !date || !scheduledTime?.time) {
+      navigate("/reservas");
+    }
+  }, [date, navigate, scheduledTime, selectedCourt]);
 
   return (
     <Box>
@@ -111,8 +120,8 @@ const Confirmation = () => {
           >
             {daysOfWeek[date.getDay()]},{" "}
             {date.toLocaleDateString("pt-BR", { timeZone: "UTC" })} de{" "}
-            {scheduledTime?.time && scheduledTime?.time[0].start} às{" "}
-            {scheduledTime?.time && scheduledTime?.time[0].end}
+            {scheduledTime?.time && scheduledTime?.time[0]?.start} às{" "}
+            {scheduledTime?.time && scheduledTime?.time[0]?.end}
           </Typography>
         </Box>
         <Box marginTop="40px">

@@ -3,9 +3,11 @@ import { Box, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CompanyLogo from "../../../images/levelBeach.png";
 
-const ClientHeaderMobile = () => {
-  const previewsPage = localStorage.getItem("lastPage")?.toString();
+interface ClientHeaderMobileProps {
+  previewsPage: string;
+}
 
+const ClientHeaderMobile = ({ previewsPage }: ClientHeaderMobileProps) => {
   return (
     <Box
       sx={{

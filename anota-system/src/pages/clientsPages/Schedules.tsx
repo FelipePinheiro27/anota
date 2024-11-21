@@ -23,11 +23,13 @@ const Schedules = () => {
   const navigate = useNavigate();
 
   const handleDateChange = (value: Dayjs | null) => {
+    console.log(value);
     if (value) {
       setDate(value);
       onSelectScheduleTime &&
         onSelectScheduleTime({
-          date: date.format("YYYY-MM-DD"),
+          ...scheduledTime,
+          date: value.format("YYYY-MM-DD"),
         });
     }
   };
@@ -88,7 +90,12 @@ const Schedules = () => {
         time: [],
         modality: undefined,
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!selectedCourt) navigate("/reservas");
+  }, [navigate, selectedCourt]);
 
   useEffect(() => {
     resetReservationData();
@@ -119,7 +126,7 @@ const Schedules = () => {
             Escolha os Horários
           </Typography>
         </Box>
-        <Box margin="0 30px">
+        <Box margin={{ md: "0 30px" }}>
           <Typography
             sx={{ fontWeight: 500, letterSpacing: "0.2" }}
             fontSize="16px"
@@ -148,7 +155,7 @@ const Schedules = () => {
             Escolha a Modalidade
           </Typography>
         </Box>
-        <Box margin="0 30px">
+        <Box margin={{ md: "0 30px" }}>
           <ModalitiesGroups
             onSelectModality={onSelectModality}
             modalitySelected={scheduledTime?.modality}
