@@ -1,10 +1,29 @@
 import {
   ReservationPayloadType,
+  ReservationScheduledResponse,
   ReservationTypes,
 } from "../types/generalTypes";
 import api from "./api";
 
-export const getReservations = () => api.get("/ReservationConfig");
+export const getReservationsByDate = async (
+  date: string
+): Promise<ReservationScheduledResponse[]> => {
+  try {
+    const { data } = (await api.get(`/Reservation/scheduled/${date}`)) || [];
+    const reponse: ReservationScheduledResponse[] = data.map((value: any) => ({
+      client: value.client,
+      clientPhone: value.client_phone,
+      courtName: value.court_name,
+      createdDate: value.created_date,
+      endDate: value.end_date,
+    }));
+
+    return reponse;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
 
 export const getAvailableSchedulesByCourtAndDate = async (
   date: string,

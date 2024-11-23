@@ -1,15 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import Header from "../../components/header/Header";
 import ReservationsTable from "../../components/tables/reservationsTable/ReservationsTable";
-import DateRangeButton from "../../components/dateButton/dateRangeButton/DateRangeButton";
+import { getReservationsByDate } from "../../api/ReservationsAPI";
+import dayjs, { Dayjs } from "dayjs";
+import DateButton from "../../components/dateButton/DateButton";
+import { ReservationScheduledResponse } from "../../types/generalTypes";
 
 const Company = () => {
+  const [date, setDate] = useState(dayjs());
+  const [reservations, setReservations] = useState<
+    ReservationScheduledResponse[]
+  >([]);
+
+  const handleDateChange = (value: Dayjs | null) => {
+    if (value) {
+      setDate(value);
+    }
+  };
+
+  useEffect(() => {
+    const fetchReservations = async () => {
+      const reservationsData = await getReservationsByDate(
+        date.format("YYYY-MM-DD")
+      );
+      setReservations(reservationsData);
+    };
+
+    fetchReservations();
+  }, [date]);
+
+  console.log(reservations);
+
   return (
     <Box>
       <Header />
-      <Box sx={{ padding: "30px 40px" }}>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box sx={{ padding: { xs: "30px 10px", md: "30px 40px" } }}>
+        <Box
+          display="flex"
+          flexDirection={{ xs: "column" }}
+          justifyContent="space-between"
+          textAlign="center"
+          alignItems="start"
+        >
           <Typography
             sx={{ fontWeight: 600, letterSpacing: "0.2" }}
             fontSize="18px"
@@ -17,10 +50,10 @@ const Company = () => {
           >
             Agendamentos Realizados
           </Typography>
-          <DateRangeButton />
+          <DateButton date={date} handleDateChange={handleDateChange} />
         </Box>
         <Box sx={{ paddingTop: "30px" }}>
-          <ReservationsTable />
+          <ReservationsTable reservations={reservations} />
         </Box>
       </Box>
     </Box>

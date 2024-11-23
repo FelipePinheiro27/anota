@@ -79,6 +79,28 @@ public class ReservationController : ControllerBase
         return NoContent();
     }
 
+    [HttpGet("scheduled/{date}")]
+    public async Task<ActionResult<IEnumerable<ScheduledReservationDTO>>> GetReservationScheduled(DateTime date)
+    {
+        var reservations = await _context.Reservations
+            .Include(r => r.Court)
+            .Where(r => r.Created_date.Date == date.Date)
+            .ToListAsync();
+
+        var scheduledReservations = reservations.Select(r => new ScheduledReservationDTO
+        {
+            Client = r.User_name,
+            Client_phone = r.User_phone,
+            Court_name = r.Court != null ? r.Court.Name : "Unknown",
+            Price = r.Price,
+            Created_date = r.Created_date,
+            End_date = r.End_date
+        }).ToList();
+
+        return Ok(scheduledReservations);
+    }
+
+
     [HttpGet("available/{date}/{courtId}")]
     public async Task<ActionResult<IEnumerable<object>>> GetAvailableSlots(DateTime date, int courtId)
     {

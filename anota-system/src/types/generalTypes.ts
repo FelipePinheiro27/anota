@@ -29,3 +29,12 @@ export type ReservationPayloadType = {
   created_date: string;
   end_date: string;
 };
+
+export type ReservationScheduledResponse = {
+  client: string;
+  clientPhone: string;
+  courtName: string;
+  value: number;
+  createdDate: string;
+  endDate: string;
+};

@@ -23,7 +23,6 @@ const Schedules = () => {
   const navigate = useNavigate();
 
   const handleDateChange = (value: Dayjs | null) => {
-    console.log(value);
     if (value) {
       setDate(value);
       onSelectScheduleTime &&

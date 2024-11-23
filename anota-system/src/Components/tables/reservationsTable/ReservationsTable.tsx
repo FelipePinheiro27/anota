@@ -1,126 +1,174 @@
-import React from "react";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
+import React, { useState } from "react";
+import {
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  TableSortLabel,
+  useTheme,
+} from "@mui/material";
+import { ReservationScheduledResponse } from "../../../types/generalTypes";
+import useIsMobile from "../../../hooks/useIsMobile";
 
 interface Column {
-  id: "client" | "court" | "value" | "date" | "schedule";
+  id: "client" | "clientPhone" | "courtName" | "value" | "date" | "time";
   label: string;
   minWidth?: number;
   align?: "right";
-  format?: (value: number) => string;
 }
 
 const columns: readonly Column[] = [
   { id: "client", label: "Cliente", minWidth: 170 },
-  { id: "court", label: "Quadra", minWidth: 170 },
+  { id: "clientPhone", label: "Número do Cliente", minWidth: 170 },
+  { id: "courtName", label: "Quadra", minWidth: 170 },
   { id: "value", label: "Valor", minWidth: 170 },
   { id: "date", label: "Data", minWidth: 170 },
-  { id: "schedule", label: "Horário", minWidth: 170 },
+  { id: "time", label: "Horário", minWidth: 170 },
 ];
 
-interface Data {
+type ReservationType = {
   client: string;
-  court: string;
+  clientPhone: string;
+  courtName: string;
   value: string;
   date: string;
-  schedule: string;
+  time: string;
+  dateTime: Date;
+};
+
+interface ReservationsTableProps {
+  reservations: ReservationScheduledResponse[];
 }
 
-function createData(
-  client: string,
-  court: string,
-  value: string,
-  date: string,
-  schedule: string
-): Data {
-  return { client, court, value, date, schedule };
-}
+const ReservationsTable = ({ reservations }: ReservationsTableProps) => {
+  const theme = useTheme();
+  const isMobile = useIsMobile();
+  const [orderBy, setOrderBy] = useState<keyof ReservationType>("dateTime");
+  const [orderDirection, setOrderDirection] = useState<"asc" | "desc">("asc");
 
-const rows = [
-  createData("Felipe", "1", "60", "17/10/2024", "10:00 às 12:00 "),
-  createData("Luan", "1", "60", "17/10/2024", "10:00 às 12:00 "),
-  createData("Felipe", "1", "60", "17/10/2024", "10:00 às 12:00 "),
-  createData("Felipe", "1", "60", "17/10/2024", "10:00 às 12:00 "),
-  createData("Felipe", "1", "60", "17/10/2024", "10:00 às 12:00 "),
-  createData("Felipe", "1", "60", "17/10/2024", "10:00 às 12:00 "),
-  createData("Felipe", "1", "60", "17/10/2024", "10:00 às 12:00 "),
-  createData("Felipe", "1", "60", "17/10/2024", "10:00 às 12:00 "),
-  createData("Felipe", "1", "60", "17/10/2024", "10:00 às 12:00 "),
-  createData("Felipe", "1", "60", "17/10/2024", "10:00 às 12:00 "),
-  createData("Felipe", "1", "60", "17/10/2024", "10:00 às 12:00 "),
-  createData("Felipe", "1", "60", "17/10/2024", "10:00 às 12:00 "),
-];
+  const reservationsParsed: ReservationType[] = reservations.map(
+    (reservation) => {
+      const date = new Date(reservation.createdDate);
+      const endDate = new Date(reservation.endDate);
+      const formattedDate = `${date.getDate().toString().padStart(2, "0")}/${(
+        date.getMonth() + 1
+      )
+        .toString()
+        .padStart(2, "0")}/${date.getFullYear()}`;
 
-const ReservationsTable = () => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+      const formattedTime = `${date.getHours()}:00 às ${endDate.getHours()}:00`;
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
+      return {
+        client: reservation.client,
+        clientPhone: reservation.clientPhone.replace(
+          /^(\d{2})(\d{5})(\d{4})$/,
+          "($1) $2-$3"
+        ),
+        courtName: reservation.courtName,
+        value: `R$ ${reservation?.value}`,
+        date: formattedDate,
+        time: formattedTime,
+        dateTime: date,
+      };
+    }
+  );
+
+  const handleSort = (column: keyof ReservationType) => {
+    const isAsc = orderBy === column && orderDirection === "asc";
+    setOrderDirection(isAsc ? "desc" : "asc");
+    setOrderBy(column);
   };
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  const sortedReservations = [...reservationsParsed].sort((a, b) => {
+    if (a[orderBy] < b[orderBy]) return orderDirection === "asc" ? -1 : 1;
+    if (a[orderBy] > b[orderBy]) return orderDirection === "asc" ? 1 : -1;
+    return 0;
+  });
 
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <TableContainer sx={{ maxHeight: 500 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth, fontWeight: 600 }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => {
-                return (
+    <>
+      {isMobile ? (
+        <Box>
+          {sortedReservations.map((reservation, index) => (
+            <Paper
+              key={index}
+              sx={{
+                marginBottom: 2,
+                padding: 2,
+                backgroundColor: theme.palette.background.default,
+                color: "#22303E",
+              }}
+            >
+              <Typography variant="subtitle1">
+                <strong>Cliente:</strong> {reservation.client}
+              </Typography>
+              <Typography variant="subtitle1">
+                <strong>Telefone:</strong> {reservation.clientPhone}
+              </Typography>
+              <Typography variant="subtitle1">
+                <strong>Quadra:</strong> {reservation.courtName}
+              </Typography>
+              <Typography variant="subtitle1">
+                <strong>Valor:</strong> {reservation.value}
+              </Typography>
+              <Typography variant="subtitle1">
+                <strong>Data:</strong> {reservation.date}
+              </Typography>
+              <Typography variant="subtitle1">
+                <strong>Horário:</strong> {reservation.time}
+              </Typography>
+            </Paper>
+          ))}
+        </Box>
+      ) : (
+        <Paper>
+          <TableContainer sx={{ maxHeight: 500 }}>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column) => (
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{ minWidth: column.minWidth, fontWeight: 600 }}
+                    >
+                      <TableSortLabel
+                        active={orderBy === column.id}
+                        direction={
+                          orderBy === column.id ? orderDirection : "asc"
+                        }
+                        onClick={() => handleSort(column.id)}
+                      >
+                        {column.label}
+                      </TableSortLabel>
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {sortedReservations.map((row, index) => (
                   <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {column.format && typeof value === "number"
-                            ? column.format(value)
-                            : value}
+                          {value}
                         </TableCell>
                       );
                     })}
                   </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {/* <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      /> */}
-    </Paper>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
+      )}
+    </>
   );
 };
 
