@@ -7,7 +7,7 @@ import ModalitiesGroups from "../../components/modalitiesGroups/ModalitiesGroups
 import DateButton from "../../components/dateButton/DateButton";
 import { ClientReservationContext } from "../../context/ClientReservationProvider";
 import { getAvailableSchedulesByCourtAndDate } from "../../api/ReservationsAPI";
-import { ReservationTypes } from "../../types/generalTypes";
+import { ModalityEnum, ReservationTypes } from "../../types/generalTypes";
 import { getScheduledRangeTime } from "../../utils/clientReservationUtil";
 import { useNavigate } from "react-router-dom";
 
@@ -27,7 +27,8 @@ const Schedules = () => {
       setDate(value);
       onSelectScheduleTime &&
         onSelectScheduleTime({
-          ...scheduledTime,
+          modality: undefined,
+          time: [],
           date: value.format("YYYY-MM-DD"),
         });
     }
@@ -38,7 +39,13 @@ const Schedules = () => {
       (value) => slot.start === value.start
     );
 
+    const scheduledTimeSlots = scheduledTime?.time;
+    const lastScheduled =
+      scheduledTimeSlots && scheduledTimeSlots[scheduledTimeSlots.length - 1];
+
     if (hasTime && onSelectScheduleTime) {
+      if (lastScheduled?.start !== slot.start) return;
+
       const slotsValue = scheduledTime?.time?.filter(
         (value) => slot.start !== value.start
       );
@@ -54,7 +61,7 @@ const Schedules = () => {
     }
   };
 
-  const onSelectModality = (modality: number) => {
+  const onSelectModality = (modality: ModalityEnum) => {
     onSelectScheduleTime &&
       onSelectScheduleTime({
         ...scheduledTime,
@@ -111,6 +118,15 @@ const Schedules = () => {
             color="#22303E"
           >
             {name}
+          </Typography>
+        </Box>
+        <Box>
+          <Typography
+            sx={{ fontWeight: 600, letterSpacing: "0.2" }}
+            fontSize="16px"
+            color="#22303E"
+          >
+            {schedules.length > 0 && `Valor: R$ ${schedules[0].price},00`}
           </Typography>
         </Box>
         <Box display="flex" margin="30px 0" gap="80px">

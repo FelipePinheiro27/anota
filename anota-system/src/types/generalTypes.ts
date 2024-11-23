@@ -1,16 +1,15 @@
 export type DateButtonTypes = "today" | "specific";
 
-type ModalitiesTypes = 0 | 1 | 2;
-
 export type CourtTypes = {
   courtId: number | string;
   companyId: number;
   name: string;
-  modality: ModalitiesTypes;
+  modality: ModalityEnum;
   description: string;
 };
 
 export type ReservationTypes = {
+  price: number;
   start: string;
   end: string;
 };
@@ -18,7 +17,7 @@ export type ReservationTypes = {
 export type ScheduledTimeTypes = {
   time?: ReservationTypes[];
   date?: string;
-  modality?: number;
+  modality?: ModalityEnum;
 };
 
 export type ReservationPayloadType = {
@@ -28,13 +27,21 @@ export type ReservationPayloadType = {
   price: number;
   created_date: string;
   end_date: string;
+  modality: ModalityEnum;
 };
 
 export type ReservationScheduledResponse = {
   client: string;
   clientPhone: string;
   courtName: string;
-  value: number;
+  price: number;
   createdDate: string;
   endDate: string;
+  modality: ModalityEnum;
 };
+
+export enum ModalityEnum {
+  BeachTennis = 0,
+  Futvolei = 1,
+  Volei = 2,
+}

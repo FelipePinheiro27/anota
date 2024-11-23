@@ -14,9 +14,17 @@ import {
 } from "@mui/material";
 import { ReservationScheduledResponse } from "../../../types/generalTypes";
 import useIsMobile from "../../../hooks/useIsMobile";
+import { modalitiesConstant } from "../../../constants/Global";
 
 interface Column {
-  id: "client" | "clientPhone" | "courtName" | "value" | "date" | "time";
+  id:
+    | "client"
+    | "clientPhone"
+    | "courtName"
+    | "modality"
+    | "price"
+    | "date"
+    | "time";
   label: string;
   minWidth?: number;
   align?: "right";
@@ -24,18 +32,20 @@ interface Column {
 
 const columns: readonly Column[] = [
   { id: "client", label: "Cliente", minWidth: 170 },
-  { id: "clientPhone", label: "Número do Cliente", minWidth: 170 },
+  { id: "clientPhone", label: "Número do Cliente", minWidth: 140 },
   { id: "courtName", label: "Quadra", minWidth: 170 },
-  { id: "value", label: "Valor", minWidth: 170 },
-  { id: "date", label: "Data", minWidth: 170 },
-  { id: "time", label: "Horário", minWidth: 170 },
+  { id: "modality", label: "Modalidade", minWidth: 100 },
+  { id: "price", label: "Valor", minWidth: 100 },
+  { id: "date", label: "Data", minWidth: 100 },
+  { id: "time", label: "Horário", minWidth: 140 },
 ];
 
 type ReservationType = {
   client: string;
   clientPhone: string;
   courtName: string;
-  value: string;
+  modality: string;
+  price: string;
   date: string;
   time: string;
   dateTime: Date;
@@ -70,7 +80,8 @@ const ReservationsTable = ({ reservations }: ReservationsTableProps) => {
           "($1) $2-$3"
         ),
         courtName: reservation.courtName,
-        value: `R$ ${reservation?.value}`,
+        modality: modalitiesConstant[reservation.modality],
+        price: `R$ ${reservation.price},00`,
         date: formattedDate,
         time: formattedTime,
         dateTime: date,
@@ -114,7 +125,10 @@ const ReservationsTable = ({ reservations }: ReservationsTableProps) => {
                 <strong>Quadra:</strong> {reservation.courtName}
               </Typography>
               <Typography variant="subtitle1">
-                <strong>Valor:</strong> {reservation.value}
+                <strong>Modalidade:</strong> {reservation.modality}
+              </Typography>
+              <Typography variant="subtitle1">
+                <strong>Valor:</strong> {reservation.price}
               </Typography>
               <Typography variant="subtitle1">
                 <strong>Data:</strong> {reservation.date}

@@ -121,7 +121,8 @@ const Confirmation = () => {
             {daysOfWeek[date.getDay()]},{" "}
             {date.toLocaleDateString("pt-BR", { timeZone: "UTC" })} de{" "}
             {scheduledTime?.time && scheduledTime?.time[0]?.start} às{" "}
-            {scheduledTime?.time && scheduledTime?.time[0]?.end}
+            {scheduledTime?.time &&
+              scheduledTime?.time[scheduledTime.time.length - 1].end}
           </Typography>
         </Box>
         <Box marginTop="40px">

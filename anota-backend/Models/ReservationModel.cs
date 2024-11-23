@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using anota_backend.Enums;
 
 namespace anota_backend.Models;
 
@@ -15,6 +16,7 @@ public class ReservationModel
     public double Price { get; set; }
     public DateTime Created_date { get; set; }
     public DateTime End_date { get; set; }
+    public ModalityEnum modality { get; set; }
 
     public static string GenerateUniqueId()
     {

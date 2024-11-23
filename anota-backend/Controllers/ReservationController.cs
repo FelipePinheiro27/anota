@@ -53,6 +53,7 @@ public class ReservationController : ControllerBase
             Id = newId,
             User_name = dto.User_name,
             User_phone = dto.User_phone,
+            modality = dto.Modality,
             Price = dto.Price,
             Court_id = dto.Court_id,
             Created_date = dto.Created_date,
@@ -92,6 +93,7 @@ public class ReservationController : ControllerBase
             Client = r.User_name,
             Client_phone = r.User_phone,
             Court_name = r.Court != null ? r.Court.Name : "Unknown",
+            Modality = r.modality,
             Price = r.Price,
             Created_date = r.Created_date,
             End_date = r.End_date
@@ -137,6 +139,7 @@ public class ReservationController : ControllerBase
         {
             TimeSpan startTime = config.Start_time;
             TimeSpan endTime = config.End_time;
+            double price = config.Price;
 
             while (startTime < endTime)
             {
@@ -146,6 +149,7 @@ public class ReservationController : ControllerBase
                 {
                     availableSlots.Add(new
                     {
+                        price,
                         start = slotTime,
                         end = startTime.Add(TimeSpan.FromHours(1)).ToString(@"hh\:mm")
                     });

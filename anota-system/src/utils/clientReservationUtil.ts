@@ -27,18 +27,26 @@ export const parseReservationDataToPayload = (
       scheduleData?.time && scheduleData.time[0].start
     }:00`
   );
-  createdDate.setHours(createdDate.getHours() - 3); // Ajustando para GMT-3
+  createdDate.setHours(createdDate.getHours() - 3);
 
   const endDate = new Date(
-    `${scheduleData?.date}T${scheduleData?.time && scheduleData.time[0].end}:00`
+    `${scheduleData?.date}T${
+      scheduleData?.time && scheduleData.time[scheduleData.time.length - 1].end
+    }:00`
   );
   endDate.setHours(endDate.getHours() - 3);
+
+  const price =
+    scheduleData?.time &&
+    scheduleData.time?.length > 0 &&
+    scheduleData.time[0].price;
 
   const reservation: ReservationPayloadType = {
     user_name: userData.clientName,
     user_phone: userData.phoneNumer.replace(/\D/g, ""),
     court_id: Number(courtData?.courtId),
-    price: 60,
+    modality: scheduleData?.modality || 0,
+    price: price || 10,
     created_date: createdDate.toISOString(),
     end_date: endDate.toISOString(),
   };

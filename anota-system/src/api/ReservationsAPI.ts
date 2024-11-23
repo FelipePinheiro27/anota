@@ -13,6 +13,8 @@ export const getReservationsByDate = async (
     const reponse: ReservationScheduledResponse[] = data.map((value: any) => ({
       client: value.client,
       clientPhone: value.client_phone,
+      price: value.price,
+      modality: value.modality,
       courtName: value.court_name,
       createdDate: value.created_date,
       endDate: value.end_date,

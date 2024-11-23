@@ -10,19 +10,28 @@ interface TimeSlotsProps {
 }
 
 const TimeSlots = ({ slots, onSelectSlots, scheduledTime }: TimeSlotsProps) => {
+  const sortedScheduledTime = [...scheduledTime].sort((a, b) =>
+    a.start.localeCompare(b.start)
+  );
+  const lastScheduled = sortedScheduledTime[sortedScheduledTime.length - 1];
+
   return (
     <div className="TimeSlots">
-      {slots.map((slot, index) => (
-        <ScheduleTime
-          key={index}
-          value={slot}
-          onSelectSlot={() => onSelectSlots(slot)}
-          selected={scheduledTime.includes(slot)}
-          disabled={
-            scheduledTime.length > 0 && scheduledTime[0].start !== slot.start
-          }
-        />
-      ))}
+      {slots.map((slot, index) => {
+        const isNextSlot = lastScheduled && slot.start === lastScheduled.end;
+
+        const isEnabled = scheduledTime.includes(slot) || isNextSlot;
+
+        return (
+          <ScheduleTime
+            key={index}
+            value={slot}
+            onSelectSlot={() => onSelectSlots(slot)}
+            selected={scheduledTime.includes(slot)}
+            disabled={scheduledTime.length > 0 && !isEnabled}
+          />
+        );
+      })}
     </div>
   );
 };
