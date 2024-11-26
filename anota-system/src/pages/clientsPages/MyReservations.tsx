@@ -26,7 +26,7 @@ const MyReservations = () => {
 
   return (
     <Box>
-      <ClientHeader previewsPage="/" />
+      <ClientHeader previewsPage="/levelBeach" />
 
       <Box sx={{ padding: { xs: "10px 10px", md: "30px 40px" } }}>
         <Box margin={"30px 0"}>

@@ -15,7 +15,7 @@ const CourtsOptions = ({ courts, onSelectCourt }: CourtsOptionsProps) => {
       {courts.map((court, index) => (
         <Link
           key={index}
-          to="/horarios"
+          to="/levelBeach/horarios"
           onClick={() => onSelectCourt && onSelectCourt(court)}
           style={{ textDecoration: "none", color: "inherit" }}
         >

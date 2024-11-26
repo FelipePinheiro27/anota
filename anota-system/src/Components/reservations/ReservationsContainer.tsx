@@ -13,13 +13,13 @@ const ReservationsContainer = () => {
       marginTop="20px"
     >
       <Link
-        to="/reservas"
+        to="/levelBeach/reservas"
         style={{ textDecoration: "none", color: "inherit", padding: "0" }}
       >
         <ReservationsButton text="Novo Agendamento" bgColor="#0C927D" />
       </Link>
       <Link
-        to="/minhas-reservas"
+        to="/levelBeach/minhas-reservas"
         style={{ textDecoration: "none", color: "inherit", padding: "0" }}
       >
         <ReservationsButton text="Minhas Reservas" bgColor="#7F42D9" />

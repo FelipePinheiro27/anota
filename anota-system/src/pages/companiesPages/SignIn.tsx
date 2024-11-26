@@ -1,11 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import { Button, FormControl, FormLabel } from "@mui/material";
 import { colors } from "../../constants/Colors";
 import Logo from "../../images/logo_anota.svg";
 import { CardComponent } from "../../components/card/Card";
+import { login } from "../../api/CompanyAPI";
+import { useNavigate } from "react-router-dom";
 
-const SignIn = (props: { disableCustomTheme?: boolean }) => {
+const SignIn = () => {
+  const [user, setUser] = useState("");
+  const [pass, setPass] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+
+  const onChangeUser = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUser(event.target.value);
+  };
+
+  const onChangePass = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPass(event.target.value);
+  };
+
+  const onSubmitLogin = async () => {
+    try {
+      const response = await login(user, pass);
+
+      if (response) {
+        localStorage.setItem("userSession", JSON.stringify(response));
+
+        navigate("/empresa");
+      } else {
+        setErrorMessage("Usuário ou senha inválidos.");
+      }
+    } catch (error) {
+      console.error("Erro no login:", error);
+      setErrorMessage("Erro ao tentar realizar o login.");
+    }
+  };
+
   return (
     <div
       style={{
@@ -22,18 +54,15 @@ const SignIn = (props: { disableCustomTheme?: boolean }) => {
           style={{ width: "170px", height: "170px", margin: "0 auto" }}
         />
         <FormControl>
-          <FormLabel>Email</FormLabel>
+          <FormLabel>Usuário</FormLabel>
           <TextField
-            id="email"
-            type="email"
-            name="email"
-            placeholder="Digite seu email"
-            autoComplete="email"
+            id="user"
+            placeholder="Seu usário ou email"
+            onChange={onChangeUser}
             autoFocus
             required
             fullWidth
             variant="outlined"
-            sx={{ ariaLabel: "email" }}
           />
         </FormControl>
         <FormControl>
@@ -42,15 +71,18 @@ const SignIn = (props: { disableCustomTheme?: boolean }) => {
             id="senha"
             type="password"
             name="senha"
-            placeholder="sua senha aqui"
-            autoFocus
+            placeholder="Sua senha aqui"
+            onChange={onChangePass}
             required
             fullWidth
             variant="outlined"
-            // color={emailError ? "error" : "primary"}
             sx={{ ariaLabel: "senha" }}
           />
         </FormControl>
+
+        {errorMessage && (
+          <p style={{ color: "red", textAlign: "center" }}>{errorMessage}</p>
+        )}
 
         <Button
           type="submit"
@@ -65,7 +97,7 @@ const SignIn = (props: { disableCustomTheme?: boolean }) => {
             },
             fontWeight: 550,
           }}
-          onClick={() => {}}
+          onClick={onSubmitLogin}
         >
           Entrar
         </Button>

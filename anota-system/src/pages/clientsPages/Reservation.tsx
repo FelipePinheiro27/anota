@@ -22,7 +22,7 @@ const Reservation = () => {
 
   return (
     <Box>
-      <ClientHeader previewsPage="/" />
+      <ClientHeader previewsPage="/levelBeach" />
       <Box sx={{ padding: "30px 40px" }}>
         <Box margin={"30px 0"}>
           <Typography

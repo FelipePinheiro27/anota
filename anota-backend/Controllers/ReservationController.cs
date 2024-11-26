@@ -80,12 +80,12 @@ public class ReservationController : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("scheduled/{date}")]
-    public async Task<ActionResult<IEnumerable<ScheduledReservationDTO>>> GetReservationScheduled(DateTime date)
+    [HttpGet("scheduled/{companyId}/{date}")]
+    public async Task<ActionResult<IEnumerable<ScheduledReservationDTO>>> GetReservationScheduled(long companyId, DateTime date)
     {
         var reservations = await _context.Reservations
             .Include(r => r.Court)
-            .Where(r => r.Created_date.Date == date.Date)
+            .Where(r => r.Created_date.Date == date.Date && r.Court.Company_id == companyId)
             .ToListAsync();
 
         var scheduledReservations = reservations.Select(r => new ScheduledReservationDTO

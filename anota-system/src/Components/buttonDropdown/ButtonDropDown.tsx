@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Button, Menu, MenuItem, Typography } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { colors } from "../../constants/Colors";
+import { useNavigate } from "react-router-dom";
 const ButtonDropDown = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -11,6 +13,11 @@ const ButtonDropDown = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleRemove = () => {
+    localStorage.removeItem("userSession");
+    navigate("/login");
   };
 
   return (
@@ -40,19 +47,8 @@ const ButtonDropDown = () => {
           style: { minWidth: anchorEl ? anchorEl : "auto" },
         }}
       >
-        {/* <MenuItem
-          onClick={handleClose}
-          style={{
-            minWidth: "120px",
-            fontFamily: "Robot",
-            fontWeight: 500,
-            color: colors.buttonCompany,
-          }}
-        >
-          Alterar Dados
-        </MenuItem> */}
         <MenuItem
-          onClick={handleClose}
+          onClick={handleRemove}
           style={{
             minWidth: "120px",
             fontFamily: "Robot",

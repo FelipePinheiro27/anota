@@ -79,7 +79,7 @@ const Confirmation = () => {
 
   const onCloseModal = () => {
     setOpen(false);
-    navigate("/");
+    navigate("/levelBeach");
   };
 
   const onSubmitReservation = async () => {
@@ -95,13 +95,13 @@ const Confirmation = () => {
 
   useEffect(() => {
     if (!selectedCourt || !date || !scheduledTime?.time) {
-      navigate("/reservas");
+      navigate("/levelBeach/reservas");
     }
   }, [date, navigate, scheduledTime, selectedCourt]);
 
   return (
     <Box>
-      <ClientHeader previewsPage="/horarios" />
+      <ClientHeader previewsPage="/levelBeach/horarios" />
       <Box sx={{ padding: "30px 40px" }}>
         <Box margin="30px 0">
           <Typography
@@ -123,6 +123,16 @@ const Confirmation = () => {
             {scheduledTime?.time && scheduledTime?.time[0]?.start} às{" "}
             {scheduledTime?.time &&
               scheduledTime?.time[scheduledTime.time.length - 1].end}
+          </Typography>
+        </Box>
+        <Box margin="10px 0">
+          <Typography
+            sx={{ letterSpacing: "0.2" }}
+            fontSize="16px"
+            fontWeight={600}
+            color="#22303E"
+          >
+            Valor: R$ {scheduledTime?.time && scheduledTime.time[0].price},00
           </Typography>
         </Box>
         <Box marginTop="40px">

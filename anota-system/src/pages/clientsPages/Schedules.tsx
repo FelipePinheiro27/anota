@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import dayjs, { Dayjs } from "dayjs";
 import { Box, Button, Typography } from "@mui/material";
 import ClientHeader from "../../components/header/clientHeader/ClientHeader";
@@ -9,7 +10,7 @@ import { ClientReservationContext } from "../../context/ClientReservationProvide
 import { getAvailableSchedulesByCourtAndDate } from "../../api/ReservationsAPI";
 import { ModalityEnum, ReservationTypes } from "../../types/generalTypes";
 import { getScheduledRangeTime } from "../../utils/clientReservationUtil";
-import { useNavigate } from "react-router-dom";
+import NoData from "../../components/noData/NodaData";
 
 const Schedules = () => {
   const clientReservation = useContext(ClientReservationContext);
@@ -100,16 +101,51 @@ const Schedules = () => {
   }, []);
 
   useEffect(() => {
-    if (!selectedCourt) navigate("/reservas");
+    if (!selectedCourt) navigate("/levelBeach/reservas");
   }, [navigate, selectedCourt]);
 
   useEffect(() => {
     resetReservationData();
   }, [resetReservationData]);
 
+  if (schedules.length === 0) {
+    return (
+      <Box>
+        <ClientHeader previewsPage="/levelBeach/reservas" />
+        <Box sx={{ padding: "30px 40px", paddingBottom: "80px" }}>
+          <Box margin="30px 0">
+            <Typography
+              sx={{ fontWeight: 600, letterSpacing: "0.2" }}
+              fontSize="18px"
+              color="#22303E"
+            >
+              {name}
+            </Typography>
+          </Box>
+          <Box>
+            <Typography
+              sx={{ fontWeight: 600, letterSpacing: "0.2" }}
+              fontSize="16px"
+              color="#22303E"
+            >
+              {schedules.length > 0 && `Valor: R$ ${schedules[0].price},00`}
+            </Typography>
+          </Box>
+          <Box display="flex" margin="30px 0" gap="80px">
+            <DateButton date={date} handleDateChange={handleDateChange} />
+          </Box>
+          <NoData
+            title="Sem Horários Disponíveis"
+            description="Esta data não possui mais horários. Que tal um outro dia?"
+          />
+        </Box>
+      </Box>
+    );
+  }
+
   return (
     <Box>
-      <ClientHeader previewsPage="/reservas" />
+      <ClientHeader previewsPage="/levelBeach/reservas" />
       <Box sx={{ padding: "30px 40px", paddingBottom: "80px" }}>
         <Box margin="30px 0">
           <Typography
@@ -191,7 +227,7 @@ const Schedules = () => {
               },
               fontWeight: 550,
             }}
-            onClick={() => navigate("/confirmacao")}
+            onClick={() => navigate("/levelBeach/confirmacao")}
           >
             Prosseguir
           </Button>

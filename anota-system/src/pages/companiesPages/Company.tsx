@@ -6,6 +6,7 @@ import { getReservationsByDate } from "../../api/ReservationsAPI";
 import dayjs, { Dayjs } from "dayjs";
 import DateButton from "../../components/dateButton/DateButton";
 import { ReservationScheduledResponse } from "../../types/generalTypes";
+import NoData from "../../components/noData/NodaData";
 
 const Company = () => {
   const [date, setDate] = useState(dayjs());
@@ -52,9 +53,16 @@ const Company = () => {
           </Typography>
           <DateButton date={date} handleDateChange={handleDateChange} />
         </Box>
-        <Box sx={{ paddingTop: "30px" }}>
-          <ReservationsTable reservations={reservations} />
-        </Box>
+        {reservations.length === 0 ? (
+          <NoData
+            title="Sem Horários Reservados"
+            description="Esta data não possui horários reservados"
+          />
+        ) : (
+          <Box sx={{ paddingTop: "30px" }}>
+            <ReservationsTable reservations={reservations} />
+          </Box>
+        )}
       </Box>
     </Box>
   );

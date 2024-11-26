@@ -94,5 +94,34 @@ namespace anota_backend.Controllers
         {
             return _context.Companies.Any(e => e.Id == id);
         }
+
+        [HttpPost("login")]
+        public async Task<ActionResult> Login([FromBody] LoginRequest loginRequest)
+        {
+            var company = await _context.Companies
+                .FirstOrDefaultAsync(c => c.Email == loginRequest.EmailOrUser || c.User == loginRequest.EmailOrUser);
+
+            if (company == null)
+            {
+                return Unauthorized(new
+                {
+                    message = "Usuário ou email inválido.",
+                    success = false
+                });
+            }
+
+            if (!company.isValidPass(loginRequest.Password))
+            {
+                return Unauthorized(new { message = "Senha incorreta.", success = false });
+            }
+
+            return Ok(new
+            {
+                message = "Login realizado com sucesso.",
+                companyId = company.Id,
+                companyName = company.Name,
+                success = true
+            });
+        }
     }
 }
