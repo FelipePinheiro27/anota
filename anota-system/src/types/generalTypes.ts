@@ -45,3 +45,10 @@ export enum ModalityEnum {
   Futvolei = 1,
   Volei = 2,
 }
+
+export type CompanyType = {
+  id: number | string;
+  name: string;
+  primaryColor: string;
+  secondaryColor: string;
+};

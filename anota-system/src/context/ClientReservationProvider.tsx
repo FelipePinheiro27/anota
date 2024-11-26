@@ -1,8 +1,14 @@
 import React, { createContext, ReactNode } from "react";
-import { CourtTypes, ScheduledTimeTypes } from "../types/generalTypes";
+import {
+  CompanyType,
+  CourtTypes,
+  ScheduledTimeTypes,
+} from "../types/generalTypes";
 import { useClientReservation } from "../hooks/useClientReservation";
 
 type ClientReservationContextType = {
+  company: CompanyType | null;
+  fetchCompany: (dynamicPath: string) => Promise<void>;
   selectedCourt: CourtTypes | null;
   onSelectCourt: (court: CourtTypes) => void;
   scheduledTime: ScheduledTimeTypes;
@@ -20,12 +26,20 @@ interface ClientReservationProviderProps {
 export const ClientReservationProvider = ({
   children,
 }: ClientReservationProviderProps) => {
-  const { selectedCourt, onSelectCourt, scheduledTime, onSelectScheduleTime } =
-    useClientReservation();
+  const {
+    company,
+    fetchCompany,
+    selectedCourt,
+    onSelectCourt,
+    scheduledTime,
+    onSelectScheduleTime,
+  } = useClientReservation();
 
   return (
     <ClientReservationContext.Provider
       value={{
+        company,
+        fetchCompany,
         selectedCourt,
         onSelectCourt,
         scheduledTime,

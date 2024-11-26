@@ -11,6 +11,10 @@ public class CompanyModel
     public string Email { get; set; }
     public string User { get; set; }
     public string Pass { get; set; }
+    public string PathRouteKey { get; set; }
+    public string primaryColor { get; set; }
+    public string SecondaryColor { get; set; }
+    public bool IsPaid { get; set; }
 
     public bool isValidPass(string pass)
     {

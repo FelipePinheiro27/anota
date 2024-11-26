@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import InputMask from "react-input-mask";
 import {
   Box,
@@ -32,12 +32,13 @@ export type FormDataType = {
 
 const Confirmation = () => {
   const [open, setOpen] = useState(false);
+  const { dynamicPath } = useParams();
   const navigate = useNavigate();
   const clientReservation = useContext(ClientReservationContext);
   const { selectedCourt, scheduledTime } = clientReservation || {};
   const [formData, setFormData] = useState<FormDataType>({
-    phoneNumer: "",
-    clientName: "",
+    phoneNumer: localStorage.getItem("clientPhone") || "",
+    clientName: localStorage.getItem("clientName") || "",
   });
 
   const onChangeNumber = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,19 +90,22 @@ const Confirmation = () => {
       scheduledTime
     );
 
+    localStorage.setItem("clientName", formData.clientName);
+    localStorage.setItem("clientPhone", formData.phoneNumer);
+
     const reservationCompleted = await createReservation(reservationData);
     if (reservationCompleted) setOpen(true);
   };
 
   useEffect(() => {
     if (!selectedCourt || !date || !scheduledTime?.time) {
-      navigate("/levelBeach/reservas");
+      navigate(`/${dynamicPath}/reservas`);
     }
-  }, [date, navigate, scheduledTime, selectedCourt]);
+  }, [date, navigate, scheduledTime, selectedCourt, dynamicPath]);
 
   return (
     <Box>
-      <ClientHeader previewsPage="/levelBeach/horarios" />
+      <ClientHeader previewsPage={`/${dynamicPath}/horarios`} />
       <Box sx={{ padding: "30px 40px" }}>
         <Box margin="30px 0">
           <Typography

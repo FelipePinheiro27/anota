@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import dayjs, { Dayjs } from "dayjs";
 import { Box, Button, Typography } from "@mui/material";
 import ClientHeader from "../../components/header/clientHeader/ClientHeader";
@@ -14,6 +14,7 @@ import NoData from "../../components/noData/NodaData";
 
 const Schedules = () => {
   const clientReservation = useContext(ClientReservationContext);
+  const { dynamicPath } = useParams();
   const { selectedCourt, scheduledTime, onSelectScheduleTime } =
     clientReservation || {};
   const { name, courtId } = selectedCourt || {};
@@ -101,8 +102,8 @@ const Schedules = () => {
   }, []);
 
   useEffect(() => {
-    if (!selectedCourt) navigate("/levelBeach/reservas");
-  }, [navigate, selectedCourt]);
+    if (!selectedCourt) navigate(`/${dynamicPath}/reservas`);
+  }, [navigate, selectedCourt, dynamicPath]);
 
   useEffect(() => {
     resetReservationData();
@@ -111,7 +112,7 @@ const Schedules = () => {
   if (schedules.length === 0) {
     return (
       <Box>
-        <ClientHeader previewsPage="/levelBeach/reservas" />
+        <ClientHeader previewsPage={`/${dynamicPath}/reservas`} />
         <Box sx={{ padding: "30px 40px", paddingBottom: "80px" }}>
           <Box margin="30px 0">
             <Typography
@@ -145,7 +146,7 @@ const Schedules = () => {
 
   return (
     <Box>
-      <ClientHeader previewsPage="/levelBeach/reservas" />
+      <ClientHeader previewsPage={`/${dynamicPath}/reservas`} />
       <Box sx={{ padding: "30px 40px", paddingBottom: "80px" }}>
         <Box margin="30px 0">
           <Typography
@@ -227,7 +228,7 @@ const Schedules = () => {
               },
               fontWeight: 550,
             }}
-            onClick={() => navigate("/levelBeach/confirmacao")}
+            onClick={() => navigate(`/${dynamicPath}/confirmacao`)}
           >
             Prosseguir
           </Button>

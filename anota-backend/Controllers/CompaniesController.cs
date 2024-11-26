@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using anota_backend.Context;
 using anota_backend.Models;
+using anota_backend.DTO;
 
 namespace anota_backend.Controllers
 {
@@ -35,6 +36,28 @@ namespace anota_backend.Controllers
 
             return company;
         }
+
+        [HttpGet("routeKey/{pathRouteKey}")]
+        public async Task<ActionResult<CompanyDTO>> GetCompanyByPathRouteKey(string pathRouteKey)
+        {
+            var company = await _context.Companies
+                .FirstOrDefaultAsync(r => r.PathRouteKey == pathRouteKey);
+
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(new CompanyDTO
+            {
+                Id = company.Id,
+                Name = company.Name,
+                PathRouteKey = company.PathRouteKey,
+                PrimaryColor = company.primaryColor,
+                SecondaryColor = company.SecondaryColor,
+            });
+        }
+
 
         [HttpPost]
         public async Task<ActionResult<CompanyModel>> CreateCompany(CompanyModel company)

@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Box, createTheme, ThemeProvider, Typography } from "@mui/material";
 import CompanyLogo from "../../images/levelBeach.png";
 import ReservationsContainer from "../../components/reservations/ReservationsContainer";
+import { useRetrieveCompany } from "../../hooks/useRetrieveCompany";
+import { ClientReservationContext } from "../../context/ClientReservationProvider";
 
 const theme = createTheme({
   typography: {
@@ -10,6 +12,9 @@ const theme = createTheme({
 });
 
 const Home = () => {
+  const { company } = useContext(ClientReservationContext) || {};
+  useRetrieveCompany();
+
   return (
     <Box
       display="flex"
@@ -28,7 +33,7 @@ const Home = () => {
           fontSize="28px"
           color="#E45609"
         >
-          Level Beach Club
+          {company?.name}
         </Typography>
       </ThemeProvider>
       <ReservationsContainer />

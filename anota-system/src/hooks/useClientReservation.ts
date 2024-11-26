@@ -1,7 +1,13 @@
 import { useState } from "react";
-import { CourtTypes, ScheduledTimeTypes } from "../types/generalTypes";
+import {
+  CompanyType,
+  CourtTypes,
+  ScheduledTimeTypes,
+} from "../types/generalTypes";
+import { getCompanyByPathRouteKey } from "../api/CompanyAPI";
 
 export const useClientReservation = () => {
+  const [company, setCompany] = useState<CompanyType | null>(null);
   const [selectedCourt, setSelectedCourt] = useState<CourtTypes | null>(null);
   const [scheduledTime, setScheduledTime] = useState<ScheduledTimeTypes>({
     time: [],
@@ -16,7 +22,15 @@ export const useClientReservation = () => {
     setScheduledTime(data);
   };
 
+  const fetchCompany = async (dynamicPath: string) => {
+    const data = await getCompanyByPathRouteKey(dynamicPath);
+
+    setCompany(data);
+  };
+
   return {
+    company,
+    fetchCompany,
     selectedCourt,
     onSelectCourt,
     scheduledTime,

@@ -14,16 +14,16 @@ const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/levelBeach" element={<Home />} />
-        <Route path="/levelBeach/horarios" element={<Schedules />} />
-        <Route path="/levelBeach/reservas" element={<Reservation />} />
-        <Route path="/levelBeach/confirmacao" element={<Confirmation />} />
+        <Route path="/:dynamicPath" element={<Home />} />
+        <Route path="/:dynamicPath/horarios" element={<Schedules />} />
+        <Route path="/:dynamicPath/reservas" element={<Reservation />} />
+        <Route path="/:dynamicPath/confirmacao" element={<Confirmation />} />
         <Route
-          path="/levelBeach/minhas-reservas"
+          path="/:dynamicPath/minhas-reservas"
           element={<MyReservations />}
         />
-        <Route path="/levelBeach/login" element={<SignIn />} />
-        <Route path="/levelBeach/cadastro" element={<SignUp />} />
+        <Route path="/login" element={<SignIn />} />
+        <Route path="/cadastro" element={<SignUp />} />
 
         <Route
           path="/empresa"

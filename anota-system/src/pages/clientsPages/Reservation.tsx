@@ -5,24 +5,28 @@ import ClientHeader from "../../components/header/clientHeader/ClientHeader";
 import { ClientReservationContext } from "../../context/ClientReservationProvider";
 import { retrieveCourtsByCompany } from "../../api/ClientAPI";
 import { CourtTypes } from "../../types/generalTypes";
+import { useRetrieveCompany } from "../../hooks/useRetrieveCompany";
+import { useParams } from "react-router-dom";
 
 const Reservation = () => {
+  useRetrieveCompany();
   const clientReservation = useContext(ClientReservationContext);
   const [courts, setCourts] = useState<CourtTypes[]>([]);
+  const { dynamicPath } = useParams();
 
-  const { onSelectCourt } = clientReservation || {};
+  const { company, onSelectCourt } = clientReservation || {};
 
   useEffect(() => {
     const fetchCourts = async () => {
-      setCourts(await retrieveCourtsByCompany());
+      setCourts(await retrieveCourtsByCompany(company?.id || ""));
     };
 
     fetchCourts();
-  }, []);
+  }, [company?.id]);
 
   return (
     <Box>
-      <ClientHeader previewsPage="/levelBeach" />
+      <ClientHeader previewsPage={`/${dynamicPath}`} />
       <Box sx={{ padding: "30px 40px" }}>
         <Box margin={"30px 0"}>
           <Typography

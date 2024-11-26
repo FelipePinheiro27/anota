@@ -11,10 +11,12 @@ import ClientHeader from "../../components/header/clientHeader/ClientHeader";
 import ReservationCard from "../../components/reservations/reservationCard/ReservationCard";
 import useIsMobile from "../../hooks/useIsMobile";
 import ConfirmationDeleteModal from "../../components/confirmationModal/ConfirmationDeleteModal";
+import { useParams } from "react-router-dom";
 
 const MyReservations = () => {
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
+  const { dynamicPath } = useParams();
 
   const onCloseModal = () => {
     setOpen(false);
@@ -26,7 +28,7 @@ const MyReservations = () => {
 
   return (
     <Box>
-      <ClientHeader previewsPage="/levelBeach" />
+      <ClientHeader previewsPage={`/${dynamicPath}`} />
 
       <Box sx={{ padding: { xs: "10px 10px", md: "30px 40px" } }}>
         <Box margin={"30px 0"}>

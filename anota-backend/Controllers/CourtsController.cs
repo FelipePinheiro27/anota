@@ -36,6 +36,22 @@ public class CourtController : ControllerBase
         return court;
     }
 
+    [HttpGet("company/{companyId}")]
+    public async Task<ActionResult<List<CourtModel>>> GetCourtsByCompanyId(long companyId)
+    {
+        var courts = await _context.Courts
+            .Where(r => r.Company_id == companyId)
+            .ToListAsync();
+
+        if (courts == null || courts.Count == 0)
+        {
+            return NotFound();
+        }
+
+        return Ok(courts);
+    }
+
+
     [HttpPost]
     public async Task<IActionResult> CreateCourt(CourtsDTO dto)
     {
