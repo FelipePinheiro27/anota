@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import { Button, FormControl, FormLabel } from "@mui/material";
 import { colors } from "../../constants/Colors";
 import Logo from "../../images/logo_anota.svg";
-import { CardComponent } from "../../components/card/Card";
+import { CardComponent } from "../../Components/card/Card";
 import { login } from "../../api/CompanyAPI";
 import { useNavigate } from "react-router-dom";
 

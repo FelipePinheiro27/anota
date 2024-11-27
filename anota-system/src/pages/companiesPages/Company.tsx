@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
-import Header from "../../components/header/Header";
-import ReservationsTable from "../../components/tables/reservationsTable/ReservationsTable";
+import Header from "../../Components/header/Header";
+import ReservationsTable from "../../Components/tables/reservationsTable/ReservationsTable";
 import { getReservationsByDate } from "../../api/ReservationsAPI";
 import dayjs, { Dayjs } from "dayjs";
-import DateButton from "../../components/dateButton/DateButton";
+import DateButton from "../../Components/dateButton/DateButton";
 import { ReservationScheduledResponse } from "../../types/generalTypes";
-import NoData from "../../components/noData/NodaData";
+import NoData from "../../Components/noData/NodaData";
 
 const Company = () => {
   const [date, setDate] = useState(dayjs());

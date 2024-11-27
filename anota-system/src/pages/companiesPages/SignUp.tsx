@@ -5,7 +5,7 @@ import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Logo from "../../images/logo_anota.svg";
 import { colors } from "../../constants/Colors";
-import { CardComponent } from "../../components/card/Card";
+import { CardComponent } from "../../Components/card/Card";
 
 const SignUp = () => {
   return (

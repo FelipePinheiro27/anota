@@ -2,15 +2,15 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import dayjs, { Dayjs } from "dayjs";
 import { Box, Button, Typography } from "@mui/material";
-import ClientHeader from "../../components/header/clientHeader/ClientHeader";
-import TimeSlots from "../../components/timeSlots/TimeSlots";
-import ModalitiesGroups from "../../components/modalitiesGroups/ModalitiesGroups";
-import DateButton from "../../components/dateButton/DateButton";
+import ClientHeader from "../../Components/header/clientHeader/ClientHeader";
+import TimeSlots from "../../Components/timeSlots/TimeSlots";
+import ModalitiesGroups from "../../Components/modalitiesGroups/ModalitiesGroups";
+import DateButton from "../../Components/dateButton/DateButton";
 import { ClientReservationContext } from "../../context/ClientReservationProvider";
 import { getAvailableSchedulesByCourtAndDate } from "../../api/ReservationsAPI";
 import { ModalityEnum, ReservationTypes } from "../../types/generalTypes";
 import { getScheduledRangeTime } from "../../utils/clientReservationUtil";
-import NoData from "../../components/noData/NodaData";
+import NoData from "../../Components/noData/NodaData";
 
 const Schedules = () => {
   const clientReservation = useContext(ClientReservationContext);

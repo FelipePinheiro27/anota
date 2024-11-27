@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import CourtsOptions from "../../components/court/courtsOptions/CourtsOptions";
+import CourtsOptions from "../../Components/court/courtsOptions/CourtsOptions";
 import { Box, Typography } from "@mui/material";
-import ClientHeader from "../../components/header/clientHeader/ClientHeader";
+import ClientHeader from "../../Components/header/clientHeader/ClientHeader";
 import { ClientReservationContext } from "../../context/ClientReservationProvider";
 import { retrieveCourtsByCompany } from "../../api/ClientAPI";
 import { CourtTypes } from "../../types/generalTypes";

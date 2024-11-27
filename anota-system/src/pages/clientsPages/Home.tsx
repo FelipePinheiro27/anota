@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Box, createTheme, ThemeProvider, Typography } from "@mui/material";
 import CompanyLogo from "../../images/levelBeach.png";
-import ReservationsContainer from "../../components/reservations/ReservationsContainer";
+import ReservationsContainer from "../../Components/reservations/ReservationsContainer";
 import { useRetrieveCompany } from "../../hooks/useRetrieveCompany";
 import { ClientReservationContext } from "../../context/ClientReservationProvider";
 

@@ -7,10 +7,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import ClientHeader from "../../components/header/clientHeader/ClientHeader";
-import ReservationCard from "../../components/reservations/reservationCard/ReservationCard";
+import ClientHeader from "../../Components/header/clientHeader/ClientHeader";
+import ReservationCard from "../../Components/reservations/reservationCard/ReservationCard";
 import useIsMobile from "../../hooks/useIsMobile";
-import ConfirmationDeleteModal from "../../components/confirmationModal/ConfirmationDeleteModal";
+import ConfirmationDeleteModal from "../../Components/confirmationModal/ConfirmationDeleteModal";
 import { useParams } from "react-router-dom";
 import { getMyReservations } from "../../api/ReservationsAPI";
 import { ReservationScheduledResponse } from "../../types/generalTypes";

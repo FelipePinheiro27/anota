@@ -9,8 +9,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import ClientHeader from "../../components/header/clientHeader/ClientHeader";
-import ConfirmationModal from "../../components/confirmationModal/ConfirmationModal";
+import ClientHeader from "../../Components/header/clientHeader/ClientHeader";
+import ConfirmationModal from "../../Components/confirmationModal/ConfirmationModal";
 import { ClientReservationContext } from "../../context/ClientReservationProvider";
 import { parseReservationDataToPayload } from "../../utils/clientReservationUtil";
 import { createReservation } from "../../api/ReservationsAPI";
