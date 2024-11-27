@@ -22,7 +22,12 @@ const Company = () => {
 
   useEffect(() => {
     const fetchReservations = async () => {
+      const value = localStorage.getItem("userSession");
+      const companyData: { companyId?: string | number } = JSON.parse(
+        value || ""
+      );
       const reservationsData = await getReservationsByDate(
+        companyData?.companyId || 0,
         date.format("YYYY-MM-DD")
       );
       setReservations(reservationsData);

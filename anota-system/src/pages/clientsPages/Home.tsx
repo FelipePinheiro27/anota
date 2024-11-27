@@ -37,6 +37,14 @@ const Home = () => {
         </Typography>
       </ThemeProvider>
       <ReservationsContainer />
+      <Box position="absolute" bottom="20px" textAlign="center">
+        <Typography fontSize="12px" color="#22303E">
+          Deseja nossa solução em sua empresa?
+        </Typography>
+        <Typography fontSize="12px" color="#22303E">
+          Fale conosco: anota.reservas@gmail.com
+        </Typography>
+      </Box>
     </Box>
   );
 };

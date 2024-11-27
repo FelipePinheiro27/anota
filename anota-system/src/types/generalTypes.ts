@@ -31,6 +31,7 @@ export type ReservationPayloadType = {
 };
 
 export type ReservationScheduledResponse = {
+  id?: string | number;
   client: string;
   clientPhone: string;
   courtName: string;

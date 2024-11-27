@@ -36,6 +36,26 @@ public class ReservationController : ControllerBase
         return reservation;
     }
 
+    [HttpGet("myReservations/{id}")]
+    public async Task<ActionResult<IEnumerable<ReservationModel>>> GetReservation(string id)
+    {
+        var currentDate = DateTime.UtcNow;
+        Console.WriteLine(currentDate);
+
+        var reservations = await _context.Reservations
+            .Where(r => (r.Id == id || r.User_phone == id) && r.Created_date > currentDate)
+            .ToListAsync();
+
+        if (!reservations.Any())
+        {
+            return NotFound();
+        }
+
+        return Ok(reservations);
+    }
+
+
+
     [HttpPost]
     public async Task<ActionResult<ReservationModel>> CreateReservation(ReservationsDTO dto)
     {
@@ -109,7 +129,7 @@ public class ReservationController : ControllerBase
         int dayOfWeek = (int)date.DayOfWeek;
 
         var configs = await _context.ReservationsConfig
-            .Where(rc => rc.Day_of_week == dayOfWeek)
+            .Where(rc => rc.Day_of_week == dayOfWeek && rc.Court_id == courtId)
             .ToListAsync();
 
         if (!configs.Any())

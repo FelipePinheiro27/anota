@@ -12,10 +12,16 @@ import ReservationCard from "../../components/reservations/reservationCard/Reser
 import useIsMobile from "../../hooks/useIsMobile";
 import ConfirmationDeleteModal from "../../components/confirmationModal/ConfirmationDeleteModal";
 import { useParams } from "react-router-dom";
+import { getMyReservations } from "../../api/ReservationsAPI";
+import { ReservationScheduledResponse } from "../../types/generalTypes";
 
 const MyReservations = () => {
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
+  const [reservationId, setResertionId] = useState("");
+  const [reservations, setReservations] = useState<
+    ReservationScheduledResponse[]
+  >([]);
   const { dynamicPath } = useParams();
 
   const onCloseModal = () => {
@@ -24,6 +30,17 @@ const MyReservations = () => {
 
   const onOpenModal = () => {
     setOpen(true);
+  };
+
+  const handleChangeReservationId = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setResertionId(event.target.value);
+  };
+
+  const fetchMyReservations = async () => {
+    const reservationsData = await getMyReservations(reservationId);
+    setReservations(reservationsData);
   };
 
   return (
@@ -51,6 +68,7 @@ const MyReservations = () => {
             <TextField
               id="cod"
               type="text"
+              onChange={handleChangeReservationId}
               fullWidth
               name="cod"
               placeholder=""
@@ -66,14 +84,16 @@ const MyReservations = () => {
               background: "#E45609",
               fontWeight: 600,
             }}
-            onClick={() => {}}
+            onClick={fetchMyReservations}
           >
             Buscar
           </Button>
         </Box>
-        <Box marginTop="40px">
-          <ReservationCard onOpenModal={onOpenModal} />
-        </Box>
+        {reservations.map((res) => (
+          <Box marginTop="20px">
+            <ReservationCard reservation={res} onOpenModal={onOpenModal} />
+          </Box>
+        ))}
       </Box>
       <ConfirmationDeleteModal open={open} closeModal={onCloseModal} />
     </Box>

@@ -1,12 +1,17 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import { ReservationScheduledResponse } from "../../../types/generalTypes";
 
 interface ReservationCardProps {
+  reservation: ReservationScheduledResponse;
   onOpenModal: () => void;
 }
 
-const ReservationCard = ({ onOpenModal }: ReservationCardProps) => {
+const ReservationCard = ({
+  reservation,
+  onOpenModal,
+}: ReservationCardProps) => {
   return (
     <Box
       display="flex"
@@ -20,7 +25,7 @@ const ReservationCard = ({ onOpenModal }: ReservationCardProps) => {
         <Box marginLeft={{ xs: "10px", md: "20px" }}>
           <Box position="absolute" top={-28} left={5}>
             <Typography fontSize={{ xs: "12px", md: "16px" }} fontWeight="600">
-              21/10/2024
+              {reservation.createdDate}
             </Typography>
           </Box>
           <Typography fontSize={{ xs: "12px", md: "18px" }} fontWeight="600">
@@ -36,13 +41,13 @@ const ReservationCard = ({ onOpenModal }: ReservationCardProps) => {
           sx={{ fontSize: { xs: "12px", md: "20px" } }}
           fontWeight={300}
         >
-          Reserva para Quadra 1
+          Reserva para {reservation.courtName}
         </Typography>
         <Typography
           sx={{ fontSize: { xs: "12px", md: "20px" } }}
           fontWeight={300}
         >
-          Valor: R$ 60,00
+          Valor: R$ {reservation.price},00
         </Typography>
       </Box>
       <Box marginRight={{ xs: "10px", md: "40px" }}>
