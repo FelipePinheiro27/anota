@@ -1,9 +1,9 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Anota Reservas",
+  "name": "Sistema de agendamentos de quadras esportivas",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "anota.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },

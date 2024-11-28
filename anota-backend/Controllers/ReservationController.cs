@@ -43,8 +43,9 @@ public class ReservationController : ControllerBase
         Console.WriteLine(currentDate);
 
         var reservations = await _context.Reservations
-            .Where(r => (r.Id == id || r.User_phone == id) && r.Created_date > currentDate)
-            .ToListAsync();
+        .Include(r => r.Court)
+        .Where(r => (r.Id == id || r.User_phone == id) && r.Created_date > currentDate)
+        .ToListAsync();
 
         if (!reservations.Any())
         {
@@ -53,8 +54,6 @@ public class ReservationController : ControllerBase
 
         return Ok(reservations);
     }
-
-
 
     [HttpPost]
     public async Task<ActionResult<ReservationModel>> CreateReservation(ReservationsDTO dto)
