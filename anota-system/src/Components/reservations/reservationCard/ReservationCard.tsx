@@ -2,16 +2,30 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { ReservationScheduledResponse } from "../../../types/generalTypes";
+import {
+  formatDate,
+  formatTime,
+  getDayOfWeek,
+} from "../../../utils/generalUtil";
 
 interface ReservationCardProps {
   reservation: ReservationScheduledResponse;
   onOpenModal: () => void;
+  setReservationToRemove: React.Dispatch<
+    React.SetStateAction<string | number | undefined>
+  >;
 }
 
 const ReservationCard = ({
   reservation,
   onOpenModal,
+  setReservationToRemove,
 }: ReservationCardProps) => {
+  const date = formatDate(reservation.createdDate);
+  const dayOfWeek = getDayOfWeek(reservation.createdDate);
+  const startTime = formatTime(reservation.createdDate);
+  const endTime = formatTime(reservation.endDate);
+
   return (
     <Box
       display="flex"
@@ -25,14 +39,14 @@ const ReservationCard = ({
         <Box marginLeft={{ xs: "10px", md: "20px" }}>
           <Box position="absolute" top={-28} left={5}>
             <Typography fontSize={{ xs: "12px", md: "16px" }} fontWeight="600">
-              {reservation.createdDate}
+              {date}
             </Typography>
           </Box>
           <Typography fontSize={{ xs: "12px", md: "18px" }} fontWeight="600">
-            Segunda Feira
+            {dayOfWeek}
           </Typography>
           <Typography fontSize={{ xs: "12px", md: "18px" }}>
-            18:00 às 19:00
+            {startTime} às {endTime}
           </Typography>
         </Box>
       </Box>
@@ -52,7 +66,10 @@ const ReservationCard = ({
       </Box>
       <Box marginRight={{ xs: "10px", md: "40px" }}>
         <DeleteOutlinedIcon
-          onClick={onOpenModal}
+          onClick={() => {
+            setReservationToRemove(reservation?.id);
+            onOpenModal();
+          }}
           sx={{ fontSize: { xs: "22px", md: "34px" }, cursor: "pointer" }}
         />
       </Box>

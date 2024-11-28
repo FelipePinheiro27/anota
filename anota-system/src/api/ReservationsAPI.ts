@@ -65,7 +65,7 @@ export const getMyReservations = async (
       clientPhone: value.client_phone,
       price: value.price,
       modality: value.modality,
-      courtName: value.court_name,
+      courtName: value.court.name,
       createdDate: value.created_date,
       endDate: value.end_date,
     }));
@@ -75,4 +75,8 @@ export const getMyReservations = async (
     console.error(error);
     return [];
   }
+};
+
+export const removeReservation = async (reservationId: string | number) => {
+  return await api.delete(`/Reservation/${reservationId}`);
 };

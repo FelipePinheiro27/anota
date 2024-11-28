@@ -4,6 +4,7 @@ import React from "react";
 interface ConfirmationDeleteModalProps {
   open: boolean;
   closeModal: () => void;
+  onRemoveReservation: () => void;
 }
 
 const style = {
@@ -22,6 +23,7 @@ const style = {
 const ConfirmationDeleteModal = ({
   open,
   closeModal,
+  onRemoveReservation,
 }: ConfirmationDeleteModalProps) => {
   return (
     <Modal
@@ -53,24 +55,24 @@ const ConfirmationDeleteModal = ({
               variant="contained"
               sx={{
                 textTransform: "capitalize",
-                background: "#0C927D",
+                background: "#c10015",
                 fontWeight: 550,
               }}
-              onClick={closeModal}
+              onClick={onRemoveReservation}
             >
-              Manter
+              Desmarcar
             </Button>
             <Button
               fullWidth
               variant="contained"
               sx={{
                 textTransform: "capitalize",
-                background: "#c10015",
+                background: "#0C927D",
                 fontWeight: 550,
               }}
               onClick={closeModal}
             >
-              Desmarcar
+              Manter
             </Button>
           </Box>
         </Stack>

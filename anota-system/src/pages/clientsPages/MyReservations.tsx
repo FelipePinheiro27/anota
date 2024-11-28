@@ -12,12 +12,18 @@ import ReservationCard from "../../Components/reservations/reservationCard/Reser
 import useIsMobile from "../../hooks/useIsMobile";
 import ConfirmationDeleteModal from "../../Components/confirmationModal/ConfirmationDeleteModal";
 import { useParams } from "react-router-dom";
-import { getMyReservations } from "../../api/ReservationsAPI";
+import {
+  getMyReservations,
+  removeReservation,
+} from "../../api/ReservationsAPI";
 import { ReservationScheduledResponse } from "../../types/generalTypes";
 
 const MyReservations = () => {
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
+  const [reservationToRemove, setReservationToRemove] = useState<
+    string | number | undefined
+  >();
   const [reservationId, setResertionId] = useState("");
   const [reservations, setReservations] = useState<
     ReservationScheduledResponse[]
@@ -41,6 +47,14 @@ const MyReservations = () => {
   const fetchMyReservations = async () => {
     const reservationsData = await getMyReservations(reservationId);
     setReservations(reservationsData);
+  };
+
+  const onRemoveReservation = async () => {
+    if (reservationToRemove) {
+      await removeReservation(reservationToRemove);
+      await fetchMyReservations();
+      onCloseModal();
+    }
   };
 
   return (
@@ -89,13 +103,22 @@ const MyReservations = () => {
             Buscar
           </Button>
         </Box>
+        <br />
         {reservations.map((res) => (
           <Box marginTop="20px">
-            <ReservationCard reservation={res} onOpenModal={onOpenModal} />
+            <ReservationCard
+              reservation={res}
+              onOpenModal={onOpenModal}
+              setReservationToRemove={setReservationToRemove}
+            />
           </Box>
         ))}
       </Box>
-      <ConfirmationDeleteModal open={open} closeModal={onCloseModal} />
+      <ConfirmationDeleteModal
+        open={open}
+        closeModal={onCloseModal}
+        onRemoveReservation={onRemoveReservation}
+      />
     </Box>
   );
 };
