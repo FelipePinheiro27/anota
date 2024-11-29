@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 const ButtonDropDown = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
+  const value = localStorage.getItem("userSession");
+  const companyData: { companyName?: string } = JSON.parse(value || "");
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -35,7 +37,7 @@ const ButtonDropDown = () => {
             color: colors.buttonCompany,
           }}
         >
-          Level Beach Club
+          {companyData.companyName}
         </Typography>
       </Button>
 

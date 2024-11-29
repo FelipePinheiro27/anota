@@ -22,7 +22,7 @@ const MyReservations = () => {
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
   const [reservationToRemove, setReservationToRemove] = useState<
-    string | number | undefined
+    ReservationScheduledResponse | undefined
   >();
   const [reservationId, setResertionId] = useState("");
   const [reservations, setReservations] = useState<
@@ -50,8 +50,8 @@ const MyReservations = () => {
   };
 
   const onRemoveReservation = async () => {
-    if (reservationToRemove) {
-      await removeReservation(reservationToRemove);
+    if (reservationToRemove?.id) {
+      await removeReservation(reservationToRemove.id);
       await fetchMyReservations();
       onCloseModal();
     }
@@ -117,6 +117,7 @@ const MyReservations = () => {
       <ConfirmationDeleteModal
         open={open}
         closeModal={onCloseModal}
+        reservationToRemove={reservationToRemove}
         onRemoveReservation={onRemoveReservation}
       />
     </Box>

@@ -4,6 +4,7 @@ import CompanyLogo from "../../images/levelBeach.png";
 import ReservationsContainer from "../../Components/reservations/ReservationsContainer";
 import { useRetrieveCompany } from "../../hooks/useRetrieveCompany";
 import { ClientReservationContext } from "../../context/ClientReservationProvider";
+import useIsMobile from "../../hooks/useIsMobile";
 
 const theme = createTheme({
   typography: {
@@ -12,6 +13,7 @@ const theme = createTheme({
 });
 
 const Home = () => {
+  const isMobile = useIsMobile();
   const { company } = useContext(ClientReservationContext) || {};
   useRetrieveCompany();
 
@@ -25,7 +27,11 @@ const Home = () => {
       gap="15px"
     >
       <div>
-        <img src={CompanyLogo} alt="Level Beach Club" />
+        <img
+          src={CompanyLogo}
+          width={isMobile ? "230px" : "300px"}
+          alt="Level Beach Club"
+        />
       </div>
       <ThemeProvider theme={theme}>
         <Typography

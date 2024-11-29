@@ -12,7 +12,7 @@ interface ReservationCardProps {
   reservation: ReservationScheduledResponse;
   onOpenModal: () => void;
   setReservationToRemove: React.Dispatch<
-    React.SetStateAction<string | number | undefined>
+    React.SetStateAction<ReservationScheduledResponse | undefined>
   >;
 }
 
@@ -67,7 +67,7 @@ const ReservationCard = ({
       <Box marginRight={{ xs: "10px", md: "40px" }}>
         <DeleteOutlinedIcon
           onClick={() => {
-            setReservationToRemove(reservation?.id);
+            setReservationToRemove(reservation);
             onOpenModal();
           }}
           sx={{ fontSize: { xs: "22px", md: "34px" }, cursor: "pointer" }}

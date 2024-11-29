@@ -39,9 +39,6 @@ const Header = () => {
 
       {isMobile ? (
         <>
-          {/* <IconButton onClick={handleMenuOpen}>
-            <MenuIcon />
-          </IconButton> */}
           <Menu
             anchorEl={menuAnchorEl}
             open={Boolean(menuAnchorEl)}

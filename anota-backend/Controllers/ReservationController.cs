@@ -40,11 +40,10 @@ public class ReservationController : ControllerBase
     public async Task<ActionResult<IEnumerable<ReservationModel>>> GetReservation(string id)
     {
         var currentDate = DateTime.UtcNow;
-        Console.WriteLine(currentDate);
 
         var reservations = await _context.Reservations
         .Include(r => r.Court)
-        .Where(r => (r.Id == id || r.User_phone == id) && r.Created_date > currentDate)
+        .Where(r => (r.Id == id || r.User_phone == id) && r.Created_date >= currentDate)
         .ToListAsync();
 
         if (!reservations.Any())

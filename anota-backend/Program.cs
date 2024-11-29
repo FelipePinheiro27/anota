@@ -7,8 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 Env.Load();
 var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
+var dbPort = Environment.GetEnvironmentVariable("DB_PORT");
+var dbServer = Environment.GetEnvironmentVariable("DB_SERVER");
+var db = Environment.GetEnvironmentVariable("DB");
 
-var connectionString = $"server=localhost;initial catalog=anota;uid=root;pwd={dbPassword}";
+var connectionString = $"server={dbServer};port={dbPort};database={db};uid=root;pwd={dbPassword};protocol=TCP";
 builder.Services.AddDbContext<ContextData>(options =>
     options.UseMySql(
         connectionString,

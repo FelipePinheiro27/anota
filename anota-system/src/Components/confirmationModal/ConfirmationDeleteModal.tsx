@@ -1,10 +1,13 @@
-import { Box, Button, Modal, Stack, Typography } from "@mui/material";
 import React from "react";
+import { Box, Button, Modal, Stack, Typography } from "@mui/material";
+import { ReservationScheduledResponse } from "../../types/generalTypes";
+import { formatDate, formatTime, getDayOfWeek } from "../../utils/generalUtil";
 
 interface ConfirmationDeleteModalProps {
   open: boolean;
   closeModal: () => void;
   onRemoveReservation: () => void;
+  reservationToRemove: ReservationScheduledResponse | undefined;
 }
 
 const style = {
@@ -24,7 +27,12 @@ const ConfirmationDeleteModal = ({
   open,
   closeModal,
   onRemoveReservation,
+  reservationToRemove,
 }: ConfirmationDeleteModalProps) => {
+  const date = formatDate(reservationToRemove?.createdDate || "");
+  const dayOfWeek = getDayOfWeek(reservationToRemove?.createdDate || "");
+  const startTime = formatTime(reservationToRemove?.createdDate || "");
+  const endTime = formatTime(reservationToRemove?.endDate || "");
   return (
     <Modal
       open={open}
@@ -47,7 +55,8 @@ const ConfirmationDeleteModal = ({
             fontSize="16px"
             color="#22303E"
           >
-            Deseja desmarcar a reserva de 18:00 de sábado, 16 de novembro?
+            Deseja desmarcar a reserva de {startTime} às {endTime}. {dayOfWeek},{" "}
+            {date}?
           </Typography>
           <Box display="flex" gap="10px">
             <Button

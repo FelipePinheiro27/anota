@@ -36,8 +36,6 @@ const Company = () => {
     fetchReservations();
   }, [date]);
 
-  console.log(reservations);
-
   return (
     <Box>
       <Header />
