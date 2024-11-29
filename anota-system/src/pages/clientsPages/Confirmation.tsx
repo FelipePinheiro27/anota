@@ -40,6 +40,10 @@ const Confirmation = () => {
     phoneNumer: localStorage.getItem("clientPhone") || "",
     clientName: localStorage.getItem("clientName") || "",
   });
+  const value =
+    scheduledTime?.time?.reduce((acc, current) => {
+      return acc + current.price;
+    }, 0) ?? 0;
 
   const onChangeNumber = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((form) => ({
@@ -80,21 +84,22 @@ const Confirmation = () => {
 
   const onCloseModal = () => {
     setOpen(false);
-    navigate("/levelBeach");
+    navigate(`/${dynamicPath}`);
   };
 
   const onSubmitReservation = async () => {
     const reservationData = parseReservationDataToPayload(
       formData,
       selectedCourt,
-      scheduledTime
+      scheduledTime,
+      value
     );
 
     localStorage.setItem("clientName", formData.clientName);
     localStorage.setItem("clientPhone", formData.phoneNumer);
 
     const reservationCompleted = await createReservation(reservationData);
-    if (reservationCompleted) setOpen(true);
+    setOpen(reservationCompleted);
   };
 
   useEffect(() => {
@@ -136,7 +141,7 @@ const Confirmation = () => {
             fontWeight={600}
             color="#22303E"
           >
-            Valor: R$ {scheduledTime?.time && scheduledTime.time[0].price},00
+            Valor: R$ {value},00
           </Typography>
         </Box>
         <Box marginTop="40px">

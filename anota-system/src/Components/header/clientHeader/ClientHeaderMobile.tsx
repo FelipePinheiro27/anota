@@ -5,9 +5,13 @@ import CompanyLogo from "../../../images/levelBeach.png";
 
 interface ClientHeaderMobileProps {
   previewsPage: string;
+  companyName: string;
 }
 
-const ClientHeaderMobile = ({ previewsPage }: ClientHeaderMobileProps) => {
+const ClientHeaderMobile = ({
+  previewsPage,
+  companyName,
+}: ClientHeaderMobileProps) => {
   return (
     <Box
       sx={{
@@ -47,13 +51,13 @@ const ClientHeaderMobile = ({ previewsPage }: ClientHeaderMobileProps) => {
           textAlign: "center",
         }}
       >
-        <img width={50} src={CompanyLogo} alt="Level Beach Club" />
+        <img width={50} src={CompanyLogo} alt="Logo da Empresa" />
         <Typography
           sx={{ fontWeight: 500, letterSpacing: "0.2" }}
           fontSize="20px"
           color="#E45609"
         >
-          Level Beach Club
+          {companyName}
         </Typography>
       </Box>
     </Box>

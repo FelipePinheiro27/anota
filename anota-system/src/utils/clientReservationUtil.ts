@@ -20,7 +20,8 @@ export const getScheduledRangeTime = (slotsSelected: ReservationTypes[]) => {
 export const parseReservationDataToPayload = (
   userData: FormDataType,
   courtData: CourtTypes | null | undefined,
-  scheduleData: ScheduledTimeTypes | undefined
+  scheduleData: ScheduledTimeTypes | undefined,
+  value: number
 ) => {
   const createdDate = new Date(
     `${scheduleData?.date}T${
@@ -36,17 +37,12 @@ export const parseReservationDataToPayload = (
   );
   endDate.setHours(endDate.getHours() - 3);
 
-  const price =
-    scheduleData?.time &&
-    scheduleData.time?.length > 0 &&
-    scheduleData.time[0].price;
-
   const reservation: ReservationPayloadType = {
     user_name: userData.clientName,
     user_phone: userData.phoneNumer.replace(/\D/g, ""),
     court_id: Number(courtData?.courtId),
     modality: scheduleData?.modality || 0,
-    price: price || 10,
+    price: value,
     created_date: createdDate.toISOString(),
     end_date: endDate.toISOString(),
   };

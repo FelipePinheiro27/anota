@@ -22,6 +22,10 @@ const Schedules = () => {
   const [schedules, setSchedules] = useState<ReservationTypes[]>([]);
   const { initialTime, finalTime } =
     getScheduledRangeTime(scheduledTime?.time || []) || {};
+  const value =
+    scheduledTime?.time?.reduce((acc, current) => {
+      return acc + current.price;
+    }, 0) ?? 0;
   const navigate = useNavigate();
 
   const handleDateChange = (value: Dayjs | null) => {
@@ -129,7 +133,8 @@ const Schedules = () => {
               fontSize="16px"
               color="#22303E"
             >
-              {schedules.length > 0 && `Valor: R$ ${schedules[0].price},00`}
+              {schedules.length > 0 &&
+                `Valor do horário: R$ ${schedules[0].price},00`}
             </Typography>
           </Box>
           <Box display="flex" margin="30px 0" gap="80px">
@@ -163,7 +168,8 @@ const Schedules = () => {
             fontSize="16px"
             color="#22303E"
           >
-            {schedules.length > 0 && `Valor: R$ ${schedules[0].price},00`}
+            {schedules.length > 0 &&
+              `Valor do horário: R$ ${schedules[0].price},00`}
           </Typography>
         </Box>
         <Box display="flex" margin="30px 0" gap="80px">
@@ -187,6 +193,7 @@ const Schedules = () => {
             {hasTimeScheduled && (
               <>
                 De {initialTime} às {finalTime}
+                {value > 0 && ` | Valor: R$ ${value},00`}
               </>
             )}
           </Typography>
