@@ -1,0 +1,31 @@
+# Etapa 1: Build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Copiar o arquivo de solução e os arquivos de projeto
+COPY ["anota_backend.csproj", "./"]
+
+# Restaurar as dependências
+RUN dotnet restore
+
+# Copiar todos os outros arquivos e construir a aplicação
+COPY . .
+RUN dotnet publish -c Release -o /app/publish
+
+# Etapa 2: Runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+WORKDIR /app
+
+# Variáveis de ambiente para evitar warnings de HTTPS
+ENV DOTNET_RUNNING_IN_CONTAINER=true \
+    DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+
+# Copiar os artefatos da etapa de build
+COPY --from=build /app/publish .
+
+# Expor a porta usada pela aplicação
+EXPOSE 5000
+EXPOSE 5001
+
+# Definir o entrypoint
+ENTRYPOINT ["dotnet", "anota_backend.dll"]
