@@ -2,13 +2,11 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copiar o arquivo de solução e os arquivos de projeto
-COPY ["anota_backend.csproj", "./"]
-
-# Restaurar as dependências
+# Copiar o arquivo de projeto e restaurar dependências
+COPY anota-backend.csproj ./
 RUN dotnet restore
 
-# Copiar todos os outros arquivos e construir a aplicação
+# Copiar todos os arquivos e construir o projeto
 COPY . .
 RUN dotnet publish -c Release -o /app/publish
 
@@ -16,16 +14,12 @@ RUN dotnet publish -c Release -o /app/publish
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 
-# Variáveis de ambiente para evitar warnings de HTTPS
-ENV DOTNET_RUNNING_IN_CONTAINER=true \
-    DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
-
 # Copiar os artefatos da etapa de build
 COPY --from=build /app/publish .
 
-# Expor a porta usada pela aplicação
+# Expor portas
 EXPOSE 5000
 EXPOSE 5001
 
-# Definir o entrypoint
-ENTRYPOINT ["dotnet", "anota_backend.dll"]
+# Inicializar a aplicação
+ENTRYPOINT ["dotnet", "anota-backend.dll"]
