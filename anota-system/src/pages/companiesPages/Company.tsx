@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import Header from "../../Components/header/Header";
-import ReservationsTable from "../../Components/tables/reservationsTable/ReservationsTable";
 import { getReservationsByDate } from "../../api/ReservationsAPI";
 import dayjs, { Dayjs } from "dayjs";
 import DateButton from "../../Components/dateButton/DateButton";
 import { ReservationScheduledResponse } from "../../types/generalTypes";
 import NoData from "../../Components/noData/NodaData";
+import ScheduledHours from "../../Components/scheduledHours/ScheduledHours";
 
 const Company = () => {
   const [date, setDate] = useState(dayjs());
@@ -63,7 +63,8 @@ const Company = () => {
           />
         ) : (
           <Box sx={{ paddingTop: "30px" }}>
-            <ReservationsTable reservations={reservations} />
+            <ScheduledHours reservations={reservations} />
+            {/* <ReservationsTable reservations={reservations} /> */}
           </Box>
         )}
       </Box>

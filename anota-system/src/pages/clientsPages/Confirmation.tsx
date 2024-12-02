@@ -36,6 +36,7 @@ const Confirmation = () => {
   const navigate = useNavigate();
   const clientReservation = useContext(ClientReservationContext);
   const { selectedCourt, scheduledTime } = clientReservation || {};
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormDataType>({
     phoneNumer: localStorage.getItem("clientPhone") || "",
     clientName: localStorage.getItem("clientName") || "",
@@ -75,7 +76,9 @@ const Confirmation = () => {
   };
 
   const isDisabled =
-    formData.clientName === "" || !isValidPhoneNumber(formData.phoneNumer);
+    formData.clientName === "" ||
+    !isValidPhoneNumber(formData.phoneNumer) ||
+    isSubmitting;
 
   const date = useMemo(
     () => new Date(scheduledTime?.date || ""),
@@ -88,6 +91,7 @@ const Confirmation = () => {
   };
 
   const onSubmitReservation = async () => {
+    setIsSubmitting(true);
     const reservationData = parseReservationDataToPayload(
       formData,
       selectedCourt,
