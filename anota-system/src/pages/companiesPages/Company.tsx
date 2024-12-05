@@ -39,7 +39,7 @@ const Company = () => {
   return (
     <Box>
       <Header />
-      <Box sx={{ padding: { xs: "30px 10px", md: "30px 40px" } }}>
+      <Box sx={{ padding: { xs: "30px 3px ", md: "30px 40px" } }}>
         <Box
           display="flex"
           flexDirection={{ xs: "column" }}

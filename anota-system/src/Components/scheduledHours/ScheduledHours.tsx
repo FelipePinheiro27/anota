@@ -12,91 +12,159 @@ interface ScheduledHoursProps {
 const ScheduledHours = ({
   reservations,
   startHour = 13,
-  endHour = 23,
+  endHour = 24,
 }: ScheduledHoursProps) => {
   const theme = useTheme();
 
+  const courts = Array.from(
+    new Set(reservations.map((reservation) => reservation.courtName))
+  );
+
+  const colors = [
+    "#369BE5",
+    "#7986CB",
+    theme.palette.error.light,
+    theme.palette.warning.light,
+    theme.palette.success.light,
+  ];
+
   const generateTimeBlocks = () => {
-    const timeBlocks = [];
+    const timeBlocks = [""];
     for (let hour = startHour; hour < endHour; hour++) {
-      timeBlocks.push(`${hour}:00 - ${hour + 1}:00`);
+      timeBlocks.push(`${hour}:00`);
     }
     return timeBlocks;
   };
 
-  const getReservationBlock = (hour: string) => {
-    const matchingReservation = reservations.filter((reservation) => {
-      const startDate = new Date(reservation.createdDate);
-      const endDate = new Date(reservation.endDate);
-      const startHour = startDate.getHours();
-      const endHour = endDate.getHours();
-      return hour >= `${startHour}:00` && hour < `${endHour}:00`;
-    });
-
-    if (matchingReservation.length === 0) return null;
-
-    return (
-      <Box display="flex" gap="10px">
-        {matchingReservation.map((res, index) => (
-          <Box
-            key={index}
-            sx={{
-              backgroundColor: theme.palette.primary.light,
-              padding: 1,
-              borderRadius: 1,
-              color: theme.palette.primary.contrastText,
-              fontSize: "10px",
-            }}
-          >
-            <Typography variant="body2">
-              <strong>Cliente:</strong> {res?.client}
-            </Typography>
-            <Typography variant="body2">
-              <strong>Quadra:</strong> {res?.courtName}
-            </Typography>
-            <Typography variant="body2">
-              <strong>Valor:</strong> {res?.price} |{" "}
-              {modalitiesConstant[res?.modality || 0]}
-            </Typography>
-          </Box>
-        ))}
-      </Box>
-    );
+  const calculateGridRowSpan = (start: Date, end: Date) => {
+    const startHour = start.getHours();
+    const endHour = end.getHours();
+    return endHour - startHour;
   };
 
   return (
     <Box
       sx={{
         display: "grid",
-        gridTemplateColumns: "1fr",
-        gap: 1,
-        // maxWidth: 400,
-        margin: "0 auto",
+        width: "100%",
+        textAlign: "left",
+        gridTemplateColumns: `70px repeat(${courts.length}, 1fr)`,
+        gridTemplateRows: `repeat(${endHour - startHour}, 1fr)`,
+        position: "relative",
+        borderRadius: 1,
+        border: `1px solid ${theme.palette.divider}`,
+        backgroundColor: theme.palette.background.paper,
       }}
     >
       {generateTimeBlocks().map((timeBlock, index) => (
         <Box
           key={index}
           sx={{
+            gridRow: index + 1,
+            zIndex: 2,
+            borderTop: `1px solid ${theme.palette.divider}`,
             display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            border: `1px solid ${theme.palette.divider}`,
-            padding: 1,
-            backgroundColor: theme.palette.background.paper,
-            borderRadius: 1,
+            alignItems: "start",
+            justifyContent: "start",
           }}
         >
-          <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+          <Typography
+            sx={{
+              fontWeight: 600,
+              fontSize: "14px",
+              paddingLeft: "10px",
+              marginTop: "-10px",
+              paddingRight: "5px",
+              background: "#fff",
+              zIndex: 1,
+            }}
+          >
             {timeBlock}
           </Typography>
-          {getReservationBlock(timeBlock) || (
-            <Typography variant="body2" color="text.secondary">
-              Disponível
-            </Typography>
-          )}
         </Box>
       ))}
+
+      {courts.map((court, index) => (
+        <Box
+          key={court}
+          sx={{
+            gridColumn: index + 2,
+            gridRow: "1",
+            textAlign: "center",
+            padding: "10px",
+            marginBottom: "20px",
+            marginRight: "5px",
+            backgroundColor: colors[index % colors.length],
+            borderBottom: `1px solid ${theme.palette.divider}`,
+            borderLeft:
+              index !== 0 ? `1px solid ${theme.palette.divider}` : "none",
+            color: theme.palette.getContrastText(colors[index % colors.length]),
+          }}
+        >
+          <Typography variant="h6">{court}</Typography>
+        </Box>
+      ))}
+
+      {courts.map((_, courtIndex) =>
+        generateTimeBlocks().map((_, timeIndex) => (
+          <Box
+            key={`court-${courtIndex}-time-${timeIndex}`}
+            sx={{
+              gridColumn: courtIndex + 2,
+              zIndex: 2,
+              gridRow: timeIndex + 2,
+              borderTop: `1px solid ${theme.palette.divider}`,
+              position: "relative",
+            }}
+          />
+        ))
+      )}
+
+      {reservations.map((reservation, index) => {
+        const startDate = new Date(reservation.createdDate);
+        const endDate = new Date(reservation.endDate);
+        const startHourIdx = startDate.getHours() - startHour;
+        const courtIndex = courts.indexOf(reservation.courtName);
+
+        if (startHourIdx < 0 || startHourIdx >= endHour - startHour)
+          return null;
+
+        return (
+          <Box
+            key={index}
+            sx={{
+              gridColumn: courtIndex + 2,
+              gridRow: `${startHourIdx + 2} / span ${calculateGridRowSpan(
+                startDate,
+                endDate
+              )}`,
+              position: "relative",
+              padding: "10px",
+              backgroundColor: colors[courtIndex % colors.length],
+              borderRadius: 1,
+              marginBottom: "5px",
+              marginRight: "5px",
+              opacity: 0.9,
+              color: theme.palette.getContrastText(
+                colors[courtIndex % colors.length]
+              ),
+              zIndex: 1,
+            }}
+          >
+            <Typography variant="body2">
+              <strong>Cliente:</strong> {reservation.client}
+            </Typography>
+            <Typography variant="body2">
+              <strong>Valor:</strong> {reservation.price} |{" "}
+              {modalitiesConstant[reservation.modality || 0]}
+            </Typography>
+            <Typography variant="body2">
+              <strong>Horário:</strong> {startDate.getHours()}:00 às{" "}
+              {endDate.getHours()}:00
+            </Typography>
+          </Box>
+        );
+      })}
     </Box>
   );
 };
