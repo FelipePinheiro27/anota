@@ -16,6 +16,7 @@ const ScheduledHours = ({
   endHour = 24,
 }: ScheduledHoursProps) => {
   const theme = useTheme();
+  const hasOnlyOneReservation = reservations.length === 1;
   const isMobile = useIsMobile();
 
   const courts = Array.from(
@@ -51,7 +52,7 @@ const ScheduledHours = ({
         width: "100%",
         textAlign: "left",
         gridTemplateColumns: `70px repeat(${courts.length}, ${
-          isMobile ? "155px" : "1fr"
+          isMobile && !hasOnlyOneReservation ? "155px" : "1fr"
         })`,
         overflowX: isMobile ? "scroll" : "",
         gridTemplateRows: `repeat(${endHour - startHour}, 0.7fr)`,
