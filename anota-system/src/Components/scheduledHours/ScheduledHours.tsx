@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import { ReservationScheduledResponse } from "../../types/generalTypes";
 import { modalitiesConstant } from "../../constants/Global";
+import useIsMobile from "../../hooks/useIsMobile";
 
 interface ScheduledHoursProps {
   reservations: ReservationScheduledResponse[];
@@ -15,6 +16,7 @@ const ScheduledHours = ({
   endHour = 24,
 }: ScheduledHoursProps) => {
   const theme = useTheme();
+  const isMobile = useIsMobile();
 
   const courts = Array.from(
     new Set(reservations.map((reservation) => reservation.courtName))
@@ -48,8 +50,11 @@ const ScheduledHours = ({
         display: "grid",
         width: "100%",
         textAlign: "left",
-        gridTemplateColumns: `70px repeat(${courts.length}, 1fr)`,
-        gridTemplateRows: `repeat(${endHour - startHour}, 1fr)`,
+        gridTemplateColumns: `70px repeat(${courts.length}, ${
+          isMobile ? "155px" : "1fr"
+        })`,
+        overflowX: isMobile ? "scroll" : "",
+        gridTemplateRows: `repeat(${endHour - startHour}, 0.7fr)`,
         position: "relative",
         borderRadius: 1,
         border: `1px solid ${theme.palette.divider}`,
@@ -91,9 +96,13 @@ const ScheduledHours = ({
             gridColumn: index + 2,
             gridRow: "1",
             textAlign: "center",
-            padding: "10px",
-            marginBottom: "20px",
+            padding: "3px",
+            marginBottom: "10px",
             marginRight: "5px",
+            height: "40%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
             backgroundColor: colors[index % colors.length],
             borderBottom: `1px solid ${theme.palette.divider}`,
             borderLeft:
@@ -101,7 +110,9 @@ const ScheduledHours = ({
             color: theme.palette.getContrastText(colors[index % colors.length]),
           }}
         >
-          <Typography variant="h6">{court}</Typography>
+          <Typography variant={isMobile ? "subtitle2" : "subtitle1"}>
+            {court}
+          </Typography>
         </Box>
       ))}
 
@@ -111,7 +122,6 @@ const ScheduledHours = ({
             key={`court-${courtIndex}-time-${timeIndex}`}
             sx={{
               gridColumn: courtIndex + 2,
-              zIndex: 2,
               gridRow: timeIndex + 2,
               borderTop: `1px solid ${theme.palette.divider}`,
               position: "relative",
