@@ -7,10 +7,12 @@ import { retrieveCourtsByCompany } from "../../api/ClientAPI";
 import { CourtTypes } from "../../types/generalTypes";
 import { useRetrieveCompany } from "../../hooks/useRetrieveCompany";
 import { useParams } from "react-router-dom";
+import LoadingSpinner from "../../Components/loadingSpinner/LoadingSpinner";
 
 const Reservation = () => {
   useRetrieveCompany();
   const clientReservation = useContext(ClientReservationContext);
+  const [isLoading, setIsLoading] = useState(true);
   const [courts, setCourts] = useState<CourtTypes[]>([]);
   const { dynamicPath } = useParams();
 
@@ -18,7 +20,9 @@ const Reservation = () => {
 
   useEffect(() => {
     const fetchCourts = async () => {
+      setIsLoading(true);
       setCourts(await retrieveCourtsByCompany(company?.id || ""));
+      setIsLoading(false);
     };
 
     fetchCourts();
@@ -38,7 +42,16 @@ const Reservation = () => {
           </Typography>
         </Box>
         <Box marginTop="40px">
-          <CourtsOptions courts={courts || []} onSelectCourt={onSelectCourt} />
+          {isLoading ? (
+            <Box marginTop="250px">
+              <LoadingSpinner color="#E45609" />
+            </Box>
+          ) : (
+            <CourtsOptions
+              courts={courts || []}
+              onSelectCourt={onSelectCourt}
+            />
+          )}
         </Box>
       </Box>
     </Box>

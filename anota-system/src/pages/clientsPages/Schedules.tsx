@@ -86,11 +86,12 @@ const Schedules = () => {
 
   useEffect(() => {
     const getAvailableSchedules = async () => {
+      setIsLoading(true);
       const schedulesData = await getAvailableSchedulesByCourtAndDate(
         date.format("YYYY-MM-DD"),
         courtId || 0
       );
-      // setIsLoading(false);
+      setIsLoading(false);
       setSchedules(schedulesData);
     };
 
@@ -115,37 +116,37 @@ const Schedules = () => {
     resetReservationData();
   }, [resetReservationData]);
 
-  // if (isLoading)
-  //   return (
-  //     <Box>
-  //       <ClientHeader previewsPage={`/${dynamicPath}/reservas`} />
-  //       <Box sx={{ padding: "30px 40px", paddingBottom: "80px" }}>
-  //         <Box margin="30px 0">
-  //           <Typography
-  //             sx={{ fontWeight: 600, letterSpacing: "0.2" }}
-  //             fontSize="18px"
-  //             color="#22303E"
-  //           >
-  //             {name}
-  //           </Typography>
-  //         </Box>
-  //         <Box>
-  //           <Typography
-  //             sx={{ fontWeight: 600, letterSpacing: "0.2" }}
-  //             fontSize="16px"
-  //             color="#22303E"
-  //           >
-  //             {schedules.length > 0 &&
-  //               `Valor do horário: R$ ${schedules[0].price},00`}
-  //           </Typography>
-  //         </Box>
-  //         <Box display="flex" margin="30px 0" gap="80px">
-  //           <DateButton date={date} handleDateChange={handleDateChange} />
-  //         </Box>
-  //         {/* <LoadingSpinner /> */}
-  //       </Box>
-  //     </Box>
-  //   );
+  if (isLoading)
+    return (
+      <Box>
+        <ClientHeader previewsPage={`/${dynamicPath}/reservas`} />
+        <Box sx={{ padding: "30px 40px", paddingBottom: "80px" }}>
+          <Box margin="30px 0">
+            <Typography
+              sx={{ fontWeight: 600, letterSpacing: "0.2" }}
+              fontSize="18px"
+              color="#22303E"
+            >
+              {name}
+            </Typography>
+          </Box>
+          <Box>
+            <Typography
+              sx={{ fontWeight: 600, letterSpacing: "0.2" }}
+              fontSize="16px"
+              color="#22303E"
+            >
+              {schedules.length > 0 &&
+                `Valor do horário: R$ ${schedules[0].price},00`}
+            </Typography>
+          </Box>
+          <Box display="flex" margin="30px 0" gap="80px" marginBottom="120px">
+            <DateButton date={date} handleDateChange={handleDateChange} />
+          </Box>
+          <LoadingSpinner color="#E45609" />
+        </Box>
+      </Box>
+    );
 
   if (schedules.length === 0) {
     return (
