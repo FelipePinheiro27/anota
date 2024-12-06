@@ -47,10 +47,10 @@ const SignIn = () => {
         height: "100vh",
       }}
     >
-      <CardComponent variant="outlined">
+      <CardComponent variant="elevation">
         <img
           src={Logo}
-          alt="Test"
+          alt="Anota Reservas"
           style={{ width: "170px", height: "170px", margin: "0 auto" }}
         />
         <FormControl>
