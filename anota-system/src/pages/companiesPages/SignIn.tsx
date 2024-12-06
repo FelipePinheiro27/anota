@@ -6,11 +6,13 @@ import Logo from "../../images/logo_anota.svg";
 import { CardComponent } from "../../Components/card/Card";
 import { login } from "../../api/CompanyAPI";
 import { useNavigate } from "react-router-dom";
+import useIsMobile from "../../hooks/useIsMobile";
 
 const SignIn = () => {
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const isMobile = useIsMobile();
   const navigate = useNavigate();
 
   const onChangeUser = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +46,7 @@ const SignIn = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
+        height: isMobile ? "" : "100vh",
       }}
     >
       <CardComponent variant="elevation">
