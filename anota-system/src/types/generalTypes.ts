@@ -52,4 +52,5 @@ export type CompanyType = {
   name: string;
   primaryColor: string;
   secondaryColor: string;
+  pathRouteKey: string;
 };

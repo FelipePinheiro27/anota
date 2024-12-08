@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { Box, createTheme, ThemeProvider, Typography } from "@mui/material";
-import CompanyLogo from "../../images/levelBeach.png";
 import ReservationsContainer from "../../Components/reservations/ReservationsContainer";
 import { useRetrieveCompany } from "../../hooks/useRetrieveCompany";
 import { ClientReservationContext } from "../../context/ClientReservationProvider";
 import useIsMobile from "../../hooks/useIsMobile";
+import LoadingSpinner from "../../Components/loadingSpinner/LoadingSpinner";
 
 const theme = createTheme({
   typography: {
@@ -15,7 +15,22 @@ const theme = createTheme({
 const Home = () => {
   const isMobile = useIsMobile();
   const { company } = useContext(ClientReservationContext) || {};
+  const { primaryColor, secondaryColor, pathRouteKey } = company || {};
   useRetrieveCompany();
+  const route = `/images/${pathRouteKey}.png`;
+
+  if (!company) {
+    return (
+      <Box
+        minHeight={{ xs: "80vh", md: "100vh" }}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <LoadingSpinner />
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -35,7 +50,7 @@ const Home = () => {
       >
         <div>
           <img
-            src={CompanyLogo}
+            src={route}
             width={isMobile ? "230px" : "300px"}
             alt="Logo da empresa"
           />
@@ -44,12 +59,15 @@ const Home = () => {
           <Typography
             sx={{ fontWeight: 700, letterSpacing: "0.2" }}
             fontSize="28px"
-            color="#E45609"
+            color={primaryColor}
           >
             {company?.name}
           </Typography>
         </ThemeProvider>
-        <ReservationsContainer />
+        <ReservationsContainer
+          primaryColor={primaryColor || ""}
+          secondaryColor={secondaryColor || ""}
+        />
       </Box>
 
       <Box textAlign="center" paddingBottom={isMobile ? 0 : "30px"}>

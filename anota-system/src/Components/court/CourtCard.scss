@@ -31,21 +31,21 @@
     display: flex;
     color: #fff;
     cursor: pointer;
-    background-color: rgba(228, 86, 9, 0.8);
+    opacity: 0.8;
     justify-content: center;
     align-items: center;
     height: 20%;
   }
 
   &-button:hover {
-    background-color: rgba(228, 86, 9, 1);
+    opacity: 1;
   }
 }
 
 @media (max-width: 600px) {
   .CourtCard {
     &-button {
-      background-color: rgba(228, 86, 9, 1);
+      opacity: 1;
     }
   }
 }

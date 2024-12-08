@@ -35,12 +35,13 @@ const Confirmation = () => {
   const { dynamicPath } = useParams();
   const navigate = useNavigate();
   const clientReservation = useContext(ClientReservationContext);
-  const { selectedCourt, scheduledTime } = clientReservation || {};
+  const { selectedCourt, scheduledTime, company } = clientReservation || {};
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormDataType>({
     phoneNumer: localStorage.getItem("clientPhone") || "",
     clientName: localStorage.getItem("clientName") || "",
   });
+  const { secondaryColor } = company || {};
   const value =
     scheduledTime?.time?.reduce((acc, current) => {
       return acc + current.price;
@@ -193,7 +194,7 @@ const Confirmation = () => {
             disabled={isDisabled}
             sx={{
               padding: "12px",
-              background: "#0C927D",
+              background: secondaryColor,
               "&.Mui-disabled": {
                 color: "#fff",
                 background: "#C4C4C4",

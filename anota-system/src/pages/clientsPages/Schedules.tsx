@@ -16,8 +16,10 @@ import LoadingSpinner from "../../Components/loadingSpinner/LoadingSpinner";
 const Schedules = () => {
   const clientReservation = useContext(ClientReservationContext);
   const { dynamicPath } = useParams();
-  const { selectedCourt, scheduledTime, onSelectScheduleTime } =
+  const { selectedCourt, scheduledTime, onSelectScheduleTime, company } =
     clientReservation || {};
+  const { primaryColor, secondaryColor } = company || {};
+
   const [isLoading, setIsLoading] = useState(true);
   const { name, courtId } = selectedCourt || {};
   const [date, setDate] = useState(dayjs());
@@ -143,7 +145,7 @@ const Schedules = () => {
           <Box display="flex" margin="30px 0" gap="80px" marginBottom="120px">
             <DateButton date={date} handleDateChange={handleDateChange} />
           </Box>
-          <LoadingSpinner color="#E45609" />
+          <LoadingSpinner color={primaryColor} />
         </Box>
       </Box>
     );
@@ -237,6 +239,7 @@ const Schedules = () => {
             slots={schedules}
             scheduledTime={scheduledTime?.time || []}
             onSelectSlots={onSelectSlots}
+            primaryColor={primaryColor || ""}
           />
         </Box>
         <br />
@@ -253,6 +256,7 @@ const Schedules = () => {
           <ModalitiesGroups
             onSelectModality={onSelectModality}
             modalitySelected={scheduledTime?.modality}
+            primaryColor={primaryColor || ""}
           />
         </Box>
         <Box sx={{ marginTop: { xs: "50px", md: "100px" } }}>
@@ -262,7 +266,7 @@ const Schedules = () => {
             disabled={!reservationFilled}
             sx={{
               padding: "12px",
-              background: "#0C927D",
+              background: secondaryColor,
               "&.Mui-disabled": {
                 color: "#fff",
                 background: "#C4C4C4",

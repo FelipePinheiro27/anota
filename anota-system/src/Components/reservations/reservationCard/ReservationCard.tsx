@@ -70,7 +70,7 @@ const ReservationCard = ({
             setReservationToRemove(reservation);
             onOpenModal();
           }}
-          sx={{ fontSize: { xs: "22px", md: "34px" }, cursor: "pointer" }}
+          sx={{ fontSize: { xs: "26px", md: "34px" }, cursor: "pointer" }}
         />
       </Box>
     </Box>

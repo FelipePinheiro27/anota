@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
-import CompanyLogo from "../../../images/levelBeach.png";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import useIsMobile from "../../../hooks/useIsMobile";
 import ClientHeaderMobile from "./ClientHeaderMobile";
@@ -16,12 +15,17 @@ const ClientHeader = ({ previewsPage }: ClientHeaderProps) => {
   const isMobile = useIsMobile();
   const { company } = useContext(ClientReservationContext) || {};
   useRetrieveCompany();
+  const { primaryColor, pathRouteKey } = company || {};
+
+  const CompanyLogo = `/images/${pathRouteKey}.png`;
 
   if (isMobile) {
     return (
       <ClientHeaderMobile
         previewsPage={previewsPage}
         companyName={company?.name || ""}
+        primaryColor={primaryColor || ""}
+        pathRouteKey={pathRouteKey || ""}
       />
     );
   }
@@ -72,7 +76,7 @@ const ClientHeader = ({ previewsPage }: ClientHeaderProps) => {
         <Typography
           sx={{ fontWeight: 500, letterSpacing: "0.2" }}
           fontSize={{ xs: "22px", md: "28px" }}
-          color="#E45609"
+          color={primaryColor}
         >
           {company?.name}
         </Typography>

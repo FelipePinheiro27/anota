@@ -1,17 +1,22 @@
 import { Link } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import CompanyLogo from "../../../images/levelBeach.png";
 
 interface ClientHeaderMobileProps {
   previewsPage: string;
   companyName: string;
+  primaryColor: string;
+  pathRouteKey: string;
 }
 
 const ClientHeaderMobile = ({
   previewsPage,
   companyName,
+  primaryColor,
+  pathRouteKey,
 }: ClientHeaderMobileProps) => {
+  const CompanyLogo = `/images/${pathRouteKey}.png`;
+
   return (
     <Box
       sx={{
@@ -41,7 +46,7 @@ const ClientHeaderMobile = ({
             height: "48px",
           }}
         >
-          <ArrowBackIcon sx={{ color: "#22303e", fontWeight: 700 }} />
+          <ArrowBackIcon sx={{ color: { primaryColor }, fontWeight: 700 }} />
         </Box>
       </Link>
       <Box
@@ -55,7 +60,7 @@ const ClientHeaderMobile = ({
         <Typography
           sx={{ fontWeight: 500, letterSpacing: "0.2" }}
           fontSize="20px"
-          color="#E45609"
+          color={primaryColor}
         >
           {companyName}
         </Typography>

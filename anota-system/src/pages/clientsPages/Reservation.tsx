@@ -17,6 +17,7 @@ const Reservation = () => {
   const { dynamicPath } = useParams();
 
   const { company, onSelectCourt } = clientReservation || {};
+  const { primaryColor } = company || {};
 
   useEffect(() => {
     const fetchCourts = async () => {
@@ -44,12 +45,13 @@ const Reservation = () => {
         <Box marginTop="40px">
           {isLoading ? (
             <Box marginTop="250px">
-              <LoadingSpinner color="#E45609" />
+              <LoadingSpinner color={primaryColor} />
             </Box>
           ) : (
             <CourtsOptions
               courts={courts || []}
               onSelectCourt={onSelectCourt}
+              primaryColor={primaryColor || ""}
             />
           )}
         </Box>

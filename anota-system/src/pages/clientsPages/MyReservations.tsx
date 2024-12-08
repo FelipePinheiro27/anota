@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Box,
   Button,
@@ -17,6 +17,7 @@ import {
   removeReservation,
 } from "../../api/ReservationsAPI";
 import { ReservationScheduledResponse } from "../../types/generalTypes";
+import { ClientReservationContext } from "../../context/ClientReservationProvider";
 
 const MyReservations = () => {
   const isMobile = useIsMobile();
@@ -28,7 +29,10 @@ const MyReservations = () => {
   const [reservations, setReservations] = useState<
     ReservationScheduledResponse[]
   >([]);
+  const clientReservation = useContext(ClientReservationContext);
   const { dynamicPath } = useParams();
+  const { company } = clientReservation || {};
+  const { secondaryColor } = company || {};
 
   const onCloseModal = () => {
     setOpen(false);
@@ -95,7 +99,7 @@ const MyReservations = () => {
             sx={{
               marginTop: { xs: "16px" },
               padding: { xs: "12px 30px", md: "16px 48px" },
-              background: "#E45609",
+              background: secondaryColor,
               fontWeight: 600,
             }}
             onClick={fetchMyReservations}

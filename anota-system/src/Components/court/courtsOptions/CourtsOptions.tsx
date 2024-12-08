@@ -7,9 +7,14 @@ import { CourtTypes } from "../../../types/generalTypes";
 interface CourtsOptionsProps {
   courts: CourtTypes[];
   onSelectCourt: ((court: CourtTypes) => void) | undefined;
+  primaryColor: string;
 }
 
-const CourtsOptions = ({ courts, onSelectCourt }: CourtsOptionsProps) => {
+const CourtsOptions = ({
+  courts,
+  onSelectCourt,
+  primaryColor,
+}: CourtsOptionsProps) => {
   const { dynamicPath } = useParams();
 
   return (
@@ -25,6 +30,7 @@ const CourtsOptions = ({ courts, onSelectCourt }: CourtsOptionsProps) => {
             key={index}
             title={court.name}
             description={court.description}
+            primaryColor={primaryColor}
           />
         </Link>
       ))}

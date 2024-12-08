@@ -4,7 +4,15 @@ import ReservationsButton from "../buttons/ReservationsButton";
 import { Link, useParams } from "react-router-dom";
 import "./ReservationsContainer.scss";
 
-const ReservationsContainer = () => {
+interface ReservationsContainerProps {
+  primaryColor: string;
+  secondaryColor: string;
+}
+
+const ReservationsContainer = ({
+  primaryColor,
+  secondaryColor,
+}: ReservationsContainerProps) => {
   const { dynamicPath } = useParams();
 
   return (
@@ -18,13 +26,13 @@ const ReservationsContainer = () => {
         to={`/${dynamicPath}/reservas`}
         style={{ textDecoration: "none", color: "inherit", padding: "0" }}
       >
-        <ReservationsButton text="Novo Agendamento" bgColor="#0C927D" />
+        <ReservationsButton text="Novo Agendamento" bgColor={secondaryColor} />
       </Link>
       <Link
         to={`/${dynamicPath}/minhas-reservas`}
         style={{ textDecoration: "none", color: "inherit", padding: "0" }}
       >
-        <ReservationsButton text="Minhas Reservas" bgColor="#7F42D9" />
+        <ReservationsButton text="Minhas Reservas" bgColor={primaryColor} />
       </Link>
     </Box>
   );

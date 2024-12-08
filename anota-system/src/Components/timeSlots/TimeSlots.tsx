@@ -7,9 +7,15 @@ interface TimeSlotsProps {
   slots: ReservationTypes[];
   scheduledTime: ReservationTypes[];
   onSelectSlots: (slot: ReservationTypes) => void;
+  primaryColor: string;
 }
 
-const TimeSlots = ({ slots, onSelectSlots, scheduledTime }: TimeSlotsProps) => {
+const TimeSlots = ({
+  slots,
+  onSelectSlots,
+  scheduledTime,
+  primaryColor,
+}: TimeSlotsProps) => {
   const sortedScheduledTime = [...scheduledTime].sort((a, b) =>
     a.start.localeCompare(b.start)
   );
@@ -28,6 +34,7 @@ const TimeSlots = ({ slots, onSelectSlots, scheduledTime }: TimeSlotsProps) => {
             value={slot}
             onSelectSlot={() => onSelectSlots(slot)}
             selected={scheduledTime.includes(slot)}
+            primaryColor={primaryColor}
             disabled={scheduledTime.length > 0 && !isEnabled}
           />
         );

@@ -7,11 +7,13 @@ import BeachTennis from "../../icons/beachTennis.svg";
 interface ModalitiesGroupsProps {
   onSelectModality: (modality: number) => void;
   modalitySelected?: number;
+  primaryColor: string;
 }
 
 const ModalitiesGroups = ({
   onSelectModality,
   modalitySelected,
+  primaryColor,
 }: ModalitiesGroupsProps) => {
   return (
     <FormControl>
@@ -26,6 +28,7 @@ const ModalitiesGroups = ({
           control={
             <RadioSelect
               label="Beach Tennis"
+              color={primaryColor}
               icon={BeachTennis}
               checked={modalitySelected === 0}
             />
@@ -38,6 +41,7 @@ const ModalitiesGroups = ({
           control={
             <RadioSelect
               label="Futvôlei"
+              color={primaryColor}
               icon={Futvolei}
               checked={modalitySelected === 1}
             />
@@ -50,6 +54,7 @@ const ModalitiesGroups = ({
           control={
             <RadioSelect
               label="Vôlei"
+              color={primaryColor}
               icon={Volei}
               checked={modalitySelected === 2}
             />
