@@ -122,7 +122,12 @@ const Schedules = () => {
     return (
       <Box>
         <ClientHeader previewsPage={`/${dynamicPath}/reservas`} />
-        <Box sx={{ padding: "30px 40px", paddingBottom: "80px" }}>
+        <Box
+          sx={{
+            padding: { xs: "30px 15px", md: "30px 40px" },
+            paddingBottom: "80px",
+          }}
+        >
           <Box margin="30px 0">
             <Typography
               sx={{ fontWeight: 600, letterSpacing: "0.2" }}
@@ -154,7 +159,12 @@ const Schedules = () => {
     return (
       <Box>
         <ClientHeader previewsPage={`/${dynamicPath}/reservas`} />
-        <Box sx={{ padding: "30px 40px", paddingBottom: "80px" }}>
+        <Box
+          sx={{
+            padding: { xs: "30px 15px", md: "30px 40px" },
+            paddingBottom: "80px",
+          }}
+        >
           <Box margin="30px 0">
             <Typography
               sx={{ fontWeight: 600, letterSpacing: "0.2" }}
@@ -189,7 +199,12 @@ const Schedules = () => {
   return (
     <Box>
       <ClientHeader previewsPage={`/${dynamicPath}/reservas`} />
-      <Box sx={{ padding: "30px 40px", paddingBottom: "80px" }}>
+      <Box
+        sx={{
+          padding: { xs: "30px 15px", md: "30px 40px" },
+          paddingBottom: "80px",
+        }}
+      >
         <Box margin="30px 0">
           <Typography
             sx={{ fontWeight: 600, letterSpacing: "0.2" }}

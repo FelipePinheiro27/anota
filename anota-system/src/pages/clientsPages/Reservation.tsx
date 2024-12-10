@@ -32,7 +32,7 @@ const Reservation = () => {
   return (
     <Box>
       <ClientHeader previewsPage={`/${dynamicPath}`} />
-      <Box sx={{ padding: "30px 40px" }}>
+      <Box sx={{ padding: { xs: "30px 15px", md: "30px 40px" } }}>
         <Box margin={"30px 0"}>
           <Typography
             sx={{ fontWeight: 600, letterSpacing: "0.2" }}
@@ -42,7 +42,7 @@ const Reservation = () => {
             Escolha uma Opção
           </Typography>
         </Box>
-        <Box marginTop="40px">
+        <Box paddingLeft="35px" marginTop="40px">
           {isLoading ? (
             <Box marginTop="250px">
               <LoadingSpinner color={primaryColor} />

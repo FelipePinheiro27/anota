@@ -166,7 +166,7 @@ const ScheduledHours = ({
               <strong>Cliente:</strong> {reservation.client}
             </Typography>
             <Typography variant="body2">
-              <strong>Valor:</strong>R$ {reservation.price},00 |{" "}
+              <strong>Valor:</strong> R$ {reservation.price},00 |{" "}
               {modalitiesConstant[reservation.modality || 0]}
             </Typography>
             <Typography variant="body2">

@@ -65,7 +65,7 @@ const MyReservations = () => {
     <Box>
       <ClientHeader previewsPage={`/${dynamicPath}`} />
 
-      <Box sx={{ padding: { xs: "10px 10px", md: "30px 40px" } }}>
+      <Box sx={{ padding: { xs: "10px 15px", md: "30px 40px" } }}>
         <Box margin={"30px 0"}>
           <Typography
             sx={{ fontWeight: 600, letterSpacing: "0.2" }}
