@@ -7,6 +7,7 @@ interface ScheduleTimeProps {
   selected?: boolean;
   disabled?: boolean;
   onSelectSlot: (value: string) => void;
+  primaryColor: string;
 }
 
 const ScheduleTime = ({
@@ -14,10 +15,12 @@ const ScheduleTime = ({
   selected = false,
   onSelectSlot,
   disabled = false,
+  primaryColor,
 }: ScheduleTimeProps) => {
   return (
     <div
       onClick={() => !disabled && onSelectSlot(value.start)}
+      style={{ border: `1px solid ${selected ? primaryColor : ""}` }}
       className={`ScheduleTime ${selected ? "selected" : ""} ${
         disabled ? "disabled" : ""
       } `}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Box,
   Button,
@@ -17,6 +17,7 @@ import {
   removeReservation,
 } from "../../api/ReservationsAPI";
 import { ReservationScheduledResponse } from "../../types/generalTypes";
+import { ClientReservationContext } from "../../context/ClientReservationProvider";
 
 const MyReservations = () => {
   const isMobile = useIsMobile();
@@ -28,7 +29,10 @@ const MyReservations = () => {
   const [reservations, setReservations] = useState<
     ReservationScheduledResponse[]
   >([]);
+  const clientReservation = useContext(ClientReservationContext);
   const { dynamicPath } = useParams();
+  const { company } = clientReservation || {};
+  const { secondaryColor } = company || {};
 
   const onCloseModal = () => {
     setOpen(false);
@@ -61,7 +65,7 @@ const MyReservations = () => {
     <Box>
       <ClientHeader previewsPage={`/${dynamicPath}`} />
 
-      <Box sx={{ padding: { xs: "10px 10px", md: "30px 40px" } }}>
+      <Box sx={{ padding: { xs: "10px 15px", md: "30px 40px" } }}>
         <Box margin={"30px 0"}>
           <Typography
             sx={{ fontWeight: 600, letterSpacing: "0.2" }}
@@ -95,7 +99,7 @@ const MyReservations = () => {
             sx={{
               marginTop: { xs: "16px" },
               padding: { xs: "12px 30px", md: "16px 48px" },
-              background: "#E45609",
+              background: secondaryColor,
               fontWeight: 600,
             }}
             onClick={fetchMyReservations}

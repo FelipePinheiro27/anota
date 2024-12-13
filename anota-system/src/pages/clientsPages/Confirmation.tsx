@@ -35,11 +35,17 @@ const Confirmation = () => {
   const { dynamicPath } = useParams();
   const navigate = useNavigate();
   const clientReservation = useContext(ClientReservationContext);
-  const { selectedCourt, scheduledTime } = clientReservation || {};
+  const { selectedCourt, scheduledTime, company } = clientReservation || {};
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormDataType>({
     phoneNumer: localStorage.getItem("clientPhone") || "",
     clientName: localStorage.getItem("clientName") || "",
   });
+  const { secondaryColor } = company || {};
+  const value =
+    scheduledTime?.time?.reduce((acc, current) => {
+      return acc + current.price;
+    }, 0) ?? 0;
 
   const onChangeNumber = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((form) => ({
@@ -71,7 +77,9 @@ const Confirmation = () => {
   };
 
   const isDisabled =
-    formData.clientName === "" || !isValidPhoneNumber(formData.phoneNumer);
+    formData.clientName === "" ||
+    !isValidPhoneNumber(formData.phoneNumer) ||
+    isSubmitting;
 
   const date = useMemo(
     () => new Date(scheduledTime?.date || ""),
@@ -80,21 +88,23 @@ const Confirmation = () => {
 
   const onCloseModal = () => {
     setOpen(false);
-    navigate("/levelBeach");
+    navigate(`/${dynamicPath}`);
   };
 
   const onSubmitReservation = async () => {
+    setIsSubmitting(true);
     const reservationData = parseReservationDataToPayload(
       formData,
       selectedCourt,
-      scheduledTime
+      scheduledTime,
+      value
     );
 
     localStorage.setItem("clientName", formData.clientName);
     localStorage.setItem("clientPhone", formData.phoneNumer);
 
     const reservationCompleted = await createReservation(reservationData);
-    if (reservationCompleted) setOpen(true);
+    setOpen(reservationCompleted);
   };
 
   useEffect(() => {
@@ -106,7 +116,7 @@ const Confirmation = () => {
   return (
     <Box>
       <ClientHeader previewsPage={`/${dynamicPath}/horarios`} />
-      <Box sx={{ padding: "30px 40px" }}>
+      <Box sx={{ padding: { xs: "30px 15px", md: "30px 40px" } }}>
         <Box margin="30px 0">
           <Typography
             sx={{ fontWeight: 600, letterSpacing: "0.2" }}
@@ -136,7 +146,7 @@ const Confirmation = () => {
             fontWeight={600}
             color="#22303E"
           >
-            Valor: R$ {scheduledTime?.time && scheduledTime.time[0].price},00
+            Valor: R$ {value},00
           </Typography>
         </Box>
         <Box marginTop="40px">
@@ -184,7 +194,7 @@ const Confirmation = () => {
             disabled={isDisabled}
             sx={{
               padding: "12px",
-              background: "#0C927D",
+              background: secondaryColor,
               "&.Mui-disabled": {
                 color: "#fff",
                 background: "#C4C4C4",

@@ -6,12 +6,14 @@ interface RadioSelectProps {
   checked?: boolean;
   label: string;
   icon?: string;
+  color: string;
 }
 
 const RadioSelect = ({
   value,
   label,
   icon,
+  color,
   checked = false,
 }: RadioSelectProps) => {
   return (
@@ -19,7 +21,7 @@ const RadioSelect = ({
       <Radio
         sx={{
           "&.Mui-checked": {
-            color: "#E45609",
+            color,
           },
         }}
         value={value}

@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, IconButton, Tooltip } from "@mui/material";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import Header from "../../Components/header/Header";
-import ReservationsTable from "../../Components/tables/reservationsTable/ReservationsTable";
 import { getReservationsByDate } from "../../api/ReservationsAPI";
 import dayjs, { Dayjs } from "dayjs";
 import DateButton from "../../Components/dateButton/DateButton";
 import { ReservationScheduledResponse } from "../../types/generalTypes";
 import NoData from "../../Components/noData/NodaData";
+import ScheduledHours from "../../Components/scheduledHours/ScheduledHours";
+import ReservationsTable from "../../Components/tables/reservationsTable/ReservationsTable";
+import LoadingSpinner from "../../Components/loadingSpinner/LoadingSpinner";
 
 const Company = () => {
   const [date, setDate] = useState(dayjs());
   const [reservations, setReservations] = useState<
     ReservationScheduledResponse[]
   >([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [calendarView, setCalendarView] = useState(true);
 
   const handleDateChange = (value: Dayjs | null) => {
     if (value) {
@@ -22,6 +28,7 @@ const Company = () => {
 
   useEffect(() => {
     const fetchReservations = async () => {
+      setIsLoading(true);
       const value = localStorage.getItem("userSession");
       const companyData: { companyId?: string | number } = JSON.parse(
         value || ""
@@ -30,6 +37,7 @@ const Company = () => {
         companyData?.companyId || 0,
         date.format("YYYY-MM-DD")
       );
+      setIsLoading(false);
       setReservations(reservationsData);
     };
 
@@ -39,7 +47,7 @@ const Company = () => {
   return (
     <Box>
       <Header />
-      <Box sx={{ padding: { xs: "30px 10px", md: "30px 40px" } }}>
+      <Box sx={{ padding: { xs: "30px 10px ", md: "30px 40px" } }}>
         <Box
           display="flex"
           flexDirection={{ xs: "column" }}
@@ -54,16 +62,51 @@ const Company = () => {
           >
             Agendamentos Realizados
           </Typography>
-          <DateButton date={date} handleDateChange={handleDateChange} />
+          <Box
+            display="flex"
+            width="100%"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <DateButton date={date} handleDateChange={handleDateChange} />
+            <Box display="flex" gap={1}>
+              <Tooltip title="Visão em Calendário">
+                <IconButton
+                  onClick={() => setCalendarView(true)}
+                  color={calendarView ? "primary" : "default"}
+                >
+                  <CalendarMonthOutlinedIcon fontSize="large" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Visão em Lista">
+                <IconButton
+                  onClick={() => setCalendarView(false)}
+                  color={!calendarView ? "primary" : "default"}
+                >
+                  <FormatListBulletedIcon fontSize="large" />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </Box>
         </Box>
         {reservations.length === 0 ? (
-          <NoData
-            title="Sem Horários Reservados"
-            description="Esta data não possui horários reservados"
-          />
+          isLoading ? (
+            <Box marginTop="180px">
+              <LoadingSpinner />
+            </Box>
+          ) : (
+            <NoData
+              title="Sem Horários Reservados"
+              description="Esta data não possui horários reservados"
+            />
+          )
         ) : (
           <Box sx={{ paddingTop: "30px" }}>
-            <ReservationsTable reservations={reservations} />
+            {calendarView ? (
+              <ScheduledHours reservations={reservations} />
+            ) : (
+              <ReservationsTable reservations={reservations} />
+            )}
           </Box>
         )}
       </Box>

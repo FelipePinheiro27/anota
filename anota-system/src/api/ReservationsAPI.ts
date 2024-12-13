@@ -43,9 +43,9 @@ export const getAvailableSchedulesByCourtAndDate = async (
   }
 };
 
-export const createReservation = (payload: ReservationPayloadType) => {
+export const createReservation = async (payload: ReservationPayloadType) => {
   try {
-    api.post("/Reservation", payload);
+    await api.post("/Reservation", payload);
     return true;
   } catch (error) {
     console.error(error);

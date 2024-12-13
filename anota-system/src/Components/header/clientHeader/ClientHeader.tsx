@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
-import CompanyLogo from "../../../images/levelBeach.png";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import useIsMobile from "../../../hooks/useIsMobile";
 import ClientHeaderMobile from "./ClientHeaderMobile";
+import { ClientReservationContext } from "../../../context/ClientReservationProvider";
+import { useContext } from "react";
+import { useRetrieveCompany } from "../../../hooks/useRetrieveCompany";
 
 interface ClientHeaderProps {
   previewsPage: string;
@@ -11,9 +13,21 @@ interface ClientHeaderProps {
 
 const ClientHeader = ({ previewsPage }: ClientHeaderProps) => {
   const isMobile = useIsMobile();
+  const { company } = useContext(ClientReservationContext) || {};
+  useRetrieveCompany();
+  const { primaryColor, pathRouteKey } = company || {};
+
+  const CompanyLogo = `/images/${pathRouteKey}.png`;
 
   if (isMobile) {
-    return <ClientHeaderMobile previewsPage={previewsPage} />;
+    return (
+      <ClientHeaderMobile
+        previewsPage={previewsPage}
+        companyName={company?.name || ""}
+        primaryColor={primaryColor || ""}
+        pathRouteKey={pathRouteKey || ""}
+      />
+    );
   }
 
   return (
@@ -57,14 +71,14 @@ const ClientHeader = ({ previewsPage }: ClientHeaderProps) => {
         <img
           width={isMobile ? 50 : 61}
           src={CompanyLogo}
-          alt="Level Beach Club"
+          alt="Logo da empresa"
         />
         <Typography
           sx={{ fontWeight: 500, letterSpacing: "0.2" }}
           fontSize={{ xs: "22px", md: "28px" }}
-          color="#E45609"
+          color={primaryColor}
         >
-          Level Beach Club
+          {company?.name}
         </Typography>
       </Box>
       {!isMobile && <Box />}

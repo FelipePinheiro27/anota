@@ -11,17 +11,25 @@ import { getAvailableSchedulesByCourtAndDate } from "../../api/ReservationsAPI";
 import { ModalityEnum, ReservationTypes } from "../../types/generalTypes";
 import { getScheduledRangeTime } from "../../utils/clientReservationUtil";
 import NoData from "../../Components/noData/NodaData";
+import LoadingSpinner from "../../Components/loadingSpinner/LoadingSpinner";
 
 const Schedules = () => {
   const clientReservation = useContext(ClientReservationContext);
   const { dynamicPath } = useParams();
-  const { selectedCourt, scheduledTime, onSelectScheduleTime } =
+  const { selectedCourt, scheduledTime, onSelectScheduleTime, company } =
     clientReservation || {};
+  const { primaryColor, secondaryColor } = company || {};
+
+  const [isLoading, setIsLoading] = useState(true);
   const { name, courtId } = selectedCourt || {};
   const [date, setDate] = useState(dayjs());
   const [schedules, setSchedules] = useState<ReservationTypes[]>([]);
   const { initialTime, finalTime } =
     getScheduledRangeTime(scheduledTime?.time || []) || {};
+  const value =
+    scheduledTime?.time?.reduce((acc, current) => {
+      return acc + current.price;
+    }, 0) ?? 0;
   const navigate = useNavigate();
 
   const handleDateChange = (value: Dayjs | null) => {
@@ -80,11 +88,12 @@ const Schedules = () => {
 
   useEffect(() => {
     const getAvailableSchedules = async () => {
+      setIsLoading(true);
       const schedulesData = await getAvailableSchedulesByCourtAndDate(
         date.format("YYYY-MM-DD"),
         courtId || 0
       );
-
+      setIsLoading(false);
       setSchedules(schedulesData);
     };
 
@@ -109,11 +118,16 @@ const Schedules = () => {
     resetReservationData();
   }, [resetReservationData]);
 
-  if (schedules.length === 0) {
+  if (isLoading)
     return (
       <Box>
         <ClientHeader previewsPage={`/${dynamicPath}/reservas`} />
-        <Box sx={{ padding: "30px 40px", paddingBottom: "80px" }}>
+        <Box
+          sx={{
+            padding: { xs: "30px 15px", md: "30px 40px" },
+            paddingBottom: "80px",
+          }}
+        >
           <Box margin="30px 0">
             <Typography
               sx={{ fontWeight: 600, letterSpacing: "0.2" }}
@@ -129,7 +143,45 @@ const Schedules = () => {
               fontSize="16px"
               color="#22303E"
             >
-              {schedules.length > 0 && `Valor: R$ ${schedules[0].price},00`}
+              {schedules.length > 0 &&
+                `Valor do horário: R$ ${schedules[0].price},00`}
+            </Typography>
+          </Box>
+          <Box display="flex" margin="30px 0" gap="80px" marginBottom="120px">
+            <DateButton date={date} handleDateChange={handleDateChange} />
+          </Box>
+          <LoadingSpinner color={primaryColor} />
+        </Box>
+      </Box>
+    );
+
+  if (schedules.length === 0) {
+    return (
+      <Box>
+        <ClientHeader previewsPage={`/${dynamicPath}/reservas`} />
+        <Box
+          sx={{
+            padding: { xs: "30px 15px", md: "30px 40px" },
+            paddingBottom: "80px",
+          }}
+        >
+          <Box margin="30px 0">
+            <Typography
+              sx={{ fontWeight: 600, letterSpacing: "0.2" }}
+              fontSize="18px"
+              color="#22303E"
+            >
+              {name}
+            </Typography>
+          </Box>
+          <Box>
+            <Typography
+              sx={{ fontWeight: 600, letterSpacing: "0.2" }}
+              fontSize="16px"
+              color="#22303E"
+            >
+              {schedules.length > 0 &&
+                `Valor do horário: R$ ${schedules[0].price},00`}
             </Typography>
           </Box>
           <Box display="flex" margin="30px 0" gap="80px">
@@ -147,7 +199,12 @@ const Schedules = () => {
   return (
     <Box>
       <ClientHeader previewsPage={`/${dynamicPath}/reservas`} />
-      <Box sx={{ padding: "30px 40px", paddingBottom: "80px" }}>
+      <Box
+        sx={{
+          padding: { xs: "30px 15px", md: "30px 40px" },
+          paddingBottom: "80px",
+        }}
+      >
         <Box margin="30px 0">
           <Typography
             sx={{ fontWeight: 600, letterSpacing: "0.2" }}
@@ -163,7 +220,8 @@ const Schedules = () => {
             fontSize="16px"
             color="#22303E"
           >
-            {schedules.length > 0 && `Valor: R$ ${schedules[0].price},00`}
+            {schedules.length > 0 &&
+              `Valor do horário: R$ ${schedules[0].price},00`}
           </Typography>
         </Box>
         <Box display="flex" margin="30px 0" gap="80px">
@@ -187,6 +245,7 @@ const Schedules = () => {
             {hasTimeScheduled && (
               <>
                 De {initialTime} às {finalTime}
+                {value > 0 && ` | Valor: R$ ${value},00`}
               </>
             )}
           </Typography>
@@ -195,6 +254,7 @@ const Schedules = () => {
             slots={schedules}
             scheduledTime={scheduledTime?.time || []}
             onSelectSlots={onSelectSlots}
+            primaryColor={primaryColor || ""}
           />
         </Box>
         <br />
@@ -211,6 +271,7 @@ const Schedules = () => {
           <ModalitiesGroups
             onSelectModality={onSelectModality}
             modalitySelected={scheduledTime?.modality}
+            primaryColor={primaryColor || ""}
           />
         </Box>
         <Box sx={{ marginTop: { xs: "50px", md: "100px" } }}>
@@ -220,7 +281,7 @@ const Schedules = () => {
             disabled={!reservationFilled}
             sx={{
               padding: "12px",
-              background: "#0C927D",
+              background: secondaryColor,
               "&.Mui-disabled": {
                 color: "#fff",
                 background: "#C4C4C4",
