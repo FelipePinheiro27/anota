@@ -103,6 +103,14 @@ const SignIn = () => {
         >
           Entrar
         </Button>
+        <Button
+          fullWidth
+          variant="text"
+          sx={{ marginTop: 2, color: colors.green, fontWeight: 550 }}
+          onClick={() => navigate("/cadastro")}
+        >
+          Cadastrar Empresa
+        </Button>
       </CardComponent>
     </div>
   );

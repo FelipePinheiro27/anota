@@ -1,4 +1,4 @@
-import { CompanyType } from "../types/generalTypes";
+import { CompanyFormType, CompanyType } from "../types/generalTypes";
 import api from "./api";
 
 export const getCompanyByPathRouteKey = async (
@@ -13,6 +13,19 @@ export const getCompanyByPathRouteKey = async (
   } catch (error: any) {
     console.error(error.response?.data?.message || "Erro ao acessar empresa");
     return null;
+  }
+};
+
+export const createCompany = async (payload: CompanyFormType) => {
+  try {
+    await api.post<CompanyType | null>("/Companies", {
+      ...payload,
+    });
+
+    return true;
+  } catch (error: any) {
+    console.error(error);
+    return false;
   }
 };
 
