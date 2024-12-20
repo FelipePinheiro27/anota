@@ -108,6 +108,7 @@ public class ReservationController : ControllerBase
 
         var scheduledReservations = reservations.Select(r => new ScheduledReservationDTO
         {
+            Id = r.Id,
             Client = r.User_name,
             Client_phone = r.User_phone,
             Court_name = r.Court != null ? r.Court.Name : "Unknown",

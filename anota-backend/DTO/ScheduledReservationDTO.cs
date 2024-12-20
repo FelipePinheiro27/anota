@@ -4,6 +4,7 @@ namespace anota_backend.DTO;
 
 public class ScheduledReservationDTO
 {
+    public string Id { get; set; }
     public string Client { get; set; }
     public string Client_phone { get; set; }
     public string Court_name { get; set; }
