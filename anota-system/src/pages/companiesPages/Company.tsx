@@ -3,7 +3,10 @@ import { Box, Typography, IconButton, Tooltip } from "@mui/material";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import Header from "../../Components/header/Header";
-import { getReservationsByDate } from "../../api/ReservationsAPI";
+import {
+  getReservationsByDate,
+  removeReservation,
+} from "../../api/ReservationsAPI";
 import dayjs, { Dayjs } from "dayjs";
 import DateButton from "../../Components/dateButton/DateButton";
 import { ReservationScheduledResponse } from "../../types/generalTypes";
@@ -11,18 +14,45 @@ import NoData from "../../Components/noData/NodaData";
 import ScheduledHours from "../../Components/scheduledHours/ScheduledHours";
 import ReservationsTable from "../../Components/tables/reservationsTable/ReservationsTable";
 import LoadingSpinner from "../../Components/loadingSpinner/LoadingSpinner";
+import ConfirmationDeleteModal from "../../Components/confirmationModal/ConfirmationDeleteModal";
 
 const Company = () => {
   const [date, setDate] = useState(dayjs());
   const [reservations, setReservations] = useState<
     ReservationScheduledResponse[]
   >([]);
+  const [reservationToRemove, setReservationToRemove] = useState<
+    ReservationScheduledResponse | undefined
+  >();
+  const [confirmationModal, setConfirmationModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [calendarView, setCalendarView] = useState(true);
+
+  const onSelectReservation = (reservationId?: string | number) => {
+    const reservationValue = reservations.find(
+      (res) => res.id === reservationId
+    );
+    setReservationToRemove(reservationValue);
+    setConfirmationModal(true);
+  };
+
+  const onCloseConfirmationModal = () => {
+    setConfirmationModal(false);
+  };
 
   const handleDateChange = (value: Dayjs | null) => {
     if (value) {
       setDate(value);
+    }
+  };
+
+  const onRemoveReservation = async () => {
+    if (reservationToRemove?.id) {
+      await removeReservation(reservationToRemove.id);
+      setReservations(
+        reservations.filter((res) => res.id !== reservationToRemove.id)
+      );
+      onCloseConfirmationModal();
     }
   };
 
@@ -105,11 +135,20 @@ const Company = () => {
             {calendarView ? (
               <ScheduledHours reservations={reservations} />
             ) : (
-              <ReservationsTable reservations={reservations} />
+              <ReservationsTable
+                reservations={reservations}
+                onSelectReservation={onSelectReservation}
+              />
             )}
           </Box>
         )}
       </Box>
+      <ConfirmationDeleteModal
+        open={confirmationModal}
+        closeModal={onCloseConfirmationModal}
+        reservationToRemove={reservationToRemove}
+        onRemoveReservation={onRemoveReservation}
+      />
     </Box>
   );
 };

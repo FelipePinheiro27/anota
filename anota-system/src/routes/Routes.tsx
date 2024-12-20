@@ -26,7 +26,7 @@ const AppRoutes = () => {
         <Route path="/cadastro" element={<SignUp />} />
 
         <Route
-          path="/empresa"
+          path="/"
           element={
             <ProtectedRoute>
               <Company />

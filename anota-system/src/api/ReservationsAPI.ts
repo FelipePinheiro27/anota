@@ -13,6 +13,7 @@ export const getReservationsByDate = async (
     const { data } =
       (await api.get(`/Reservation/scheduled/${companyId}/${date}`)) || [];
     const reponse: ReservationScheduledResponse[] = data.map((value: any) => ({
+      id: value.id,
       client: value.client,
       clientPhone: value.client_phone,
       price: value.price,
