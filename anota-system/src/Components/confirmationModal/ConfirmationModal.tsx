@@ -5,6 +5,8 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 interface ConfirmationModalProps {
   open: boolean;
   closeModal: () => void;
+  title: string;
+  description: string;
 }
 
 const style = {
@@ -20,7 +22,12 @@ const style = {
   textAlign: "center",
 };
 
-const ConfirmationModal = ({ open, closeModal }: ConfirmationModalProps) => {
+const ConfirmationModal = ({
+  open,
+  closeModal,
+  title,
+  description,
+}: ConfirmationModalProps) => {
   return (
     <Modal
       open={open}
@@ -37,15 +44,14 @@ const ConfirmationModal = ({ open, closeModal }: ConfirmationModalProps) => {
             fontSize="22px"
             color="#22303E"
           >
-            Tudo Certo!
+            {title}
           </Typography>
           <Typography
             id="modal-modal-description"
             color="#22303E"
             sx={{ mt: 2 }}
           >
-            Lembre-se de chegar 10 minutos antes. <br />
-            Divirta-se!
+            {description}
           </Typography>
         </Stack>
       </Box>

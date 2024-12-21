@@ -207,7 +207,12 @@ const Confirmation = () => {
           </Button>
         </Box>
       </Box>
-      <ConfirmationModal open={open} closeModal={onCloseModal} />
+      <ConfirmationModal
+        open={open}
+        closeModal={onCloseModal}
+        title="Tudo certo!"
+        description="Lembre-se de chegar 10 minutos antes. Divirta-se!"
+      />
     </Box>
   );
 };

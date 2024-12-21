@@ -54,3 +54,14 @@ export type CompanyType = {
   secondaryColor: string;
   pathRouteKey: string;
 };
+
+export type CompanyFormType = {
+  user: string;
+  email: string;
+  name: string;
+  pass: string;
+  pathRouteKey: string;
+  primaryColor: string;
+  secondaryColor: string;
+  isPaid: boolean;
+};

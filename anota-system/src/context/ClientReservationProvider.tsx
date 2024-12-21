@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode } from "react";
+import React, { createContext, ReactNode, useEffect } from "react";
 import {
   CompanyType,
   CourtTypes,
@@ -34,6 +34,12 @@ export const ClientReservationProvider = ({
     scheduledTime,
     onSelectScheduleTime,
   } = useClientReservation();
+
+  useEffect(() => {
+    if (company) {
+      document.title = company.name;
+    }
+  }, [company]);
 
   return (
     <ClientReservationContext.Provider
