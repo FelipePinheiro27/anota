@@ -6,7 +6,7 @@ interface ConfirmationModalProps {
   open: boolean;
   closeModal: () => void;
   title: string;
-  description: string;
+  description: React.JSX.Element | string;
 }
 
 const style = {

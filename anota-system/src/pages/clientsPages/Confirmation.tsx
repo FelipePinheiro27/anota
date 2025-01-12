@@ -113,6 +113,13 @@ const Confirmation = () => {
     }
   }, [date, navigate, scheduledTime, selectedCourt, dynamicPath]);
 
+  const text = (
+    <>
+      Confira suas reservas acessando <strong>Minhas Reservas</strong> e
+      inserindo seu número de telefone. Divirta-se!
+    </>
+  );
+
   return (
     <Box>
       <ClientHeader previewsPage={`/${dynamicPath}/horarios`} />
@@ -211,7 +218,7 @@ const Confirmation = () => {
         open={open}
         closeModal={onCloseModal}
         title="Tudo certo!"
-        description="Lembre-se de chegar 10 minutos antes. Divirta-se!"
+        description={text}
       />
     </Box>
   );

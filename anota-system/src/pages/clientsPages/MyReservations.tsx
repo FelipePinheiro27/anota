@@ -82,7 +82,7 @@ const MyReservations = () => {
           gap="50px"
         >
           <FormControl sx={{ width: { xs: "100%", md: "40%" } }}>
-            <FormLabel>Código da Reserva ou Número do Responsável </FormLabel>
+            <FormLabel>Número do Responsável </FormLabel>
             <TextField
               id="cod"
               type="text"
