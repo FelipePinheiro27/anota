@@ -4,13 +4,19 @@ import LogoHeader from "../../images/LogoHeader.svg";
 import ButtonDropDown from "../buttonDropdown/ButtonDropDown";
 import useIsMobile from "../../hooks/useIsMobile";
 
-const Header = () => {
-  const [activeItem, setActiveItem] = useState("Agendamentos");
+type activeItemType = "Agendamentos" | "Quadras";
+
+interface HeaderProps {
+  activeItem: activeItemType;
+  setActiveItem: React.Dispatch<React.SetStateAction<activeItemType>>;
+}
+
+const Header = ({ activeItem, setActiveItem }: HeaderProps) => {
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
   const isMobile = useIsMobile();
 
   const handleItemClick = (item: string) => {
-    setActiveItem(item);
+    setActiveItem(item as activeItemType);
     setMenuAnchorEl(null);
   };
 
@@ -44,7 +50,7 @@ const Header = () => {
             open={Boolean(menuAnchorEl)}
             onClose={handleMenuClose}
           >
-            {["Agendamentos"].map((item) => (
+            {["Agendamentos", "Quadras"].map((item) => (
               <MenuItem
                 key={item}
                 selected={activeItem === item}
@@ -58,7 +64,7 @@ const Header = () => {
       ) : (
         <Box>
           <List disablePadding sx={{ display: "flex", gap: 2 }}>
-            {["Agendamentos"].map((item) => (
+            {["Agendamentos", "Quadras"].map((item) => (
               <ListItem
                 key={item}
                 sx={{
