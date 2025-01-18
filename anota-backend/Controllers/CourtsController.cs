@@ -51,6 +51,36 @@ public class CourtController : ControllerBase
         return Ok(courts);
     }
 
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateCourt(long id, CourtsDTO dto)
+    {
+        var existingCourt = await _context.Courts.FindAsync(id);
+        if (existingCourt == null)
+        {
+            return NotFound(new { Message = "Court not found." });
+        }
+
+        existingCourt.Company_id = dto.Company_id;
+        existingCourt.Name = dto.Name;
+        existingCourt.Modality = dto.Modality;
+        existingCourt.Description = dto.Description;
+        existingCourt.Image_url = dto.Image_url;
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!_context.Courts.Any(e => e.Id == id))
+            {
+                return NotFound(new { Message = "Court not found after concurrency check." });
+            }
+            throw;
+        }
+
+        return NoContent();
+    }
 
     [HttpPost]
     public async Task<IActionResult> CreateCourt(CourtsDTO dto)

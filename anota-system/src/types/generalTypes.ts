@@ -65,3 +65,11 @@ export type CompanyFormType = {
   secondaryColor: string;
   isPaid: boolean;
 };
+
+export type CourtPayloadType = {
+  courtId: number | string;
+  company_id: number | string;
+  name: string;
+  modality: number;
+  description: string;
+};

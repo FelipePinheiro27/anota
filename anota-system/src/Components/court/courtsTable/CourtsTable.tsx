@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Button,
   Paper,
   Table,
   TableBody,
@@ -10,6 +9,7 @@ import {
   TableRow,
 } from "@mui/material";
 import { CourtTypes } from "../../../types/generalTypes";
+import DetailsCourt from "../detailsCourt/DetailsCourt";
 
 interface Column {
   id: "name" | "description" | "detail";
@@ -26,9 +26,10 @@ const columns: readonly Column[] = [
 
 interface CourtsTableProps {
   courts: CourtTypes[];
+  refetchCourts: () => Promise<void>;
 }
 
-const CourtsTable = ({ courts }: CourtsTableProps) => {
+const CourtsTable = ({ courts, refetchCourts }: CourtsTableProps) => {
   return (
     <Paper>
       <TableContainer sx={{ maxHeight: 500 }}>
@@ -62,20 +63,10 @@ const CourtsTable = ({ courts }: CourtsTableProps) => {
                           align={column.align}
                           sx={{ color: "blue", cursor: "pointer" }}
                         >
-                          <Button
-                            variant="contained"
-                            // fullWidth={isMobile}
-                            sx={{
-                              marginTop: { xs: "16px" },
-                              padding: { xs: "12px 30px", md: "12px 30px" },
-                              background: "#2AA137",
-                              fontWeight: 600,
-                              textTransform: "capitalize",
-                            }}
-                            onClick={() => {}}
-                          >
-                            Ver Detalhes
-                          </Button>
+                          <DetailsCourt
+                            court={row as CourtTypes}
+                            refetchCourts={refetchCourts}
+                          />
                         </TableCell>
                       );
 
