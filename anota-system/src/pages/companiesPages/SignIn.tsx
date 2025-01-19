@@ -30,7 +30,7 @@ const SignIn = () => {
       if (response) {
         localStorage.setItem("userSession", JSON.stringify(response));
 
-        navigate("/");
+        navigate("/empresa");
       } else {
         setErrorMessage("Usuário ou senha inválidos.");
       }

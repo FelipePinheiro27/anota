@@ -9,6 +9,7 @@ import SignIn from "../pages/companiesPages/SignIn";
 import SignUp from "../pages/companiesPages/SignUp";
 import Company from "../pages/companiesPages/Company";
 import ProtectedRoute from "./ProtectedRoutes";
+import Plans from "../pages/plansPage/Plans";
 
 const AppRoutes = () => {
   return (
@@ -24,9 +25,10 @@ const AppRoutes = () => {
         />
         <Route path="/login" element={<SignIn />} />
         <Route path="/cadastro" element={<SignUp />} />
+        <Route path="/" element={<Plans />} />
 
         <Route
-          path="/"
+          path="/empresa"
           element={
             <ProtectedRoute>
               <Company />
