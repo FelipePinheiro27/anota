@@ -61,7 +61,6 @@ const SignIn = () => {
             id="user"
             placeholder="Seu usário ou email"
             onChange={onChangeUser}
-            autoFocus
             required
             fullWidth
             variant="outlined"

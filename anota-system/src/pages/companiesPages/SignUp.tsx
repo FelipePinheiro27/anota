@@ -88,7 +88,6 @@ const SignUp = () => {
             type="text"
             name="user"
             placeholder="Digite seu login"
-            autoFocus
             required
             fullWidth
             variant="outlined"
