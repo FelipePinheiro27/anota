@@ -73,7 +73,6 @@ const SignUp = () => {
             type="text"
             name="name"
             placeholder="Digite o nome da sua empresa"
-            autoFocus
             required
             fullWidth
             variant="outlined"
