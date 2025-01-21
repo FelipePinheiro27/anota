@@ -54,6 +54,7 @@ const ClientHeaderMobile = ({
           display: "flex",
           alignItems: "center",
           textAlign: "center",
+          gap: "10px",
         }}
       >
         <img width={50} src={CompanyLogo} alt="Logo da Empresa" />
