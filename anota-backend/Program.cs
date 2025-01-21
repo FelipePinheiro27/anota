@@ -36,7 +36,7 @@ builder.Services.AddCors(options =>
     {
         options.AddPolicy("AllowSpecificOrigin", policy =>
         {
-            policy.WithOrigins("https://www.anotareservas.com/")
+            policy.WithOrigins("https://www.anotareservas.com")
                   .AllowAnyMethod()
                   .AllowAnyHeader();
         });
