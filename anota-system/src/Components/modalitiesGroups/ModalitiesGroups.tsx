@@ -1,12 +1,15 @@
+import { useEffect } from "react";
 import { FormControl, FormControlLabel, RadioGroup } from "@mui/material";
 import RadioSelect from "../radioSelect/RadioSelect";
 import Futvolei from "../../icons/futvolei.svg";
 import Volei from "../../icons/volei.svg";
 import BeachTennis from "../../icons/beachTennis.svg";
+import Soccer from "../../icons/soccer.png";
 
 interface ModalitiesGroupsProps {
   onSelectModality: (modality: number) => void;
   modalitySelected?: number;
+  modalityCourt?: number;
   primaryColor: string;
 }
 
@@ -14,7 +17,38 @@ const ModalitiesGroups = ({
   onSelectModality,
   modalitySelected,
   primaryColor,
+  modalityCourt,
 }: ModalitiesGroupsProps) => {
+  useEffect(() => {
+    if (modalityCourt === 1) onSelectModality(3);
+  }, []);
+
+  if (modalityCourt === 1) {
+    return (
+      <FormControl>
+        <RadioGroup
+          row
+          aria-labelledby="demo-row-radio-buttons-group-label"
+          name="row-radio-buttons-group"
+        >
+          <FormControlLabel
+            value={3}
+            onClick={() => onSelectModality(3)}
+            control={
+              <RadioSelect
+                label="Futebol"
+                color={primaryColor}
+                icon={Soccer}
+                checked={modalitySelected === 3}
+              />
+            }
+            label=""
+          />
+        </RadioGroup>
+      </FormControl>
+    );
+  }
+
   return (
     <FormControl>
       <RadioGroup

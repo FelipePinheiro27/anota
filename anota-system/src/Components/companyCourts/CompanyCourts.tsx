@@ -1,62 +1,57 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Box, Typography } from "@mui/material";
 import { retrieveCourtsByCompany } from "../../api/ClientAPI";
 import CourtsTable from "../court/courtsTable/CourtsTable";
 import { CourtTypes } from "../../types/generalTypes";
 import LoadingSpinner from "../loadingSpinner/LoadingSpinner";
+import useIsMobile from "../../hooks/useIsMobile";
 
 const CompanyCourts = () => {
   const [courts, setCourts] = useState<CourtTypes[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const isMobile = useIsMobile();
 
-  const refetchCourts = async () => {
-    setIsLoading(true);
-    const value = localStorage.getItem("userSession");
-    const companyData: { companyId?: string | number } = JSON.parse(
-      value || ""
-    );
-    const courtsData = await retrieveCourtsByCompany(
-      companyData?.companyId || 0
-    );
-    setCourts(courtsData);
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    const onFetchCourts = async () => {
+  const fetchCourts = useCallback(async () => {
+    try {
       setIsLoading(true);
       const value = localStorage.getItem("userSession");
-      const companyData: { companyId?: string | number } = JSON.parse(
-        value || ""
-      );
+      const companyData: { companyId?: string | number } = value
+        ? JSON.parse(value)
+        : {};
       const courtsData = await retrieveCourtsByCompany(
         companyData?.companyId || 0
       );
       setCourts(courtsData);
+    } catch (error) {
+      console.error("Failed to fetch courts:", error);
+    } finally {
       setIsLoading(false);
-    };
-
-    onFetchCourts();
+    }
   }, []);
 
+  useEffect(() => {
+    fetchCourts();
+  }, [fetchCourts]);
+
   return (
-    <>
+    <Box padding={isMobile ? "16px" : "32px"}>
       <Typography
         sx={{ fontWeight: 600, letterSpacing: "0.2" }}
-        fontSize="18px"
+        fontSize={isMobile ? "16px" : "18px"}
         color="#22303E"
       >
         Minhas Quadras
       </Typography>
-      <br />
-      {isLoading ? (
-        <Box marginTop="180px">
-          <LoadingSpinner />
-        </Box>
-      ) : (
-        <CourtsTable courts={courts} refetchCourts={refetchCourts} />
-      )}
-    </>
+      <Box marginTop={isMobile ? "24px" : "40px"}>
+        {isLoading ? (
+          <Box marginTop="180px" display="flex" justifyContent="center">
+            <LoadingSpinner />
+          </Box>
+        ) : (
+          <CourtsTable courts={courts} refetchCourts={fetchCourts} />
+        )}
+      </Box>
+    </Box>
   );
 };
 

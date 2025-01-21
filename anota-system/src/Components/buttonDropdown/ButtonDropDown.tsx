@@ -3,7 +3,16 @@ import { Button, Menu, MenuItem, Typography } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { colors } from "../../constants/Colors";
 import { useNavigate } from "react-router-dom";
-const ButtonDropDown = () => {
+
+interface ButtonDropDownProps {
+  optionsMenu: string[];
+  handleItemClick: (item: string) => void;
+}
+
+const ButtonDropDown = ({
+  optionsMenu,
+  handleItemClick,
+}: ButtonDropDownProps) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
   const value = localStorage.getItem("userSession");
@@ -49,6 +58,17 @@ const ButtonDropDown = () => {
           style: { minWidth: anchorEl ? anchorEl : "auto" },
         }}
       >
+        {optionsMenu.map((item) => (
+          <MenuItem
+            key={item}
+            onClick={() => {
+              handleItemClick(item);
+              handleClose();
+            }}
+          >
+            {item}
+          </MenuItem>
+        ))}
         <MenuItem
           onClick={handleRemove}
           style={{

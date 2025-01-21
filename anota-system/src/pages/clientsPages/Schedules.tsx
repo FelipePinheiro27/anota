@@ -21,7 +21,7 @@ const Schedules = () => {
   const { primaryColor, secondaryColor } = company || {};
 
   const [isLoading, setIsLoading] = useState(true);
-  const { name, courtId } = selectedCourt || {};
+  const { name, courtId, modality: modalityCourt } = selectedCourt || {};
   const [date, setDate] = useState(dayjs());
   const [schedules, setSchedules] = useState<ReservationTypes[]>([]);
   const { initialTime, finalTime } =
@@ -272,6 +272,7 @@ const Schedules = () => {
             onSelectModality={onSelectModality}
             modalitySelected={scheduledTime?.modality}
             primaryColor={primaryColor || ""}
+            modalityCourt={modalityCourt}
           />
         </Box>
         <Box sx={{ marginTop: { xs: "50px", md: "100px" } }}>

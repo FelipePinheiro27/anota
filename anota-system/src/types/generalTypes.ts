@@ -4,7 +4,7 @@ export type CourtTypes = {
   courtId: number | string;
   companyId: number;
   name: string;
-  modality: ModalityEnum;
+  modality: number;
   description: string;
 };
 

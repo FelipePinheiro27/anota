@@ -4,5 +4,6 @@ public enum ModalityEnum
 {
     BeachTennis = 0,
     Futvolei = 1,
-    Volei = 2
+    Volei = 2,
+    Futebol = 3,
 }

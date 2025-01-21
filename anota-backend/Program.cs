@@ -23,12 +23,24 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    if (builder.Environment.IsDevelopment())
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
+        options.AddPolicy("AllowAll", policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+    }
+    else
+    {
+        options.AddPolicy("AllowSpecificOrigin", policy =>
+        {
+            policy.WithOrigins("https://www.anotareservas.com/")
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+    }
 });
 
 builder.Services.AddSwaggerGen(c =>
@@ -43,14 +55,14 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Configuração do pipeline de requisição
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
 
-app.UseCors("AllowAll");
+app.UseCors(builder.Environment.IsDevelopment() ? "AllowAll" : "AllowSpecificOrigin");
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();

@@ -1,3 +1,8 @@
 export const clientRoutes = ["/", "reservas", "horarios"];
 
-export const modalitiesConstant = ["Beach Tennis", "Futvôlei", "Vôlei"];
+export const modalitiesConstant = [
+  "Beach Tennis",
+  "Futvôlei",
+  "Vôlei",
+  "Futebol",
+];

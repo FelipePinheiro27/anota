@@ -12,16 +12,11 @@ interface HeaderProps {
 }
 
 const Header = ({ activeItem, setActiveItem }: HeaderProps) => {
-  const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
   const isMobile = useIsMobile();
+  const optionsMenu = ["Agendamentos", "Quadras"];
 
   const handleItemClick = (item: string) => {
     setActiveItem(item as activeItemType);
-    setMenuAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setMenuAnchorEl(null);
   };
 
   return (
@@ -43,28 +38,10 @@ const Header = ({ activeItem, setActiveItem }: HeaderProps) => {
         style={{ width: "40px", height: "40px" }}
       />
 
-      {isMobile ? (
-        <>
-          <Menu
-            anchorEl={menuAnchorEl}
-            open={Boolean(menuAnchorEl)}
-            onClose={handleMenuClose}
-          >
-            {["Agendamentos", "Quadras"].map((item) => (
-              <MenuItem
-                key={item}
-                selected={activeItem === item}
-                onClick={() => handleItemClick(item)}
-              >
-                {item}
-              </MenuItem>
-            ))}
-          </Menu>
-        </>
-      ) : (
+      {!isMobile && (
         <Box>
           <List disablePadding sx={{ display: "flex", gap: 2 }}>
-            {["Agendamentos", "Quadras"].map((item) => (
+            {optionsMenu.map((item) => (
               <ListItem
                 key={item}
                 sx={{
@@ -86,7 +63,10 @@ const Header = ({ activeItem, setActiveItem }: HeaderProps) => {
         </Box>
       )}
 
-      <ButtonDropDown />
+      <ButtonDropDown
+        optionsMenu={optionsMenu}
+        handleItemClick={handleItemClick}
+      />
     </Box>
   );
 };
