@@ -127,6 +127,10 @@ public class ReservationController : ControllerBase
     {
         int dayOfWeek = (int)date.DayOfWeek;
 
+        TimeZoneInfo tzInfo = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+        DateTime currentDateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, tzInfo);
+        Console.WriteLine(currentDateTime);
+
         var configs = await _context.ReservationsConfig
             .Where(rc => rc.Day_of_week == dayOfWeek && rc.Court_id == courtId)
             .ToListAsync();
@@ -162,16 +166,23 @@ public class ReservationController : ControllerBase
 
             while (startTime < endTime)
             {
-                string slotTime = startTime.ToString(@"hh\:mm");
+                DateTime slotDateTime = date.Date + startTime; // Combina a data e o horário do slot
+                DateTime slotDateTimeUtc = DateTime.SpecifyKind(slotDateTime, DateTimeKind.Unspecified);
+                DateTime slotDateTimeUtcInTz = TimeZoneInfo.ConvertTimeFromUtc(slotDateTimeUtc, tzInfo);
 
-                if (!reservedSlots.Contains(slotTime))
+                if (slotDateTimeUtcInTz >= currentDateTime) // Verifica se o horário do slot é maior ou igual ao horário atual
                 {
-                    availableSlots.Add(new
+                    string slotTime = startTime.ToString(@"hh\:mm");
+
+                    if (!reservedSlots.Contains(slotTime))
                     {
-                        price,
-                        start = slotTime,
-                        end = startTime.Add(TimeSpan.FromHours(1)).ToString(@"hh\:mm")
-                    });
+                        availableSlots.Add(new
+                        {
+                            price,
+                            start = slotTime,
+                            end = startTime.Add(TimeSpan.FromHours(1)).ToString(@"hh\:mm")
+                        });
+                    }
                 }
 
                 startTime = startTime.Add(TimeSpan.FromHours(1));
@@ -180,4 +191,5 @@ public class ReservationController : ControllerBase
 
         return Ok(availableSlots);
     }
+
 }

@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
-import { Button, FormControl, FormLabel } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  CircularProgress,
+} from "@mui/material";
 import { colors } from "../../constants/Colors";
 import Logo from "../../images/logo_anota.svg";
 import { CardComponent } from "../../Components/card/Card";
@@ -12,6 +17,7 @@ const SignIn = () => {
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const isMobile = useIsMobile();
   const navigate = useNavigate();
 
@@ -24,19 +30,35 @@ const SignIn = () => {
   };
 
   const onSubmitLogin = async () => {
+    setLoading(true);
+    setErrorMessage("");
     try {
-      const response = await login(user, pass);
+      let attempts = 0;
 
-      if (response) {
-        localStorage.setItem("userSession", JSON.stringify(response));
+      while (attempts < 4) {
+        const response = await login(user, pass);
 
-        navigate("/empresa");
-      } else {
-        setErrorMessage("Usuário ou senha inválidos.");
+        if (!response) {
+          attempts++;
+          if (attempts >= 4) {
+            setErrorMessage("Usuário ou senha inválidos.");
+            setLoading(false);
+            return;
+          }
+
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+        } else {
+          localStorage.setItem("userSession", JSON.stringify(response));
+
+          navigate("/empresa");
+          setLoading(false);
+          return;
+        }
       }
     } catch (error) {
       console.error("Erro no login:", error);
       setErrorMessage("Erro ao tentar realizar o login.");
+      setLoading(false);
     }
   };
 
@@ -85,23 +107,36 @@ const SignIn = () => {
           <p style={{ color: "red", textAlign: "center" }}>{errorMessage}</p>
         )}
 
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{
-            background: colors.green,
-            "&.Mui-disabled": {
+        {loading ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "16px",
+            }}
+          >
+            <CircularProgress />
+          </div>
+        ) : (
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{
               background: colors.green,
-              color: "#ffffff",
-              opacity: 0.8,
-            },
-            fontWeight: 550,
-          }}
-          onClick={onSubmitLogin}
-        >
-          Entrar
-        </Button>
+              "&.Mui-disabled": {
+                background: colors.green,
+                color: "#ffffff",
+                opacity: 0.8,
+              },
+              fontWeight: 550,
+            }}
+            onClick={onSubmitLogin}
+          >
+            Entrar
+          </Button>
+        )}
+
         <Button
           fullWidth
           variant="text"
