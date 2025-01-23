@@ -118,6 +118,8 @@ const Schedules = () => {
     resetReservationData();
   }, [resetReservationData]);
 
+  const isPrimaryColorBlack = primaryColor === "#000000";
+
   if (isLoading)
     return (
       <Box>
@@ -254,7 +256,9 @@ const Schedules = () => {
             slots={schedules}
             scheduledTime={scheduledTime?.time || []}
             onSelectSlots={onSelectSlots}
-            primaryColor={primaryColor || ""}
+            primaryColor={
+              isPrimaryColorBlack ? secondaryColor || "" : primaryColor || ""
+            }
           />
         </Box>
         <br />
