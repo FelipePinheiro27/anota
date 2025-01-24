@@ -12,7 +12,7 @@ interface ScheduledHoursProps {
 
 const ScheduledHours = ({
   reservations,
-  startHour = 13,
+  startHour = 12,
   endHour = 24,
 }: ScheduledHoursProps) => {
   const theme = useTheme();
@@ -32,17 +32,27 @@ const ScheduledHours = ({
   ];
 
   const generateTimeBlocks = () => {
-    const timeBlocks = [""];
+    const timeBlocks: string[] = [];
     for (let hour = startHour; hour < endHour; hour++) {
       timeBlocks.push(`${hour}:00`);
+      timeBlocks.push(`${hour}:30`); // Adiciona o intervalo de 30 minutos
     }
     return timeBlocks;
   };
 
   const calculateGridRowSpan = (start: Date, end: Date) => {
-    const startHour = start.getHours();
-    const endHour = end.getHours();
-    return endHour - startHour;
+    const startTotalMinutes = start.getHours() * 60 + start.getMinutes();
+    const endTotalMinutes = end.getHours() * 60 + end.getMinutes();
+    const durationMinutes = endTotalMinutes - startTotalMinutes;
+
+    return Math.ceil(durationMinutes / 30);
+  };
+
+  const calculateGridRow = (time: Date) => {
+    const totalMinutes = time.getHours() * 60 + time.getMinutes();
+    const startMinutes = startHour * 60;
+    const rowIndex = Math.floor((totalMinutes - startMinutes) / 30) + 1; // 30 minutos por linha
+    return rowIndex;
   };
 
   return (
@@ -55,7 +65,7 @@ const ScheduledHours = ({
           isMobile && !hasOnlyOneReservation ? "155px" : "1fr"
         })`,
         overflowX: isMobile ? "scroll" : "",
-        gridTemplateRows: `repeat(${endHour - startHour}, 0.7fr)`,
+        gridTemplateRows: `repeat(${(endHour - startHour) * 2}, 0.7fr)`, // 2 linhas por hora (30min cada)
         position: "relative",
         borderRadius: 1,
         border: `1px solid ${theme.palette.divider}`,
@@ -134,21 +144,18 @@ const ScheduledHours = ({
       {reservations.map((reservation, index) => {
         const startDate = new Date(reservation.createdDate);
         const endDate = new Date(reservation.endDate);
-        const startHourIdx = startDate.getHours() - startHour;
+        const startRow = calculateGridRow(startDate);
+        const rowSpan = calculateGridRowSpan(startDate, endDate);
         const courtIndex = courts.indexOf(reservation.courtName);
 
-        if (startHourIdx < 0 || startHourIdx >= endHour - startHour)
-          return null;
+        if (startRow < 0 || startRow >= (endHour - startHour) * 2) return null;
 
         return (
           <Box
             key={index}
             sx={{
               gridColumn: courtIndex + 2,
-              gridRow: `${startHourIdx + 2} / span ${calculateGridRowSpan(
-                startDate,
-                endDate
-              )}`,
+              gridRow: `${startRow} / span ${rowSpan}`,
               position: "relative",
               padding: "10px",
               backgroundColor: colors[courtIndex % colors.length],
@@ -170,8 +177,10 @@ const ScheduledHours = ({
               {modalitiesConstant[reservation.modality || 0]}
             </Typography>
             <Typography variant="body2">
-              <strong>Horário:</strong> {startDate.getHours()}:00 às{" "}
-              {endDate.getHours()}:00
+              <strong>Horário:</strong> {startDate.getHours()}:
+              {String(startDate.getMinutes()).padStart(2, "0")} às{" "}
+              {endDate.getHours()}:
+              {String(endDate.getMinutes()).padStart(2, "0")}
             </Typography>
           </Box>
         );

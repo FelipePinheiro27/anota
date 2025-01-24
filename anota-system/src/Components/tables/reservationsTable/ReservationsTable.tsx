@@ -80,7 +80,13 @@ const ReservationsTable = ({
         .toString()
         .padStart(2, "0")}/${date.getFullYear()}`;
 
-      const formattedTime = `${date.getHours()}:00 às ${endDate.getHours()}:00`;
+      const formattedTime = `${date.getHours()}:${date
+        .getMinutes()
+        .toString()
+        .padStart(2, "0")} às ${endDate.getHours()}:${endDate
+        .getMinutes()
+        .toString()
+        .padStart(2, "0")}`;
 
       return {
         id: reservation.id,

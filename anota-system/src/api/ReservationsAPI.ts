@@ -32,11 +32,13 @@ export const getReservationsByDate = async (
 
 export const getAvailableSchedulesByCourtAndDate = async (
   date: string,
-  courtId: string | number
+  courtId: string | number,
+  minutes: number | null
 ): Promise<ReservationTypes[]> => {
   try {
     const { data } =
-      (await api.get(`/Reservation/available/${date}/${courtId}`)) || {};
+      (await api.get(`/Reservation/available/${date}/${courtId}/${minutes}`)) ||
+      {};
     return data;
   } catch (error) {
     console.error(error);

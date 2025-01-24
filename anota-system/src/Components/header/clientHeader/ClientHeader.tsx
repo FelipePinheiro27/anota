@@ -66,6 +66,7 @@ const ClientHeader = ({ previewsPage }: ClientHeaderProps) => {
           display: "flex",
           alignItems: "center",
           textAlign: "center",
+          gap: "20px",
         }}
       >
         <img

@@ -18,7 +18,7 @@ const Schedules = () => {
   const { dynamicPath } = useParams();
   const { selectedCourt, scheduledTime, onSelectScheduleTime, company } =
     clientReservation || {};
-  const { primaryColor, secondaryColor } = company || {};
+  const { primaryColor, secondaryColor, id: companyId } = company || {};
 
   const [isLoading, setIsLoading] = useState(true);
   const { name, courtId, modality: modalityCourt } = selectedCourt || {};
@@ -89,16 +89,18 @@ const Schedules = () => {
   useEffect(() => {
     const getAvailableSchedules = async () => {
       setIsLoading(true);
+      const minutes = companyId === 1 ? 30 : 60;
       const schedulesData = await getAvailableSchedulesByCourtAndDate(
         date.format("YYYY-MM-DD"),
-        courtId || 0
+        courtId || 0,
+        minutes
       );
       setIsLoading(false);
       setSchedules(schedulesData);
     };
 
     getAvailableSchedules();
-  }, [courtId, date]);
+  }, [companyId, courtId, date]);
 
   const resetReservationData = useCallback(() => {
     onSelectScheduleTime &&

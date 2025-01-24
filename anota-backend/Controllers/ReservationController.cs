@@ -122,8 +122,8 @@ public class ReservationController : ControllerBase
     }
 
 
-    [HttpGet("available/{date}/{courtId}")]
-    public async Task<ActionResult<IEnumerable<object>>> GetAvailableSlots(DateTime date, int courtId)
+    [HttpGet("available/{date}/{courtId}/{minutes}")]
+    public async Task<ActionResult<IEnumerable<object>>> GetAvailableSlots(DateTime date, int courtId, int minutes)
     {
         int dayOfWeek = (int)date.DayOfWeek;
 
@@ -153,7 +153,7 @@ public class ReservationController : ControllerBase
             while (reservedStartTime < reservedEndTime)
             {
                 reservedSlots.Add(reservedStartTime.ToString(@"hh\:mm"));
-                reservedStartTime = reservedStartTime.Add(TimeSpan.FromHours(1));
+                reservedStartTime = reservedStartTime.Add(TimeSpan.FromMinutes(minutes));
             }
         }
 
@@ -180,12 +180,12 @@ public class ReservationController : ControllerBase
                         {
                             price,
                             start = slotTime,
-                            end = startTime.Add(TimeSpan.FromHours(1)).ToString(@"hh\:mm")
+                            end = startTime.Add(TimeSpan.FromMinutes(minutes)).ToString(@"hh\:mm")
                         });
                     }
                 }
 
-                startTime = startTime.Add(TimeSpan.FromHours(1));
+                startTime = startTime.Add(TimeSpan.FromMinutes(minutes));
             }
         }
 
