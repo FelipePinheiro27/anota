@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import { ReservationScheduledResponse } from "../../types/generalTypes";
 import { modalitiesConstant } from "../../constants/Global";
@@ -16,7 +16,24 @@ const ScheduledHours = ({
   endHour = 24,
 }: ScheduledHoursProps) => {
   const theme = useTheme();
-  const hasOnlyOneReservation = reservations.length === 1;
+  const hasOnlyOneReservation = useMemo(() => {
+    let qttResercedCourts = 0;
+    let courtName = "";
+
+    reservations.forEach((res) => {
+      if (courtName !== "" && res.courtName !== courtName) qttResercedCourts++;
+
+      if (courtName === "") {
+        courtName = res.courtName;
+        qttResercedCourts++;
+      }
+    });
+
+    return qttResercedCourts === 1;
+  }, [reservations]);
+
+  console.log(hasOnlyOneReservation);
+
   const isMobile = useIsMobile();
 
   const courts = Array.from(
@@ -65,11 +82,12 @@ const ScheduledHours = ({
           isMobile && !hasOnlyOneReservation ? "155px" : "1fr"
         })`,
         overflowX: isMobile ? "scroll" : "",
-        gridTemplateRows: `repeat(${(endHour - startHour) * 2}, 0.7fr)`, // 2 linhas por hora (30min cada)
+        gridTemplateRows: `repeat(${(endHour - startHour) * 2}, 0.7fr)`,
         position: "relative",
         borderRadius: 1,
         border: `1px solid ${theme.palette.divider}`,
         backgroundColor: theme.palette.background.paper,
+        marginTop: "-10px",
       }}
     >
       {generateTimeBlocks().map((timeBlock, index) => (
@@ -95,7 +113,7 @@ const ScheduledHours = ({
               zIndex: 1,
             }}
           >
-            {timeBlock}
+            {index !== 0 && timeBlock}
           </Typography>
         </Box>
       ))}
