@@ -13,6 +13,8 @@ import {
 import { CourtPayloadType, CourtTypes } from "../../types/generalTypes";
 import { colors } from "../../constants/Colors";
 import { updateCourt } from "../../api/CourtAPI";
+import AccordionContent from "../accordion/AccordionContent";
+import ScheduleEdit from "../scheduleEdit/ScheduleEdit";
 
 interface DetailsCourtModalProps {
   open: boolean;
@@ -31,6 +33,8 @@ const style = {
   borderRadius: "12px",
   boxShadow: 24,
   p: 4,
+  // overflowY: "auto",
+  // maxHeight: "90vh",
 };
 
 const DetailsCourtModal = ({
@@ -105,6 +109,10 @@ const DetailsCourtModal = ({
               variant="outlined"
             />
           </FormControl>
+          {/* <br />
+          <AccordionContent title="Configurar Horários">
+            <ScheduleEdit />
+          </AccordionContent> */}
           <br />
           <Box sx={{ display: "flex", gap: 2 }}>
             <Button
