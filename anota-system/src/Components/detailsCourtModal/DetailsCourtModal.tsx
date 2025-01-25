@@ -28,13 +28,13 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: { xs: "80%", md: "70%" },
+  width: { xs: "80%", md: "500px" },
   bgcolor: "background.paper",
   borderRadius: "12px",
   boxShadow: 24,
   p: 4,
-  overflowY: "auto",
-  maxHeight: "90vh",
+  // overflowY: "auto",
+  // maxHeight: "90vh",
 };
 
 const DetailsCourtModal = ({
@@ -109,10 +109,10 @@ const DetailsCourtModal = ({
               variant="outlined"
             />
           </FormControl>
-          <br />
+          {/* <br />
           <AccordionContent title="Configurar Horários">
             <ScheduleEdit />
-          </AccordionContent>
+          </AccordionContent> */}
           <br />
           <Box sx={{ display: "flex", gap: 2 }}>
             <Button
