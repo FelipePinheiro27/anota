@@ -130,7 +130,10 @@ const ReservationsTableData = () => {
       ) : (
         <Box sx={{ paddingTop: "30px" }}>
           {calendarView ? (
-            <ScheduledHours reservations={reservations} />
+            <ScheduledHours
+              reservations={reservations}
+              displayedDate={date.toDate()}
+            />
           ) : (
             <ReservationsTable
               reservations={reservations}

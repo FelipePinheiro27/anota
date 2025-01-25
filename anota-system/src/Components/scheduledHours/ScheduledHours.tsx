@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect, useRef } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import { ReservationScheduledResponse } from "../../types/generalTypes";
 import { modalitiesConstant } from "../../constants/Global";
@@ -8,14 +8,19 @@ interface ScheduledHoursProps {
   reservations: ReservationScheduledResponse[];
   startHour?: number;
   endHour?: number;
+  displayedDate: Date;
 }
 
 const ScheduledHours = ({
   reservations,
   startHour = 12,
   endHour = 24,
+  displayedDate,
 }: ScheduledHoursProps) => {
   const theme = useTheme();
+  const isMobile = useIsMobile();
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const hasOnlyOneReservation = useMemo(() => {
     let qttResercedCourts = 0;
     let courtName = "";
@@ -31,10 +36,6 @@ const ScheduledHours = ({
 
     return qttResercedCourts === 1;
   }, [reservations]);
-
-  console.log(hasOnlyOneReservation);
-
-  const isMobile = useIsMobile();
 
   const courts = Array.from(
     new Set(reservations.map((reservation) => reservation.courtName))
@@ -52,7 +53,7 @@ const ScheduledHours = ({
     const timeBlocks: string[] = [];
     for (let hour = startHour; hour < endHour; hour++) {
       timeBlocks.push(`${hour}:00`);
-      timeBlocks.push(`${hour}:30`); // Adiciona o intervalo de 30 minutos
+      timeBlocks.push(`${hour}:30`);
     }
     return timeBlocks;
   };
@@ -68,12 +69,26 @@ const ScheduledHours = ({
   const calculateGridRow = (time: Date) => {
     const totalMinutes = time.getHours() * 60 + time.getMinutes();
     const startMinutes = startHour * 60;
-    const rowIndex = Math.floor((totalMinutes - startMinutes) / 30) + 1; // 30 minutos por linha
+    const rowIndex = Math.floor((totalMinutes - startMinutes) / 30) + 1;
     return rowIndex;
   };
 
+  const currentTime = new Date();
+  const currentRow = calculateGridRow(currentTime);
+  const currentMinutesOffset = (currentTime.getMinutes() % 30) / 30;
+
+  useEffect(() => {
+    if (containerRef.current && currentRow > 0) {
+      const redLine = containerRef.current.querySelector(".red-line");
+      if (redLine) {
+        redLine.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  }, [currentRow]);
+
   return (
     <Box
+      ref={containerRef}
       sx={{
         display: "grid",
         width: "100%",
@@ -158,6 +173,23 @@ const ScheduledHours = ({
           />
         ))
       )}
+
+      {currentRow > 0 &&
+        currentRow <= (endHour - startHour) * 2 &&
+        displayedDate.toDateString() === new Date().toDateString() && (
+          <Box
+            className="red-line"
+            sx={{
+              gridColumn: `1 / -1`,
+              gridRow: currentRow,
+              borderTop: `2px solid red`,
+              position: "absolute",
+              width: "100%",
+              zIndex: 3,
+              top: `${currentMinutesOffset * 2}%`,
+            }}
+          />
+        )}
 
       {reservations.map((reservation, index) => {
         const startDate = new Date(reservation.createdDate);
