@@ -129,7 +129,6 @@ public class ReservationController : ControllerBase
 
         TimeZoneInfo tzInfo = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
         DateTime currentDateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, tzInfo);
-        Console.WriteLine(currentDateTime);
 
         var configs = await _context.ReservationsConfig
             .Where(rc => rc.Day_of_week == dayOfWeek && rc.Court_id == courtId)
@@ -167,10 +166,11 @@ public class ReservationController : ControllerBase
             while (startTime < endTime)
             {
                 DateTime slotDateTime = date.Date + startTime; // Combina a data e o horário do slot
-                DateTime slotDateTimeUtc = DateTime.SpecifyKind(slotDateTime, DateTimeKind.Unspecified);
-                DateTime slotDateTimeUtcInTz = TimeZoneInfo.ConvertTimeFromUtc(slotDateTimeUtc, tzInfo);
+                DateTime slotDateTimeInTz = DateTime.SpecifyKind(slotDateTime, DateTimeKind.Unspecified);
+                slotDateTimeInTz = TimeZoneInfo.ConvertTime(slotDateTimeInTz, tzInfo);
 
-                if (slotDateTimeUtcInTz >= currentDateTime) // Verifica se o horário do slot é maior ou igual ao horário atual
+                // Permitir slots visíveis até 1 minuto antes do horário
+                if (slotDateTimeInTz > currentDateTime.AddMinutes(-1))
                 {
                     string slotTime = startTime.ToString(@"hh\:mm");
 
