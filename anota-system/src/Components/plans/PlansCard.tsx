@@ -5,7 +5,7 @@ import { colors } from "../../constants/Colors";
 
 const PlansCard = () => {
   const redirectToWhatsApp = () => {
-    const phone = "5588999581075";
+    const phone = "5588992429813";
     const message = "Olá, gostaria de saber mais sobre o plano mensal.";
     const encodedMessage = encodeURIComponent(message);
 
