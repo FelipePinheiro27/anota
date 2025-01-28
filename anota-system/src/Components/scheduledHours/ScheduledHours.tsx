@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useRef } from "react";
+import React, { useMemo, useEffect, useRef, useState } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import { ReservationScheduledResponse } from "../../types/generalTypes";
 import { modalitiesConstant } from "../../constants/Global";
@@ -20,6 +20,7 @@ const ScheduledHours = ({
   const theme = useTheme();
   const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   const hasOnlyOneReservation = useMemo(() => {
     let qttResercedCourts = 0;
@@ -73,10 +74,26 @@ const ScheduledHours = ({
     return rowIndex;
   };
 
-  const currentTime = new Date();
-  const currentRow = calculateGridRow(currentTime);
-  const currentMinutesOffset = (currentTime.getMinutes() % 30) / 30;
+  const calculateRedLinePosition = () => {
+    const now = currentTime;
+    const totalMinutes = now.getHours() * 60 + now.getMinutes();
+    const startMinutes = startHour * 60;
+    const minutesFromStart = totalMinutes - startMinutes;
+    const rowIndex = Math.floor(minutesFromStart / 30) + 1;
+    const offsetPercentage = ((minutesFromStart % 30) / 30) * 100;
+    return { rowIndex, offsetPercentage };
+  };
 
+  const { rowIndex: currentRow, offsetPercentage: currentMinutesOffset } =
+    calculateRedLinePosition();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000 * 60);
+
+    return () => clearInterval(interval);
+  }, []);
   useEffect(() => {
     if (containerRef.current && currentRow > 0) {
       const redLine = containerRef.current.querySelector(".red-line");
@@ -186,7 +203,7 @@ const ScheduledHours = ({
               position: "absolute",
               width: "100%",
               zIndex: 3,
-              top: `${currentMinutesOffset * 2}%`,
+              top: `${currentMinutesOffset / 10}%`,
             }}
           />
         )}
