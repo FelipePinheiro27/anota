@@ -81,10 +81,10 @@ const Confirmation = () => {
     !isValidPhoneNumber(formData.phoneNumer) ||
     isSubmitting;
 
-  const date = useMemo(
-    () => new Date(scheduledTime?.date || ""),
-    [scheduledTime?.date]
-  );
+  const date = useMemo(() => {
+    const rawDate = scheduledTime?.date || "";
+    return new Date(`${rawDate}T00:00:00Z`); // Garante UTC
+  }, [scheduledTime?.date]);
 
   const onCloseModal = () => {
     setOpen(false);
@@ -139,9 +139,11 @@ const Confirmation = () => {
             fontSize="16px"
             color="#22303E"
           >
-            {daysOfWeek[date.getDay()]},{" "}
-            {date.toLocaleDateString("pt-BR", { timeZone: "UTC" })} de{" "}
-            {scheduledTime?.time && scheduledTime?.time[0]?.start} às{" "}
+            {daysOfWeek[date.getUTCDay()]},{" "}
+            {date.toLocaleDateString("pt-BR", {
+              timeZone: "America/Sao_Paulo",
+            })}{" "}
+            de {scheduledTime?.time && scheduledTime?.time[0]?.start} às{" "}
             {scheduledTime?.time &&
               scheduledTime?.time[scheduledTime.time.length - 1].end}
           </Typography>
