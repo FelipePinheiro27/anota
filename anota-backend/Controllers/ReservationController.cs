@@ -127,7 +127,8 @@ public class ReservationController : ControllerBase
     {
         int dayOfWeek = (int)date.DayOfWeek;
 
-        DateTime currentDateTime = DateTime.UtcNow.AddHours(-3);
+        TimeZoneInfo tzInfo = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+        DateTime currentDateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, tzInfo);
 
         var configs = await _context.ReservationsConfig
             .Where(rc => rc.Day_of_week == dayOfWeek && rc.Court_id == courtId)
@@ -166,21 +167,18 @@ public class ReservationController : ControllerBase
             {
                 DateTime slotDateTime = date.Date + startTime;
                 DateTime slotDateTimeInTz = DateTime.SpecifyKind(slotDateTime, DateTimeKind.Unspecified);
-                slotDateTimeInTz = slotDateTimeInTz.AddHours(-3);
+                slotDateTimeInTz = TimeZoneInfo.ConvertTime(slotDateTimeInTz, tzInfo);
 
-                if (slotDateTimeInTz > currentDateTime.AddMinutes(-1))
+                string slotTime = startTime.ToString(@"hh\:mm");
+
+                if (!reservedSlots.Contains(slotTime))
                 {
-                    string slotTime = startTime.ToString(@"hh\:mm");
-
-                    if (!reservedSlots.Contains(slotTime))
+                    availableSlots.Add(new
                     {
-                        availableSlots.Add(new
-                        {
-                            price,
-                            start = slotTime,
-                            end = startTime.Add(TimeSpan.FromMinutes(minutes)).ToString(@"hh\:mm")
-                        });
-                    }
+                        price,
+                        start = slotTime,
+                        end = startTime.Add(TimeSpan.FromMinutes(minutes)).ToString(@"hh\:mm")
+                    });
                 }
 
                 startTime = startTime.Add(TimeSpan.FromMinutes(minutes));
