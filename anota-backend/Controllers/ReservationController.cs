@@ -169,20 +169,17 @@ public class ReservationController : ControllerBase
                 DateTime slotDateTimeInTz = DateTime.SpecifyKind(slotDateTime, DateTimeKind.Unspecified);
                 slotDateTimeInTz = TimeZoneInfo.ConvertTime(slotDateTimeInTz, tzInfo);
 
-                // Permitir slots visíveis até 1 minuto antes do horário
-                if (slotDateTimeInTz > currentDateTime.AddMinutes(-1))
-                {
-                    string slotTime = startTime.ToString(@"hh\:mm");
 
-                    if (!reservedSlots.Contains(slotTime))
+                string slotTime = startTime.ToString(@"hh\:mm");
+
+                if (!reservedSlots.Contains(slotTime))
+                {
+                    availableSlots.Add(new
                     {
-                        availableSlots.Add(new
-                        {
-                            price,
-                            start = slotTime,
-                            end = startTime.Add(TimeSpan.FromMinutes(minutes)).ToString(@"hh\:mm")
-                        });
-                    }
+                        price,
+                        start = slotTime,
+                        end = startTime.Add(TimeSpan.FromMinutes(minutes)).ToString(@"hh\:mm")
+                    });
                 }
 
                 startTime = startTime.Add(TimeSpan.FromMinutes(minutes));
