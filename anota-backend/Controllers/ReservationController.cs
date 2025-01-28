@@ -125,18 +125,11 @@ public class ReservationController : ControllerBase
     [HttpGet("available/{date}/{courtId}/{minutes}")]
     public async Task<ActionResult<IEnumerable<object>>> GetAvailableSlots(DateTime date, int courtId, int minutes)
     {
-        // Configurar fuso horário esperado (Ex.: América do Sul)
-        TimeZoneInfo tzInfo = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+        int dayOfWeek = (int)date.DayOfWeek;
 
-        // Converter o horário atual para o fuso horário correto
+        TimeZoneInfo tzInfo = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
         DateTime currentDateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, tzInfo);
 
-        // Garantir que a data recebida esteja ajustada ao fuso horário esperado
-        DateTime localDate = TimeZoneInfo.ConvertTime(date, tzInfo);
-
-        int dayOfWeek = (int)localDate.DayOfWeek;
-
-        // Obter as configurações para o dia e quadra específicos
         var configs = await _context.ReservationsConfig
             .Where(rc => rc.Day_of_week == dayOfWeek && rc.Court_id == courtId)
             .ToListAsync();
@@ -146,12 +139,10 @@ public class ReservationController : ControllerBase
             return NotFound("Nenhuma configuração de reserva para o dia especificado.");
         }
 
-        // Obter reservas existentes para a data e quadra
         var reservations = await _context.Reservations
-            .Where(r => r.Created_date.Date == localDate.Date && r.Court_id == courtId)
+            .Where(r => r.Created_date.Date == date.Date && r.Court_id == courtId)
             .ToListAsync();
 
-        // Conjunto de horários reservados
         var reservedSlots = new HashSet<string>();
         foreach (var reservation in reservations)
         {
@@ -165,7 +156,6 @@ public class ReservationController : ControllerBase
             }
         }
 
-        // Lista de horários disponíveis
         var availableSlots = new List<object>();
         foreach (var config in configs)
         {
@@ -175,12 +165,10 @@ public class ReservationController : ControllerBase
 
             while (startTime < endTime)
             {
-                // Combinar data e horário do slot
-                DateTime slotDateTime = localDate.Date + startTime;
+                DateTime slotDateTime = date.Date + startTime;
                 DateTime slotDateTimeInTz = DateTime.SpecifyKind(slotDateTime, DateTimeKind.Unspecified);
                 slotDateTimeInTz = TimeZoneInfo.ConvertTime(slotDateTimeInTz, tzInfo);
 
-                // Permitir slots visíveis até 1 minuto antes do horário atual
                 if (slotDateTimeInTz > currentDateTime.AddMinutes(-1))
                 {
                     string slotTime = startTime.ToString(@"hh\:mm");
