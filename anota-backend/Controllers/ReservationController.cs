@@ -127,8 +127,7 @@ public class ReservationController : ControllerBase
     {
         int dayOfWeek = (int)date.DayOfWeek;
 
-        TimeZoneInfo tzInfo = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
-        DateTime currentDateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, tzInfo);
+        DateTime currentDateTime = DateTime.UtcNow.AddHours(-3);
 
         var configs = await _context.ReservationsConfig
             .Where(rc => rc.Day_of_week == dayOfWeek && rc.Court_id == courtId)
@@ -167,7 +166,7 @@ public class ReservationController : ControllerBase
             {
                 DateTime slotDateTime = date.Date + startTime;
                 DateTime slotDateTimeInTz = DateTime.SpecifyKind(slotDateTime, DateTimeKind.Unspecified);
-                slotDateTimeInTz = TimeZoneInfo.ConvertTime(slotDateTimeInTz, tzInfo);
+                slotDateTimeInTz = slotDateTimeInTz.AddHours(-3);
 
                 if (slotDateTimeInTz > currentDateTime.AddMinutes(-1))
                 {
