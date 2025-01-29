@@ -19,6 +19,8 @@ const Home = () => {
   useRetrieveCompany();
   const route = `/images/${pathRouteKey}.png`;
 
+  const isPrimaryColorWhite = primaryColor === "#FFFFFF";
+
   if (!company) {
     return (
       <Box
@@ -59,7 +61,7 @@ const Home = () => {
           <Typography
             sx={{ fontWeight: 700, letterSpacing: "0.2" }}
             fontSize="28px"
-            color={primaryColor}
+            color={isPrimaryColorWhite ? secondaryColor : primaryColor}
           >
             {company?.name}
           </Typography>

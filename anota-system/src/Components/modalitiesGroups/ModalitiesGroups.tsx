@@ -21,6 +21,7 @@ const ModalitiesGroups = ({
 }: ModalitiesGroupsProps) => {
   useEffect(() => {
     if (modalityCourt === 1) onSelectModality(3);
+    if (modalityCourt === 2) onSelectModality(0);
   }, []);
 
   if (modalityCourt === 1) {
@@ -40,6 +41,32 @@ const ModalitiesGroups = ({
                 color={primaryColor}
                 icon={Soccer}
                 checked={modalitySelected === 3}
+              />
+            }
+            label=""
+          />
+        </RadioGroup>
+      </FormControl>
+    );
+  }
+
+  if (modalityCourt === 2) {
+    return (
+      <FormControl>
+        <RadioGroup
+          row
+          aria-labelledby="demo-row-radio-buttons-group-label"
+          name="row-radio-buttons-group"
+        >
+          <FormControlLabel
+            value={0}
+            onClick={() => onSelectModality(0)}
+            control={
+              <RadioSelect
+                label="Beach Tennis"
+                color={primaryColor}
+                icon={BeachTennis}
+                checked={modalitySelected === 0}
               />
             }
             label=""

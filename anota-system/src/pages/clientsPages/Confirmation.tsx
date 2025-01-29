@@ -41,7 +41,7 @@ const Confirmation = () => {
     phoneNumer: localStorage.getItem("clientPhone") || "",
     clientName: localStorage.getItem("clientName") || "",
   });
-  const { secondaryColor } = company || {};
+  const { primaryColor, secondaryColor } = company || {};
   const value =
     scheduledTime?.time?.reduce((acc, current) => {
       return acc + current.price;
@@ -119,6 +119,8 @@ const Confirmation = () => {
       inserindo seu número de telefone. Divirta-se!
     </>
   );
+
+  const isSecondaryColorWhite = secondaryColor === "#FFFFFF";
 
   return (
     <Box>
@@ -203,7 +205,7 @@ const Confirmation = () => {
             disabled={isDisabled}
             sx={{
               padding: "12px",
-              background: secondaryColor,
+              background: isSecondaryColorWhite ? primaryColor : secondaryColor,
               "&.Mui-disabled": {
                 color: "#fff",
                 background: "#C4C4C4",

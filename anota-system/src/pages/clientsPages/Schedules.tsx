@@ -121,6 +121,7 @@ const Schedules = () => {
   }, [resetReservationData]);
 
   const isPrimaryColorBlack = primaryColor === "#000000";
+  const isSecondaryColorWhite = secondaryColor === "#FFFFFF";
 
   if (isLoading)
     return (
@@ -288,7 +289,7 @@ const Schedules = () => {
             disabled={!reservationFilled}
             sx={{
               padding: "12px",
-              background: secondaryColor,
+              background: isSecondaryColorWhite ? primaryColor : secondaryColor,
               "&.Mui-disabled": {
                 color: "#fff",
                 background: "#C4C4C4",

@@ -32,7 +32,9 @@ const MyReservations = () => {
   const clientReservation = useContext(ClientReservationContext);
   const { dynamicPath } = useParams();
   const { company } = clientReservation || {};
-  const { secondaryColor } = company || {};
+  const { primaryColor, secondaryColor } = company || {};
+
+  const isSecondaryColorWhite = secondaryColor === "#FFFFFF";
 
   const onCloseModal = () => {
     setOpen(false);
@@ -99,7 +101,7 @@ const MyReservations = () => {
             sx={{
               marginTop: { xs: "16px" },
               padding: { xs: "12px 30px", md: "16px 48px" },
-              background: secondaryColor,
+              background: isSecondaryColorWhite ? primaryColor : secondaryColor,
               fontWeight: 600,
             }}
             onClick={fetchMyReservations}
