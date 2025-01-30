@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Modal,
@@ -10,11 +10,19 @@ import {
   TextField,
 } from "@mui/material";
 
-import { CourtPayloadType, CourtTypes } from "../../types/generalTypes";
+import {
+  ConfigReservations,
+  CourtPayloadType,
+  CourtTypes,
+} from "../../types/generalTypes";
 import { colors } from "../../constants/Colors";
 import { updateCourt } from "../../api/CourtAPI";
 import AccordionContent from "../accordion/AccordionContent";
 import ScheduleEdit from "../scheduleEdit/ScheduleEdit";
+import {
+  createOrUpdateReservationsConfigByCourtId,
+  retrieveReservationsConfigByCourtId,
+} from "../../api/ReservationsConfig";
 
 interface DetailsCourtModalProps {
   open: boolean;
@@ -33,8 +41,8 @@ const style = {
   borderRadius: "12px",
   boxShadow: 24,
   p: 4,
-  // overflowY: "auto",
-  // maxHeight: "90vh",
+  overflowY: "auto",
+  maxHeight: "90vh",
 };
 
 const DetailsCourtModal = ({
@@ -45,6 +53,9 @@ const DetailsCourtModal = ({
 }: DetailsCourtModalProps) => {
   const [name, setName] = useState(court.name);
   const [description, setDescription] = useState(court.description);
+  const [reservationsConfig, setReservationsConfig] = useState<
+    ConfigReservations[]
+  >([]);
 
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -64,11 +75,24 @@ const DetailsCourtModal = ({
     };
 
     await updateCourt(data);
+    await createOrUpdateReservationsConfigByCourtId(reservationsConfig);
     await refetchCourts();
     closeModal();
   };
 
   const isDisabled = name === "" || description === "";
+
+  useEffect(() => {
+    const fetchReservationsConfig = async () => {
+      const data = await retrieveReservationsConfigByCourtId(court.courtId);
+      setReservationsConfig(data);
+    };
+
+    fetchReservationsConfig();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  console.log(reservationsConfig);
 
   return (
     <Modal
@@ -109,10 +133,14 @@ const DetailsCourtModal = ({
               variant="outlined"
             />
           </FormControl>
-          {/* <br />
+          <br />
           <AccordionContent title="Configurar Horários">
-            <ScheduleEdit />
-          </AccordionContent> */}
+            <ScheduleEdit
+              reservationsConfig={reservationsConfig}
+              setReservationsConfig={setReservationsConfig}
+              courtId={court.courtId}
+            />
+          </AccordionContent>
           <br />
           <Box sx={{ display: "flex", gap: 2 }}>
             <Button

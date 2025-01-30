@@ -22,7 +22,7 @@ const ModalitiesGroups = ({
   useEffect(() => {
     if (modalityCourt === 1) onSelectModality(3);
     if (modalityCourt === 2) onSelectModality(0);
-  }, []);
+  }, [modalityCourt, onSelectModality]);
 
   if (modalityCourt === 1) {
     return (

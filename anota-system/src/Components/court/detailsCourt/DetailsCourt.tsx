@@ -26,12 +26,14 @@ const DetailsCourt = ({ court, refetchCourts }: DetailsCourtProps) => {
       >
         Editar
       </Button>
-      <DetailsCourtModal
-        open={open}
-        closeModal={() => setOpen(false)}
-        court={court}
-        refetchCourts={refetchCourts}
-      />
+      {open && (
+        <DetailsCourtModal
+          open={open}
+          closeModal={() => setOpen(false)}
+          court={court}
+          refetchCourts={refetchCourts}
+        />
+      )}
     </>
   );
 };

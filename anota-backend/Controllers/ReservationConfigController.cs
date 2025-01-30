@@ -62,6 +62,55 @@ public class ReservationConfigController : ControllerBase
         return Ok(timeSlots);
     }
 
+    [HttpGet("court/{courtId}")]
+    public async Task<ActionResult<IEnumerable<ReservationConfigModel>>> GetReservationsByCourt(long courtId)
+    {
+        var reservations = await _context.ReservationsConfig
+            .Where(rc => rc.Court_id == courtId)
+            .ToListAsync();
+
+        if (!reservations.Any())
+        {
+            return NotFound("Nenhuma configuração encontrada para a quadra especificada.");
+        }
+
+        return Ok(reservations);
+    }
+
+    [HttpPost("bulk")]
+    public async Task<IActionResult> UpsertReservationsConfig([FromBody] List<ReservationConfigModel> reservationsConfig)
+    {
+        if (reservationsConfig == null || !reservationsConfig.Any())
+        {
+            return BadRequest("A lista de configurações não pode estar vazia.");
+        }
+
+        foreach (var config in reservationsConfig)
+        {
+            var existingConfig = await _context.ReservationsConfig
+                .FirstOrDefaultAsync(rc => rc.Id == config.Id);
+
+            if (existingConfig != null)
+            {
+                existingConfig.Day_of_week = config.Day_of_week;
+                existingConfig.Price = config.Price;
+                existingConfig.Start_time = config.Start_time;
+                existingConfig.End_time = config.End_time;
+                existingConfig.Court_id = config.Court_id;
+
+                _context.ReservationsConfig.Update(existingConfig);
+            }
+            else
+            {
+                _context.ReservationsConfig.Add(config);
+            }
+        }
+
+        await _context.SaveChangesAsync();
+        return Ok("Configurações de reserva processadas com sucesso.");
+    }
+
+
     [HttpPost]
     public async Task<ActionResult<ReservationConfigModel>> CreateReservationConfig(ReservationConfigModel reservationConfig)
     {

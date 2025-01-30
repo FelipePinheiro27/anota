@@ -73,3 +73,12 @@ export type CourtPayloadType = {
   modality: number;
   description: string;
 };
+
+export type ConfigReservations = {
+  id?: number | string;
+  day_of_week: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+  price: number;
+  start_time: string;
+  end_time: string;
+  court_id: number | string;
+};
