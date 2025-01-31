@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Box } from "@mui/material";
-import Header from "../../Components/header/Header";
+import Header, { activeItemType } from "../../Components/header/Header";
 import ReservationsTableData from "../../Components/reservationsTableData/ReservationsTableData";
 import CompanyCourts from "../../Components/companyCourts/CompanyCourts";
-
-type activeItemType = "Agendamentos" | "Quadras";
+import ScheduleFix from "../../Components/scheduleFix/ScheduleFix";
 
 const Company = () => {
   const [activeItem, setActiveItem] = useState<activeItemType>("Agendamentos");
@@ -12,6 +11,7 @@ const Company = () => {
   const contentData = {
     Agendamentos: <ReservationsTableData />,
     Quadras: <CompanyCourts />,
+    Horários: <ScheduleFix setActiveItem={setActiveItem} />,
   };
 
   return (

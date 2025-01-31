@@ -27,12 +27,14 @@ const RadioSelect = ({
         value={value}
         checked={checked}
       />
-      <img
-        src={icon}
-        alt="Imagem da Modalidade"
-        width={20}
-        style={{ marginRight: "5px" }}
-      />
+      {icon && (
+        <img
+          src={icon}
+          alt="Imagem da Modalidade"
+          width={20}
+          style={{ marginRight: "5px" }}
+        />
+      )}
       <Typography>{label}</Typography>
     </Box>
   );

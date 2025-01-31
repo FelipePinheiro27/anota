@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { Box, List, ListItem, Menu, MenuItem } from "@mui/material";
+import React from "react";
+import { Box, List, ListItem } from "@mui/material";
 import LogoHeader from "../../images/LogoHeader.svg";
 import ButtonDropDown from "../buttonDropdown/ButtonDropDown";
 import useIsMobile from "../../hooks/useIsMobile";
 
-type activeItemType = "Agendamentos" | "Quadras";
+export type activeItemType = "Agendamentos" | "Quadras" | "Horários";
 
 interface HeaderProps {
   activeItem: activeItemType;
@@ -13,7 +13,7 @@ interface HeaderProps {
 
 const Header = ({ activeItem, setActiveItem }: HeaderProps) => {
   const isMobile = useIsMobile();
-  const optionsMenu = ["Agendamentos", "Quadras"];
+  const optionsMenu = ["Agendamentos", "Quadras", "Horários"];
 
   const handleItemClick = (item: string) => {
     setActiveItem(item as activeItemType);

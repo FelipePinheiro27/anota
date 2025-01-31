@@ -30,6 +30,18 @@ export type ReservationPayloadType = {
   modality: ModalityEnum;
 };
 
+export type BulkReservationPayloadType = {
+  user_name: string;
+  user_phone: string;
+  court_id: number;
+  price: number;
+  startDate: string;
+  startTime: string;
+  endTime: string;
+  durationMonths: number;
+  modality: ModalityEnum;
+};
+
 export type ReservationScheduledResponse = {
   id?: string | number;
   client: string;

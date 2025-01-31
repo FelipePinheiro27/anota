@@ -92,8 +92,6 @@ const DetailsCourtModal = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(reservationsConfig);
-
   return (
     <Modal
       open={open}

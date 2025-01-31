@@ -6,3 +6,13 @@ export const modalitiesConstant = [
   "Vôlei",
   "Futebol",
 ];
+
+export const daysOfWeek = [
+  "Domingo",
+  "Segunda Feira",
+  "Terça Feira",
+  "Quarta Feira",
+  "Quinta Feira",
+  "Sexta Feira",
+  "Sábado",
+];

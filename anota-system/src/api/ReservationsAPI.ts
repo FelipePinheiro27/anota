@@ -1,4 +1,5 @@
 import {
+  BulkReservationPayloadType,
   ReservationPayloadType,
   ReservationScheduledResponse,
   ReservationTypes,
@@ -49,6 +50,16 @@ export const getAvailableSchedulesByCourtAndDate = async (
 export const createReservation = async (payload: ReservationPayloadType) => {
   try {
     await api.post("/Reservation", payload);
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+export const bulkReservation = async (payload: BulkReservationPayloadType) => {
+  try {
+    await api.post("/Reservation/fix", payload);
     return true;
   } catch (error) {
     console.error(error);

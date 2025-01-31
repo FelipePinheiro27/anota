@@ -188,4 +188,51 @@ public class ReservationController : ControllerBase
         return Ok(availableSlots);
     }
 
+    [HttpPost("fix")]
+    public async Task<ActionResult> FixReservation([FromBody] FixReservationDTO dto)
+    {
+        if (dto.DurationMonths <= 0)
+        {
+            return BadRequest("A duração deve ser de pelo menos 1 mês.");
+        }
+
+        DateTime startDate = dto.StartDate;
+        DateTime endDate = startDate.AddMonths(dto.DurationMonths);
+        DayOfWeek targetDayOfWeek = startDate.DayOfWeek;
+
+        List<ReservationModel> reservations = new List<ReservationModel>();
+
+        for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+        {
+            if (date.DayOfWeek == targetDayOfWeek)
+            {
+                string newId;
+                bool idExists;
+
+                do
+                {
+                    newId = ReservationModel.GenerateUniqueId();
+                    idExists = await _context.Reservations.AnyAsync(r => r.Id == newId);
+                } while (idExists);
+
+                reservations.Add(new ReservationModel
+                {
+                    Id = newId,
+                    User_name = dto.User_name,
+                    User_phone = dto.User_phone,
+                    modality = dto.Modality,
+                    Price = dto.Price,
+                    Court_id = dto.Court_id,
+                    Created_date = date.Date.Add(dto.StartTime),
+                    End_date = date.Date.Add(dto.EndTime)
+                });
+            }
+        }
+
+        _context.Reservations.AddRange(reservations);
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = "Reservas fixadas com sucesso!", reservations });
+    }
+
 }
