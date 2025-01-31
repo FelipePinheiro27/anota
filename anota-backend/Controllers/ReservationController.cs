@@ -197,23 +197,23 @@ public class ReservationController : ControllerBase
         }
 
         DateTime startDate = dto.StartDate;
-        DateTime endDate = startDate.AddMonths(dto.DurationMonths);
+        DateTime endDate = startDate.AddMonths(dto.DurationMonths).AddDays(-1);
         DayOfWeek targetDayOfWeek = startDate.DayOfWeek;
 
-        List<ReservationModel> reservations = new List<ReservationModel>();
+        var existingIds = new HashSet<string>(await _context.Reservations.Select(r => r.Id).ToListAsync());
+        var reservations = new List<ReservationModel>();
 
         for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
         {
             if (date.DayOfWeek == targetDayOfWeek)
             {
                 string newId;
-                bool idExists;
-
                 do
                 {
                     newId = ReservationModel.GenerateUniqueId();
-                    idExists = await _context.Reservations.AnyAsync(r => r.Id == newId);
-                } while (idExists);
+                } while (existingIds.Contains(newId));
+
+                existingIds.Add(newId);
 
                 reservations.Add(new ReservationModel
                 {
@@ -229,8 +229,11 @@ public class ReservationController : ControllerBase
             }
         }
 
-        _context.Reservations.AddRange(reservations);
-        await _context.SaveChangesAsync();
+        if (reservations.Count > 0)
+        {
+            await _context.Reservations.AddRangeAsync(reservations);
+            await _context.SaveChangesAsync();
+        }
 
         return Ok(new { message = "Reservas fixadas com sucesso!", reservations });
     }
