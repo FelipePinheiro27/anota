@@ -90,7 +90,11 @@ const ScheduleEdit = ({
                   }
                   fullWidth
                   InputLabelProps={{ shrink: true }}
+                  InputProps={{
+                    sx: { textAlign: "left", "& input": { textAlign: "left" } },
+                  }}
                 />
+
                 <TextField
                   label="Horário Final"
                   type="time"
@@ -99,6 +103,9 @@ const ScheduleEdit = ({
                     handleChange(index, "end_time", e.target.value + ":00")
                   }
                   fullWidth
+                  InputProps={{
+                    sx: { textAlign: "left", "& input": { textAlign: "left" } },
+                  }}
                   InputLabelProps={{ shrink: true }}
                 />
                 <TextField
@@ -113,6 +120,9 @@ const ScheduleEdit = ({
                     )
                   }
                   fullWidth
+                  InputProps={{
+                    sx: { textAlign: "left", "& input": { textAlign: "left" } },
+                  }}
                   InputLabelProps={{ shrink: true }}
                 />
               </Box>

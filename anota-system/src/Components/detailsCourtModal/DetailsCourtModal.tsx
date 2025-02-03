@@ -140,7 +140,7 @@ const DetailsCourtModal = ({
             />
           </AccordionContent>
           <br />
-          <Box sx={{ display: "flex", gap: 2 }}>
+          <Box sx={{ display: "flex", gap: 2, paddingBottom: "80px" }}>
             <Button
               variant="contained"
               fullWidth
