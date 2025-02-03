@@ -173,9 +173,9 @@ const BulkReservation = ({ courts, setActiveItem }: BulkReservationProps) => {
 
       const payload: BulkReservationPayloadType = {
         user_name: clientName,
-        user_phone: phoneNumer,
+        user_phone: phoneNumer.replace(/\D/g, ""),
         court_id: Number(selectedCourt?.courtId),
-        price: timeSelected[0].price,
+        price: value,
         startDate: `${dateValue}T00:00:00`,
         startTime: timeSelected[0].start + ":00",
         endTime: timeSelected[timeSelected.length - 1].end + ":00",
