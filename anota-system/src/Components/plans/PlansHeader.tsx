@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Box, Typography } from "@mui/material";
-import Logo from "../../images/LogoHeader.svg";
+import { Box } from "@mui/material";
+import Logo from "../../images/logo_anota.svg";
 import useIsMobile from "../../hooks/useIsMobile";
 
 const PlansHeader = () => {
@@ -33,13 +33,10 @@ const PlansHeader = () => {
           src={Logo}
           alt="logo da empresa"
           style={{
-            width: isMobile ? "45px" : "55px",
-            height: isMobile ? "45px" : "55px",
+            width: "110px",
+            height: "40px",
           }}
         />
-        <Typography fontWeight={300} fontSize={isMobile ? "16px" : "18px"}>
-          Anota Reservas
-        </Typography>
       </Box>
       <Link
         to="/login"

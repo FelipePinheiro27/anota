@@ -114,7 +114,7 @@ const PlansCardYear = () => {
       <Box display="flex" justifyContent="center" gap="8px" marginTop="30px">
         <Box
           sx={{
-            background: colors.green,
+            background: colors.blue,
             color: "#fff",
             padding: "7px 60px",
             borderRadius: "10px",

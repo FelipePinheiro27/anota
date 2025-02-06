@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, List, ListItem } from "@mui/material";
-import LogoHeader from "../../images/LogoHeader.svg";
+import LogoHeader from "../../images/logo_anota.svg";
 import ButtonDropDown from "../buttonDropdown/ButtonDropDown";
 import useIsMobile from "../../hooks/useIsMobile";
 
@@ -30,13 +30,9 @@ const Header = ({ activeItem, setActiveItem }: HeaderProps) => {
       }}
       paddingTop={2}
       paddingBottom={2}
-      paddingX={4}
+      paddingX={isMobile ? 2 : 5}
     >
-      <img
-        src={LogoHeader}
-        alt="logo da empresa"
-        style={{ width: "40px", height: "40px" }}
-      />
+      <img src={LogoHeader} alt="logo da empresa" style={{ width: "110px" }} />
 
       {!isMobile && (
         <Box>
@@ -48,7 +44,7 @@ const Header = ({ activeItem, setActiveItem }: HeaderProps) => {
                   cursor: "pointer",
                   borderBottom:
                     activeItem === item
-                      ? "2px solid #2AA137"
+                      ? "2px solid #226FE2"
                       : "1px solid transparent",
                   "&:hover": {
                     opacity: 0.8,

@@ -293,14 +293,14 @@ const BulkReservation = ({ courts, setActiveItem }: BulkReservationProps) => {
                 slots={schedules}
                 scheduledTime={timeSelected || []}
                 onSelectSlots={onSelectSlots}
-                primaryColor="#2AA137"
+                primaryColor="#226FE2"
               />
             </Box>
             <Box margin="30px 5px">
               <ModalitiesGroups
                 onSelectModality={onSelectModality}
                 modalitySelected={modality}
-                primaryColor="#2AA137"
+                primaryColor="#226FE2"
                 modalityCourt={selectedCourt?.modality}
               />
             </Box>
@@ -349,7 +349,7 @@ const BulkReservation = ({ courts, setActiveItem }: BulkReservationProps) => {
                 disabled={!reservationFilled || isSubmitting}
                 sx={{
                   padding: "12px",
-                  background: "#2AA137",
+                  background: "#226FE2",
                   "&.Mui-disabled": {
                     color: "#fff",
                     background: "#C4C4C4",

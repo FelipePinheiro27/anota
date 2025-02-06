@@ -75,7 +75,7 @@ const SignIn = () => {
         <img
           src={Logo}
           alt="Anota Reservas"
-          style={{ width: "170px", height: "170px", margin: "0 auto" }}
+          style={{ width: "280px", height: "200px", margin: "0 auto" }}
         />
         <FormControl>
           <FormLabel>Usuário</FormLabel>
@@ -123,9 +123,9 @@ const SignIn = () => {
             fullWidth
             variant="contained"
             sx={{
-              background: colors.green,
+              background: colors.blue,
               "&.Mui-disabled": {
-                background: colors.green,
+                background: colors.blue,
                 color: "#ffffff",
                 opacity: 0.8,
               },
@@ -140,7 +140,7 @@ const SignIn = () => {
         <Button
           fullWidth
           variant="text"
-          sx={{ marginTop: 2, color: colors.green, fontWeight: 550 }}
+          sx={{ marginTop: 2, color: colors.blue, fontWeight: 550 }}
           onClick={() => navigate("/cadastro")}
         >
           Cadastrar Empresa

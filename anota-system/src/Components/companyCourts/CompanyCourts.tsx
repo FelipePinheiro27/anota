@@ -34,7 +34,7 @@ const CompanyCourts = () => {
   }, [fetchCourts]);
 
   return (
-    <Box padding={isMobile ? "16px" : "32px"}>
+    <Box>
       <Typography
         sx={{ fontWeight: 600, letterSpacing: "0.2" }}
         fontSize={isMobile ? "16px" : "18px"}

@@ -18,7 +18,7 @@ const DetailsCourt = ({ court, refetchCourts }: DetailsCourtProps) => {
         sx={{
           marginTop: { xs: "16px" },
           padding: { xs: "12px 30px", md: "12px 30px" },
-          background: "#2AA137",
+          background: "#226FE2",
           fontWeight: 600,
           textTransform: "capitalize",
         }}

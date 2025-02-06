@@ -21,7 +21,7 @@ const PeriodToReserve = ({ period, onChange }: PeriodToReserveProps) => {
           control={
             <RadioSelect
               label="1 Única Vez"
-              color="#2AA137"
+              color="#226FE2"
               checked={period === 0}
             />
           }
@@ -31,7 +31,7 @@ const PeriodToReserve = ({ period, onChange }: PeriodToReserveProps) => {
           value={1}
           onClick={() => onChange(1)}
           control={
-            <RadioSelect label="1 Mês" color="#2AA137" checked={period === 1} />
+            <RadioSelect label="1 Mês" color="#226FE2" checked={period === 1} />
           }
           label=""
         />
@@ -41,7 +41,7 @@ const PeriodToReserve = ({ period, onChange }: PeriodToReserveProps) => {
           control={
             <RadioSelect
               label="3 Meses"
-              color="#2AA137"
+              color="#226FE2"
               checked={period === 3}
             />
           }
@@ -53,7 +53,7 @@ const PeriodToReserve = ({ period, onChange }: PeriodToReserveProps) => {
           control={
             <RadioSelect
               label="6 Meses"
-              color="#2AA137"
+              color="#226FE2"
               checked={period === 6}
             />
           }
