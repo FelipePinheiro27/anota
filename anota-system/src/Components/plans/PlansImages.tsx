@@ -27,7 +27,7 @@ const PlansImages = () => {
           width: "120px",
           background: "linear-gradient(to right, #226FE2, #0033FF)",
           borderRadius: "20px 20px 20px 0",
-          zIndex: 1, // Mantém atrás da imagem
+          zIndex: 1,
         }}
       />
 

@@ -31,7 +31,7 @@ const PlansHeader = () => {
           src={Logo}
           alt="logo da empresa"
           style={{
-            width: "140px",
+            width: "160px",
           }}
         />
       </Box>

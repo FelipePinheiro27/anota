@@ -1,52 +1,18 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import PlansHeader from "../../Components/plans/PlansHeader";
-import PlansTextInfo from "../../Components/plans/PlansTextInfo";
-import PlansImages from "../../Components/plans/PlansImages";
 import PlansCard from "../../Components/plans/PlansCard";
 import PlansCardYear from "../../Components/plans/PlansCardYear";
 import useIsMobile from "../../hooks/useIsMobile";
+import HorizontalStrip from "../../Components/plans/HorizontalStrip";
+import SystemAbout from "../../Components/plans/SystemAbout";
 
 const Plans = () => {
   const isMobile = useIsMobile();
 
   return (
     <>
-      <Box
-        sx={{
-          background: "#fff",
-          color: "#22303E",
-          minHeight: "100vh",
-          margin: "0 auto",
-          maxWidth: "1350px",
-        }}
-      >
-        <br />
-        <PlansHeader />
-        <Box
-          padding={isMobile ? "40px 20px" : "20px 120px"}
-          marginTop="40px"
-          gap={isMobile ? "30px" : "70px"}
-          display="flex"
-          flexDirection={isMobile ? "column" : "row"}
-          alignItems={isMobile ? "center" : "flex-start"}
-        >
-          <Box
-            width={isMobile ? "100%" : "62%"}
-            textAlign={isMobile ? "center" : "left"}
-          >
-            <PlansTextInfo />
-          </Box>
-          <Box
-            width={isMobile ? "100%" : "30%"}
-            display="flex"
-            justifyContent={isMobile ? "center" : "flex-start"}
-            marginTop={isMobile ? "20px" : "0"}
-          >
-            <PlansImages />
-          </Box>
-        </Box>
-      </Box>
+      <SystemAbout />
+      <HorizontalStrip />
       <Box
         sx={{
           color: "#22303E",
