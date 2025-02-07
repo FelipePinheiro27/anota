@@ -15,15 +15,17 @@ const Plans = () => {
       <Box
         sx={{
           background: "#fff",
-          fontFamily: "Manrope",
           color: "#22303E",
           minHeight: "100vh",
+          margin: "0 auto",
+          maxWidth: "1350px",
         }}
       >
         <br />
         <PlansHeader />
         <Box
-          padding={isMobile ? "40px 20px" : "80px 0 20px 40px"}
+          padding={isMobile ? "40px 20px" : "20px 120px"}
+          marginTop="40px"
           gap={isMobile ? "30px" : "70px"}
           display="flex"
           flexDirection={isMobile ? "column" : "row"}
