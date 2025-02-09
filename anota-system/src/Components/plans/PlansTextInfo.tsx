@@ -8,7 +8,7 @@ const PlansTextInfo = () => {
 
   const handleScroll = () => {
     window.scrollBy({
-      top: isMobile ? window.innerHeight + 180 : window.innerHeight + 50,
+      top: isMobile ? window.innerHeight + 2000 : window.innerHeight + 1100,
       behavior: "smooth",
     });
   };

@@ -13,7 +13,6 @@ const SystemAbout = () => {
       sx={{
         background: "#fff",
         color: "#22303E",
-        minHeight: "100vh",
         margin: "0 auto",
         maxWidth: "1350px",
       }}
