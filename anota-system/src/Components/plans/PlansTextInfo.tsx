@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
+import { motion } from "framer-motion";
 import Arrow from "../../images/arrow.svg";
 import useIsMobile from "../../hooks/useIsMobile";
 
@@ -8,66 +9,90 @@ const PlansTextInfo = () => {
 
   const handleScroll = () => {
     window.scrollBy({
-      top: isMobile ? window.innerHeight + 2000 : window.innerHeight + 1100,
+      top: isMobile ? window.innerHeight + 1800 : window.innerHeight + 1350,
       behavior: "smooth",
     });
   };
 
   return (
     <>
-      <Typography
-        letterSpacing="0.1px"
-        fontWeight={500}
-        lineHeight={1.1}
-        color="#22303E"
-        width="400px"
-        fontFamily="system-ui"
-        fontSize={isMobile ? "36px" : "67px"}
-        textAlign="left"
-      >
-        Sistema de agendamentos de quadras
-      </Typography>
-      <Typography
-        color="#6B7280"
-        fontWeight={500}
-        width="360px"
-        fontFamily="system-ui"
-        fontSize={isMobile ? "24px" : "28px"}
-        marginTop="20px"
-        textAlign="left"
-      >
-        Gerencie suas reservas de forma simples e eficiente!
-      </Typography>
-
-      <Box
-        onClick={handleScroll}
-        marginTop="30px"
-        width="275px"
-        display="flex"
-        sx={{
-          cursor: "pointer",
-        }}
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
       >
         <Typography
-          sx={{
-            textDecoration: "none",
-            color: "#fff",
-            fontSize: "16px",
-            padding: "11px 30px",
-            borderRadius: "30px",
-            background: "linear-gradient(to right, #226FE2, #0033FF)",
-            fontWeight: 510,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "18px",
-            cursor: "pointer",
-          }}
+          letterSpacing="0.1px"
+          fontWeight={500}
+          lineHeight={1.1}
+          color="#22303E"
+          maxWidth={isMobile ? "90%" : "400px"}
+          fontFamily="system-ui"
+          fontSize={isMobile ? "28px" : "67px"}
+          textAlign={isMobile ? "center" : "left"}
+          mx={isMobile ? "auto" : 0}
         >
-          Confira nossos planos{" "}
-          <img src={Arrow} width="20px" alt="Nossos planos" />
+          Sistema de agendamentos de quadras
         </Typography>
-      </Box>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.3 }}
+      >
+        <Typography
+          color="#6B7280"
+          fontWeight={500}
+          maxWidth={isMobile ? "85%" : "360px"}
+          fontFamily="system-ui"
+          fontSize={isMobile ? "18px" : "28px"}
+          marginTop="20px"
+          textAlign={isMobile ? "center" : "left"}
+          mx={isMobile ? "auto" : 0}
+        >
+          Gerencie suas reservas de forma simples e eficiente!
+        </Typography>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, delay: 0.6 }}
+      >
+        <Box
+          onClick={handleScroll}
+          marginTop="50px"
+          width={isMobile ? "100%" : "275px"}
+          display="flex"
+          justifyContent="center"
+          sx={{ cursor: "pointer" }}
+        >
+          <Typography
+            sx={{
+              textDecoration: "none",
+              color: "#fff",
+              fontSize: isMobile ? "14px" : "16px",
+              padding: isMobile ? "10px 20px" : "11px 30px",
+              borderRadius: "30px",
+              background: "linear-gradient(to right, #226FE2, #0033FF)",
+              fontWeight: 510,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "12px",
+              cursor: "pointer",
+            }}
+          >
+            Confira nossos planos
+            <img
+              src={Arrow}
+              width={isMobile ? "16px" : "20px"}
+              alt="Nossos planos"
+            />
+          </Typography>
+        </Box>
+      </motion.div>
     </>
   );
 };

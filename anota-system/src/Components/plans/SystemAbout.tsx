@@ -15,29 +15,35 @@ const SystemAbout = () => {
         color: "#22303E",
         margin: "0 auto",
         maxWidth: "1350px",
+        padding: isMobile ? "20px 10px" : "40px 80px",
       }}
     >
-      <br />
       <PlansHeader />
       <Box
-        padding={isMobile ? "40px 20px" : "50px 120px"}
-        marginTop="40px"
-        gap={isMobile ? "30px" : "70px"}
-        display="flex"
-        flexDirection={isMobile ? "column" : "row"}
-        alignItems={isMobile ? "center" : "flex-start"}
+        sx={{
+          display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          alignItems: isMobile ? "center" : "flex-start",
+          justifyContent: "space-between",
+          gap: isMobile ? "20px" : "50px",
+          marginTop: "40px",
+        }}
       >
         <Box
-          width={isMobile ? "100%" : "62%"}
-          textAlign={isMobile ? "center" : "left"}
+          sx={{
+            width: isMobile ? "100%" : "60%",
+            textAlign: isMobile ? "center" : "left",
+          }}
         >
           <PlansTextInfo />
         </Box>
         <Box
-          width={isMobile ? "100%" : "30%"}
-          display="flex"
-          justifyContent={isMobile ? "center" : "flex-start"}
-          marginTop={isMobile ? "20px" : "0"}
+          sx={{
+            width: isMobile ? "100%" : "35%",
+            display: "flex",
+            justifyContent: "center",
+            marginTop: isMobile ? "60px" : "0",
+          }}
         >
           <PlansImages />
         </Box>
