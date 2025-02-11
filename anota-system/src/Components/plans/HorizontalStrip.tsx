@@ -3,6 +3,7 @@ import { Box, Paper } from "@mui/material";
 import useIsMobile from "../../hooks/useIsMobile";
 import { motion } from "framer-motion";
 import Logo from "../../images/minimalistWhiteLogo.svg";
+import CompanyPage from "../../images/companyPage.png";
 
 const HorizontalStrip = () => {
   const isMobile = useIsMobile();
@@ -38,7 +39,10 @@ const HorizontalStrip = () => {
             sx={{
               width: isMobile ? "90%" : "70%",
               height: isMobile ? "45vh" : "62vh",
-              background: "#F2F2F2",
+              backgroundImage: `url(${CompanyPage})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
               borderRadius: "16px",
               border: "2px solid #fff",
               margin: "0 auto",

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box, Paper } from "@mui/material";
 import { motion } from "framer-motion";
 import BeachTennis from "../../images/beach_plan.jpg";
@@ -7,17 +7,9 @@ import Volei from "../../images/volei.jpg";
 import useIsMobile from "../../hooks/useIsMobile";
 
 const PlansImages = () => {
-  const [imagesIterator, setImagesIterator] = useState(0);
+  const [imagesIterator] = useState(0);
   const images = [BeachTennis, Futvolei, Volei];
   const isMobile = useIsMobile();
-
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setImagesIterator((prev) => (prev < images.length - 1 ? prev + 1 : 0));
-  //   }, 3000);
-
-  //   return () => clearInterval(timer);
-  // }, []);
 
   return (
     <motion.div
