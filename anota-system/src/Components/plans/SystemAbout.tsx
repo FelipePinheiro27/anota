@@ -26,7 +26,7 @@ const SystemAbout = () => {
           alignItems: isMobile ? "center" : "flex-start",
           justifyContent: "space-between",
           gap: isMobile ? "20px" : "50px",
-          marginTop: "40px",
+          marginTop: "60px",
         }}
       >
         <Box
