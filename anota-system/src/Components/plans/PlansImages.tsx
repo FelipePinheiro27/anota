@@ -1,15 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Paper } from "@mui/material";
 import { motion } from "framer-motion";
-import BeachTennis from "../../images/beach_plan.jpg";
-import Futvolei from "../../images/futvolei.jpg";
-import Volei from "../../images/volei.jpg";
+import BeachTennis from "../../images/beach_plan.png";
+import Society from "../../images/society.png";
+import Volei from "../../images/volei.png";
 import useIsMobile from "../../hooks/useIsMobile";
 
+const modalities = ["Beach Tennis", "Vôlei", "Society"];
+
 const PlansImages = () => {
-  const [imagesIterator] = useState(0);
-  const images = [BeachTennis, Futvolei, Volei];
+  const [imagesIterator, setImagesIterator] = useState(0);
+  const images = [BeachTennis, Volei, Society];
   const isMobile = useIsMobile();
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setImagesIterator((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [images.length]);
 
   return (
     <motion.div
@@ -55,23 +64,19 @@ const PlansImages = () => {
             fontSize: isMobile ? "14px" : "16px",
           }}
         >
-          Beach tennis
+          {modalities[imagesIterator]}
         </Paper>
 
-        <motion.img
-          key={imagesIterator}
+        <Box
+          component="img"
           src={images[imagesIterator]}
           alt="Modalidades"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
-          style={{
+          sx={{
             position: "relative",
             zIndex: 2,
-            height: isMobile ? 300 : 400,
-            width: isMobile ? 300 : 400,
+            height: isMobile ? 320 : 400,
+            width: isMobile ? 320 : 400,
             borderRadius: 8,
-            objectFit: "cover",
           }}
         />
       </Box>

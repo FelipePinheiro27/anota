@@ -112,8 +112,8 @@ const Resources = () => {
                     {index === 0
                       ? "Seu cliente agenda sozinho"
                       : index === 1
-                      ? "Agendamento programado"
-                      : "Tela personalizada"}
+                      ? "Agendamentos fixos"
+                      : "Tela e link personalizados"}
                   </Typography>
                   <Typography
                     letterSpacing="0.2px"
@@ -124,10 +124,10 @@ const Resources = () => {
                     fontSize={isMobile ? "12px" : "14px"}
                   >
                     {index === 0
-                      ? "Com a nossa plataforma de agendamentos online, seus clientes podem marcar compromissos de forma rápida e fácil, no horário que preferirem."
+                      ? "Com a nossa plataforma de agendamentos online, seus clientes podem marcar horários de forma rápida e fácil."
                       : index === 1
-                      ? "Com o agendamento programado, você otimiza sua rotina ao marcar horários de forma antecipada e sem complicações."
-                      : "Com a tela personalizada, você leva a identidade visual da sua marca diretamente para a experiência do usuário."}
+                      ? "Com o agendamento fixo, você pode reservar horários recorrentes por longos períodos, ideal para clientes fiéis que frequentam sempre no mesmo dia e horário da semana."
+                      : "Com uma tela e um link personalizados, sua marca se destaca, proporcionando uma experiência única e alinhada à sua identidade visual."}
                   </Typography>
                 </Box>
               </Box>
