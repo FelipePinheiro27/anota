@@ -48,14 +48,23 @@ const NeedHelp = () => {
       <Box marginTop={isMobile ? "30px" : "60px"}>
         <MoreInfo
           title="Como funciona?"
-          description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s..."
+          description="Nosso sistema permite que você gerencie reservas de forma simples e eficiente. Cadastre-se, configure suas quadras com horarios de funcionamento e valores para cada dia da semana e compartilhe seu link personalizado com seus clientes."
         />
         <br />
-        <MoreInfo title="Quais as formas de pagamento?" description="" />
+        <MoreInfo
+          title="Quais as formas de pagamento?"
+          description="Aceitamos pagamentos via cartão de crédito e Pix. Você pode escolher a melhor opção para você."
+        />
         <br />
-        <MoreInfo title="Como funciona o agendamento online?" description="" />
+        <MoreInfo
+          title="Como funciona o agendamento online?"
+          description="Os clientes acessam seu link personalizado, escolhem a data e horário disponíveis e confirmam a reserva em poucos cliques. Tudo de forma automatizada e sem complicação."
+        />
         <br />
-        <MoreInfo title="A Anota Reservas é confiável?" description="" />
+        <MoreInfo
+          title="A Anota Reservas é confiável?"
+          description="Sim! Utilizamos tecnologia segura para garantir a proteção dos seus dados e das reservas dos seus clientes. Além disso, já ajudamos diversas empresas a simplificar sua gestão."
+        />
       </Box>
     </Box>
   );

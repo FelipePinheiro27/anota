@@ -6,6 +6,12 @@ import Logo from "../../images/minimalistWhiteLogo.svg";
 import SignUpLogo from "../../images/signUpLogo.svg";
 import LinkLogo from "../../images/link.svg";
 
+const trailDescriptions = [
+  "Faça o cadastro e tenha acesso imediato ao sistema",
+  "Receba o link personalizado da sua empresa e compartilhe-o com seus clientes",
+  "Simplifique o gerenciamento das suas reservas com um sistema intuitivo",
+];
+
 const Trail = () => {
   const isMobile = useIsMobile();
 
@@ -35,7 +41,7 @@ const Trail = () => {
           }}
         >
           <Box>
-            {["Cadastro", "Compartilhe", "Lucre"].map((title, index) => (
+            {["Cadastro", "Compartilhe", "Gerencie"].map((title, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0.3, y: 50 }}
@@ -54,7 +60,7 @@ const Trail = () => {
                       component="img"
                       src={SignUpLogo}
                       alt="Logo"
-                      sx={{ width: 160 }}
+                      sx={{ width: 130 }}
                     />
                   )}
                   {index % 2 === 1 && (
@@ -63,10 +69,10 @@ const Trail = () => {
                         color="#22303E"
                         fontWeight={400}
                         fontFamily="sans-serif"
-                        fontSize={isMobile ? "18px" : "102px"}
+                        fontSize={isMobile ? "18px" : "86px"}
                         textAlign={isMobile ? "center" : "left"}
                         mx={isMobile ? "auto" : 0}
-                        marginRight="45px"
+                        marginRight="145px"
                       >
                         0{index + 1}
                       </Typography>
@@ -74,11 +80,11 @@ const Trail = () => {
                         component="img"
                         src={LinkLogo}
                         alt="Logo"
-                        sx={{ width: 160 }}
+                        sx={{ width: 130 }}
                       />
                     </>
                   )}
-                  <Box marginRight="50px">
+                  <Box marginRight="145px">
                     <Typography
                       color="#22303E"
                       fontWeight={400}
@@ -98,7 +104,7 @@ const Trail = () => {
                       textAlign={isMobile ? "center" : "left"}
                       mx={isMobile ? "auto" : 0}
                     >
-                      Gerencie suas reservas de forma simples e eficiente!
+                      {trailDescriptions[index]}
                     </Typography>
                   </Box>
                   {index % 2 === 0 && (
@@ -106,7 +112,7 @@ const Trail = () => {
                       color="#22303E"
                       fontWeight={400}
                       fontFamily="sans-serif"
-                      fontSize={isMobile ? "18px" : "102px"}
+                      fontSize={isMobile ? "18px" : "86px"}
                       textAlign={isMobile ? "center" : "left"}
                       mx={isMobile ? "auto" : 0}
                     >
@@ -123,8 +129,8 @@ const Trail = () => {
           >
             <Paper
               sx={{
-                height: isMobile ? "70px" : "520px",
-                width: isMobile ? "70px" : "520px",
+                height: isMobile ? "70px" : "400px",
+                width: isMobile ? "70px" : "400px",
                 background: "linear-gradient(to right,#226FE2, #0033FF)",
                 borderRadius: "50%",
                 display: "flex",
@@ -142,7 +148,7 @@ const Trail = () => {
                 sx={{
                   position: "relative",
                   zIndex: 2,
-                  width: isMobile ? "40px" : "260px",
+                  width: isMobile ? "40px" : "210px",
                   borderRadius: 2,
                 }}
               />

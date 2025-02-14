@@ -4,13 +4,14 @@ import { motion } from "framer-motion";
 import BeachTennis from "../../images/beach_plan.png";
 import Society from "../../images/society.png";
 import Volei from "../../images/volei.png";
+import Futvolei from "../../images/futvolei.png";
 import useIsMobile from "../../hooks/useIsMobile";
 
-const modalities = ["Beach Tennis", "Vôlei", "Society"];
+const modalities = ["Beach Tennis", "Vôlei", "Futvôlei", "Society"];
 
 const PlansImages = () => {
   const [imagesIterator, setImagesIterator] = useState(0);
-  const images = [BeachTennis, Volei, Society];
+  const images = [BeachTennis, Volei, Futvolei, Society];
   const isMobile = useIsMobile();
 
   useEffect(() => {
