@@ -53,7 +53,7 @@ const Trail = () => {
             flexDirection: isMobile ? "column" : "row",
             alignItems: "center",
             justifyContent: "space-between",
-            marginTop: isMobile ? "50px" : "30px",
+            marginTop: isMobile ? "40px" : "30px",
           }}
         >
           <Box component="article" role="list">
@@ -119,6 +119,7 @@ const Trail = () => {
                     <Typography
                       color="#22303E"
                       fontWeight={300}
+                      maxWidth={isMobile ? "100%" : "260px"}
                       fontSize={isMobile ? "12px" : "14px"}
                       textAlign="left"
                       mx={isMobile ? "auto" : 0}
