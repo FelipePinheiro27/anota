@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import MoreInfo from "../../Components/moreInfo/MoreInfo";
 import useIsMobile from "../../hooks/useIsMobile";
 
@@ -7,11 +7,12 @@ const NeedHelp = () => {
   const isMobile = useIsMobile();
 
   return (
-    <Box
-      padding={isMobile ? "20px 15px" : "50px 120px"}
-      margin="0 auto"
-      maxWidth={isMobile ? "100%" : "1090px"}
-      sx={{
+    <section
+      aria-label="Seção de Perguntas Frequentes"
+      style={{
+        padding: isMobile ? "20px 15px" : "50px 120px",
+        margin: "0 auto",
+        maxWidth: isMobile ? "100%" : "1090px",
         color: "#22303E",
         marginTop: isMobile ? "10px" : "70px",
       }}
@@ -25,30 +26,35 @@ const NeedHelp = () => {
         }}
       >
         <Box width={isMobile ? "100%" : "65%"}>
-          <Typography
-            letterSpacing="0.1px"
-            fontWeight={500}
-            lineHeight={1.1}
-            fontSize={isMobile ? "28px" : "57px"}
+          <h2
+            style={{
+              letterSpacing: "0.1px",
+              fontWeight: 500,
+              lineHeight: 1.1,
+              fontSize: isMobile ? "32px" : "60px",
+              fontFamily: "system-ui",
+            }}
           >
             Ficou alguma dúvida?
-          </Typography>
-          <br />
-          <Typography
-            letterSpacing="0.1px"
-            color="#6B7280"
-            fontWeight={400}
-            lineHeight={1.3}
-            fontSize={isMobile ? "16px" : "24px"}
+          </h2>
+          <p
+            style={{
+              letterSpacing: "0.1px",
+              color: "#6B7280",
+              fontWeight: 400,
+              lineHeight: 1.3,
+              fontSize: isMobile ? "18px" : "26px",
+              fontFamily: "system-ui",
+            }}
           >
             Aqui estão as respostas para suas principais perguntas
-          </Typography>
+          </p>
         </Box>
       </Box>
-      <Box marginTop={isMobile ? "30px" : "60px"}>
+      <Box marginTop={isMobile ? "20px" : "40px"}>
         <MoreInfo
           title="Como funciona?"
-          description="Nosso sistema permite que você gerencie reservas de forma simples e eficiente. Cadastre-se, configure suas quadras com horarios de funcionamento e valores para cada dia da semana e compartilhe seu link personalizado com seus clientes."
+          description="Nosso sistema permite que você gerencie reservas de forma simples e eficiente. Cadastre-se, configure suas quadras com horários de funcionamento e valores para cada dia da semana e compartilhe seu link personalizado com seus clientes."
         />
         <br />
         <MoreInfo
@@ -66,7 +72,7 @@ const NeedHelp = () => {
           description="Sim! Utilizamos tecnologia segura para garantir a proteção dos seus dados e das reservas dos seus clientes. Além disso, já ajudamos diversas empresas a simplificar sua gestão."
         />
       </Box>
-    </Box>
+    </section>
   );
 };
 

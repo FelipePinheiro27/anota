@@ -45,7 +45,6 @@ const Resources = () => {
         padding={isMobile ? "20px 10px" : "50px 120px"}
         sx={{
           color: "#22303E",
-          marginTop: isMobile ? "20px" : "70px",
           margin: "0 auto",
           maxWidth: "1350px",
         }}
@@ -79,7 +78,7 @@ const Resources = () => {
             flexDirection: isMobile ? "column" : "row",
             alignItems: "center",
             gap: isMobile ? "20px" : "0",
-            marginTop: isMobile ? "40px" : "80px",
+            marginTop: "80px",
             justifyContent: "space-around",
           }}
         >
@@ -100,7 +99,7 @@ const Resources = () => {
                   height: isMobile ? "auto" : "285px",
                   borderRadius: "19px",
                   padding: isMobile ? "20px" : "0",
-                  textAlign: "center",
+                  textAlign: "left",
                 }}
               >
                 <Box

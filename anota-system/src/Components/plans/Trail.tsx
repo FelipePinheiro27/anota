@@ -1,10 +1,11 @@
 import React from "react";
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import useIsMobile from "../../hooks/useIsMobile";
-import Logo from "../../images/minimalistWhiteLogo.svg";
+import Logo from "../../images/anota_mask.png";
 import SignUpLogo from "../../images/signUpLogo.svg";
 import LinkLogo from "../../images/link.svg";
+import ManageLogo from "../../images/manage.svg";
 
 const trailSteps = [
   {
@@ -22,7 +23,7 @@ const trailSteps = [
     title: "Gerencie",
     description:
       "Simplifique o gerenciamento das suas reservas com um sistema intuitivo",
-    icon: SignUpLogo,
+    icon: ManageLogo,
   },
 ];
 
@@ -43,16 +44,16 @@ const Trail = () => {
           color: "#22303E",
           margin: "0 auto",
           maxWidth: "1350px",
-          padding: isMobile ? "20px 10px" : "40px 80px",
-          marginTop: "50px",
+          padding: isMobile ? "20px 20px" : "40px 80px",
         }}
       >
         <Box
           sx={{
             display: "flex",
+            flexDirection: isMobile ? "column" : "row",
             alignItems: "center",
             justifyContent: "space-between",
-            marginTop: "30px",
+            marginTop: isMobile ? "50px" : "30px",
           }}
         >
           <Box component="article" role="list">
@@ -70,65 +71,67 @@ const Trail = () => {
                   gap="20px"
                   alignItems="center"
                   mt={index !== 0 ? 4 : 0}
+                  fontFamily="system-ui"
                 >
                   {index % 2 === 0 && (
                     <Box
                       component="img"
                       src={step.icon}
                       alt={`Ícone de ${step.title}`}
-                      sx={{ width: 130 }}
+                      sx={{ width: isMobile ? 70 : 100 }}
                     />
                   )}
                   {index % 2 === 1 && (
                     <>
-                      <Typography
-                        component="h2"
-                        color="#22303E"
-                        fontWeight={400}
-                        fontSize={isMobile ? "18px" : "86px"}
-                        textAlign={isMobile ? "center" : "left"}
-                        mx={isMobile ? "auto" : 0}
-                        marginRight="145px"
-                      >
-                        0{index + 1}
-                      </Typography>
+                      {!isMobile && (
+                        <Typography
+                          component="h2"
+                          color="#22303E"
+                          fontWeight={400}
+                          fontSize="70px"
+                          textAlign="left"
+                          mx={isMobile ? "auto" : 0}
+                          marginRight="60px"
+                        >
+                          0{index + 1}
+                        </Typography>
+                      )}
                       <Box
                         component="img"
                         src={step.icon}
                         alt={`Ícone de ${step.title}`}
-                        sx={{ width: 130 }}
+                        sx={{ width: isMobile ? 70 : 100 }}
                       />
                     </>
                   )}
-                  <Box marginRight={isMobile ? "0" : "145px"}>
+                  <Box marginRight={isMobile ? "10px" : "50px"}>
                     <Typography
                       component="h3"
                       color="#22303E"
                       fontWeight={400}
                       letterSpacing={1.6}
                       fontFamily="system-ui"
-                      fontSize={isMobile ? "18px" : "28px"}
-                      textAlign={isMobile ? "center" : "left"}
+                      fontSize={isMobile ? "14px" : "20px"}
+                      textAlign="left"
                     >
                       {step.title}
                     </Typography>
                     <Typography
-                      color="#6B7280"
+                      color="#22303E"
                       fontWeight={300}
-                      maxWidth={isMobile ? "85%" : "260px"}
-                      fontSize={isMobile ? "18px" : "16px"}
-                      textAlign={isMobile ? "center" : "left"}
+                      fontSize={isMobile ? "12px" : "14px"}
+                      textAlign="left"
                       mx={isMobile ? "auto" : 0}
                     >
                       {step.description}
                     </Typography>
                   </Box>
-                  {index % 2 === 0 && (
+                  {index % 2 === 0 && !isMobile && (
                     <Typography
                       color="#22303E"
                       fontWeight={400}
-                      fontSize={isMobile ? "18px" : "86px"}
-                      textAlign={isMobile ? "center" : "left"}
+                      fontSize={isMobile ? "18px" : "70px"}
+                      textAlign="left"
                       mx={isMobile ? "auto" : 0}
                     >
                       0{index + 1}
@@ -142,34 +145,18 @@ const Trail = () => {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1, transition: { duration: 0.6 } }}
           >
-            <Paper
-              component="section"
-              aria-label="Logo do sistema Anota Reservas"
+            <Box
+              component={motion.img}
+              src={Logo}
+              alt="Logo Anota Reservas"
               sx={{
-                height: isMobile ? "70px" : "400px",
-                width: isMobile ? "70px" : "400px",
-                background: "linear-gradient(to right,#226FE2, #0033FF)",
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#fff",
-                fontWeight: 510,
-                fontSize: isMobile ? "14px" : "16px",
+                position: "relative",
+                zIndex: 2,
+                width: isMobile ? "310px" : "580px",
+                marginTop: isMobile ? "60px" : 0,
+                borderRadius: 2,
               }}
-            >
-              <Box
-                component={motion.img}
-                src={Logo}
-                alt="Logo Anota Reservas"
-                sx={{
-                  position: "relative",
-                  zIndex: 2,
-                  width: isMobile ? "40px" : "210px",
-                  borderRadius: 2,
-                }}
-              />
-            </Paper>
+            />
           </motion.div>
         </Box>
       </Box>
