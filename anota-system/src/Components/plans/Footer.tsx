@@ -18,6 +18,7 @@ const Footer = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          marginTop: "25px",
         }}
       >
         <Box
@@ -27,7 +28,7 @@ const Footer = () => {
             justifyContent: isMobile ? "center" : "space-around",
             alignItems: "center",
             width: "100%",
-            gap: isMobile ? "15px" : "0",
+            gap: isMobile ? "10px" : "0",
           }}
         >
           <Box
@@ -39,7 +40,7 @@ const Footer = () => {
           <Box
             sx={{
               display: "flex",
-              gap: "15px",
+              gap: "10px",
               marginTop: isMobile ? "10px" : "0",
             }}
           >

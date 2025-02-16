@@ -42,7 +42,7 @@ const Resources = () => {
       aria-labelledby="resources-title"
     >
       <Box
-        padding={isMobile ? "20px 10px" : "0px 120px"}
+        padding={isMobile ? "10px 10px" : "0px 120px"}
         sx={{
           color: "#22303E",
           margin: "0 auto",
@@ -65,7 +65,7 @@ const Resources = () => {
             letterSpacing="0.1px"
             fontWeight={500}
             lineHeight={1.2}
-            fontFamily="System-ui"
+            fontFamily="sans-serif"
             fontSize={isMobile ? "28px" : "57px"}
           >
             Recursos poderosos para impulsionar seus resultados
@@ -131,7 +131,7 @@ const Resources = () => {
                     letterSpacing="0.1px"
                     fontWeight={500}
                     lineHeight={1.3}
-                    fontFamily="System-ui"
+                    fontFamily="sans-serif"
                     fontSize={isMobile ? "20px" : "26px"}
                   >
                     {feature.title}
@@ -140,7 +140,7 @@ const Resources = () => {
                     letterSpacing="0.2px"
                     fontWeight={400}
                     lineHeight={1.3}
-                    fontFamily="System-ui"
+                    fontFamily="sans-serif"
                     marginTop="15px"
                     fontSize={isMobile ? "12px" : "14px"}
                   >

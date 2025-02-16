@@ -10,11 +10,10 @@ const NeedHelp = () => {
     <section
       aria-label="Seção de Perguntas Frequentes"
       style={{
-        padding: isMobile ? "20px 15px" : "50px 120px",
+        padding: isMobile ? "20px 10px" : "50px 120px",
         margin: "0 auto",
         maxWidth: isMobile ? "100%" : "1090px",
         color: "#22303E",
-        marginTop: isMobile ? "10px" : "70px",
       }}
     >
       <Box
@@ -32,7 +31,7 @@ const NeedHelp = () => {
               fontWeight: 500,
               lineHeight: 1.1,
               fontSize: isMobile ? "32px" : "60px",
-              fontFamily: "system-ui",
+              fontFamily: "sans-serif",
             }}
           >
             Ficou alguma dúvida?
@@ -44,7 +43,7 @@ const NeedHelp = () => {
               fontWeight: 400,
               lineHeight: 1.3,
               fontSize: isMobile ? "18px" : "26px",
-              fontFamily: "system-ui",
+              fontFamily: "sans-serif",
             }}
           >
             Aqui estão as respostas para suas principais perguntas

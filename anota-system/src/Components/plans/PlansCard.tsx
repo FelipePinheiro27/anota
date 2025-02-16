@@ -32,14 +32,14 @@ const PlansCard = () => {
           letterSpacing="0.1px"
           fontWeight={500}
           lineHeight={1.2}
-          fontFamily="System-ui"
+          fontFamily="sans-serif"
           fontSize="34px"
           marginTop="40px"
         >
           Básico
         </Typography>
         <Typography
-          fontFamily="System-ui"
+          fontFamily="sans-serif"
           fontWeight={300}
           fontSize="14px"
           marginTop="10px"
@@ -50,7 +50,7 @@ const PlansCard = () => {
         <Box display="flex" alignItems="center" marginTop="25px">
           <Typography
             color="#226FE2"
-            fontFamily="System-ui"
+            fontFamily="sans-serif"
             fontWeight={400}
             fontSize="22px"
           >
@@ -58,7 +58,7 @@ const PlansCard = () => {
           </Typography>
           <Typography
             color="#226FE2"
-            fontFamily="System-ui"
+            fontFamily="sans-serif"
             fontWeight={600}
             marginLeft="8px"
             marginTop="-10px"
@@ -69,7 +69,7 @@ const PlansCard = () => {
         </Box>
         <Typography
           color="#22303E"
-          fontFamily="System-ui"
+          fontFamily="sans-serif"
           fontWeight={300}
           fontSize="16px"
         >
@@ -80,7 +80,7 @@ const PlansCard = () => {
           <img src={Right} alt="Correto" style={{ width: "22px" }} />
           <Typography
             color="#22303E"
-            fontFamily="System-ui"
+            fontFamily="sans-serif"
             fontWeight={300}
             fontSize="14px"
           >
@@ -92,7 +92,7 @@ const PlansCard = () => {
           <img src={Right} alt="Correto" style={{ width: "22px" }} />
           <Typography
             color="#22303E"
-            fontFamily="System-ui"
+            fontFamily="sans-serif"
             fontWeight={300}
             fontSize="14px"
             width="260px"
@@ -123,7 +123,11 @@ const PlansCard = () => {
             }}
             onClick={() => redirectToWhatsApp(0)}
           >
-            <Typography fontFamily="System-ui" fontWeight={600} fontSize="14px">
+            <Typography
+              fontFamily="sans-serif"
+              fontWeight={600}
+              fontSize="14px"
+            >
               Teste grátis
             </Typography>
           </Box>
@@ -143,13 +147,13 @@ const PlansCard = () => {
           fontWeight={500}
           lineHeight={1.2}
           marginTop="40px"
-          fontFamily="System-ui"
+          fontFamily="sans-serif"
           fontSize="34px"
         >
           Avançado
         </Typography>
         <Typography
-          fontFamily="System-ui"
+          fontFamily="sans-serif"
           fontWeight={300}
           fontSize="14px"
           marginTop="10px"
@@ -160,7 +164,7 @@ const PlansCard = () => {
         <Box display="flex" alignItems="center" marginTop="25px">
           <Typography
             color="#226FE2"
-            fontFamily="System-ui"
+            fontFamily="sans-serif"
             fontWeight={400}
             fontSize="22px"
           >
@@ -168,7 +172,7 @@ const PlansCard = () => {
           </Typography>
           <Typography
             color="#226FE2"
-            fontFamily="System-ui"
+            fontFamily="sans-serif"
             fontWeight={600}
             marginLeft="8px"
             marginTop="-10px"
@@ -179,7 +183,7 @@ const PlansCard = () => {
         </Box>
         <Typography
           color="#22303E"
-          fontFamily="System-ui"
+          fontFamily="sans-serif"
           fontWeight={300}
           fontSize="16px"
         >
@@ -189,7 +193,7 @@ const PlansCard = () => {
           <img src={Right} alt="Correto" style={{ width: "22px" }} />
           <Typography
             color="#22303E"
-            fontFamily="System-ui"
+            fontFamily="sans-serif"
             fontWeight={300}
             fontSize="14px"
           >
@@ -200,7 +204,7 @@ const PlansCard = () => {
           <img src={Right} alt="Correto" style={{ width: "22px" }} />
           <Typography
             color="#22303E"
-            fontFamily="System-ui"
+            fontFamily="sans-serif"
             fontWeight={300}
             fontSize="14px"
             width="260px"
@@ -212,7 +216,7 @@ const PlansCard = () => {
           <img src={Right} alt="Correto" style={{ width: "22px" }} />
           <Typography
             color="#22303E"
-            fontFamily="System-ui"
+            fontFamily="sans-serif"
             fontWeight={300}
             fontSize="14px"
             width="260px"
@@ -242,7 +246,11 @@ const PlansCard = () => {
             }}
             onClick={() => redirectToWhatsApp(1)}
           >
-            <Typography fontFamily="System-ui" fontWeight={600} fontSize="14px">
+            <Typography
+              fontFamily="sans-serif"
+              fontWeight={600}
+              fontSize="14px"
+            >
               Teste grátis
             </Typography>
           </Box>
@@ -262,13 +270,13 @@ const PlansCard = () => {
           fontWeight={500}
           lineHeight={1.2}
           marginTop="40px"
-          fontFamily="System-ui"
+          fontFamily="sans-serif"
           fontSize="34px"
         >
           Pro
         </Typography>
         <Typography
-          fontFamily="System-ui"
+          fontFamily="sans-serif"
           fontWeight={300}
           fontSize="14px"
           marginTop="10px"
@@ -279,7 +287,7 @@ const PlansCard = () => {
         <Box display="flex" alignItems="center" marginTop="25px">
           <Typography
             color="#fff"
-            fontFamily="System-ui"
+            fontFamily="sans-serif"
             fontWeight={400}
             fontSize="22px"
           >
@@ -287,7 +295,7 @@ const PlansCard = () => {
           </Typography>
           <Typography
             color="#fff"
-            fontFamily="System-ui"
+            fontFamily="sans-serif"
             fontWeight={600}
             marginLeft="8px"
             marginTop="-10px"
@@ -298,7 +306,7 @@ const PlansCard = () => {
         </Box>
         <Typography
           color="#fff"
-          fontFamily="System-ui"
+          fontFamily="sans-serif"
           fontWeight={300}
           fontSize="16px"
         >
@@ -308,7 +316,7 @@ const PlansCard = () => {
           <img src={RightWhite} alt="Correto" style={{ width: "22px" }} />
           <Typography
             color="#fff"
-            fontFamily="System-ui"
+            fontFamily="sans-serif"
             fontWeight={300}
             fontSize="14px"
           >
@@ -319,7 +327,7 @@ const PlansCard = () => {
           <img src={RightWhite} alt="Correto" style={{ width: "22px" }} />
           <Typography
             color="#fff"
-            fontFamily="System-ui"
+            fontFamily="sans-serif"
             fontWeight={300}
             fontSize="14px"
             width="260px"
@@ -331,7 +339,7 @@ const PlansCard = () => {
           <img src={RightWhite} alt="Correto" style={{ width: "22px" }} />
           <Typography
             color="#fff"
-            fontFamily="System-ui"
+            fontFamily="sans-serif"
             fontWeight={300}
             fontSize="14px"
             width="260px"
@@ -361,7 +369,11 @@ const PlansCard = () => {
             }}
             onClick={() => redirectToWhatsApp(2)}
           >
-            <Typography fontFamily="System-ui" fontWeight={600} fontSize="14px">
+            <Typography
+              fontFamily="sans-serif"
+              fontWeight={600}
+              fontSize="14px"
+            >
               Teste grátis
             </Typography>
           </Box>

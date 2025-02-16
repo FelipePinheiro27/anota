@@ -71,7 +71,7 @@ const Trail = () => {
                   gap="20px"
                   alignItems="center"
                   mt={index !== 0 ? 4 : 0}
-                  fontFamily="system-ui"
+                  fontFamily="sans-serif"
                 >
                   {index % 2 === 0 && (
                     <Box
@@ -110,7 +110,7 @@ const Trail = () => {
                       color="#22303E"
                       fontWeight={400}
                       letterSpacing={1.6}
-                      fontFamily="system-ui"
+                      fontFamily="sans-serif"
                       fontSize={isMobile ? "14px" : "20px"}
                       textAlign="left"
                     >

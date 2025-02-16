@@ -35,7 +35,7 @@ const Pricing = forwardRef((_, ref) => {
             <Typography
               component="h2"
               letterSpacing="0.1px"
-              fontFamily="system-ui"
+              fontFamily="sans-serif"
               fontWeight={500}
               lineHeight={1.2}
               fontSize={isMobile ? "28px" : "54px"}
@@ -46,7 +46,7 @@ const Pricing = forwardRef((_, ref) => {
             <Typography
               component="p"
               letterSpacing="0.1px"
-              fontFamily="system-ui"
+              fontFamily="sans-serif"
               color="#6B7280"
               fontWeight={400}
               lineHeight={1.2}
@@ -79,7 +79,7 @@ const Pricing = forwardRef((_, ref) => {
             padding="12px 0"
             width={isMobile ? "302px" : "200px"}
             fontSize="16px"
-            fontFamily="system-ui"
+            fontFamily="sans-serif"
             fontWeight={510}
             onClick={() => onShowAnnualPlansChange(false)}
           >
@@ -101,7 +101,7 @@ const Pricing = forwardRef((_, ref) => {
             fontSize="16px"
             padding="12px 0"
             width={isMobile ? "302px" : "200px"}
-            fontFamily="system-ui"
+            fontFamily="sans-serif"
             fontWeight={510}
             onClick={() => onShowAnnualPlansChange(true)}
           >
@@ -114,7 +114,6 @@ const Pricing = forwardRef((_, ref) => {
           justifyContent="center"
           alignItems={isMobile ? "center" : "flex-start"}
           marginTop={isMobile ? "40px" : "80px"}
-          marginBottom="30px"
           gap={isMobile ? "20px" : "80px"}
         >
           {showAnnualPlans ? <PlansCardYear /> : <PlansCard />}

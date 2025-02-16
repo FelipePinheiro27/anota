@@ -20,11 +20,11 @@ const PlansTextInfo = ({ scrollToPricing }: PlansTextInfoProps) => {
       >
         <Typography
           letterSpacing="0.1px"
-          fontWeight={500}
+          fontWeight={600}
           lineHeight={1.1}
           color="#22303E"
           maxWidth={isMobile ? "90%" : "400px"}
-          fontFamily="system-ui"
+          fontFamily="sans-serif"
           fontSize={isMobile ? "28px" : "67px"}
           textAlign={isMobile ? "center" : "left"}
           mx={isMobile ? "auto" : 0}
@@ -42,7 +42,7 @@ const PlansTextInfo = ({ scrollToPricing }: PlansTextInfoProps) => {
           color="#6B7280"
           fontWeight={500}
           maxWidth={isMobile ? "90%" : "360px"}
-          fontFamily="system-ui"
+          fontFamily="sans-serif"
           fontSize={isMobile ? "18px" : "28px"}
           marginTop="20px"
           textAlign={isMobile ? "center" : "left"}
