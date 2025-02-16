@@ -5,7 +5,11 @@ import PlansTextInfo from "./PlansTextInfo";
 import useIsMobile from "../../hooks/useIsMobile";
 import PlansImages from "./PlansImages";
 
-const SystemAbout = () => {
+interface SystemAboutProps {
+  scrollToPricing: () => void;
+}
+
+const SystemAbout = ({ scrollToPricing }: SystemAboutProps) => {
   const isMobile = useIsMobile();
 
   return (
@@ -35,7 +39,7 @@ const SystemAbout = () => {
             textAlign: isMobile ? "center" : "left",
           }}
         >
-          <PlansTextInfo />
+          <PlansTextInfo scrollToPricing={scrollToPricing} />
         </Box>
         <Box
           sx={{
