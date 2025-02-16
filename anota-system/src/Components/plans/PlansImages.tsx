@@ -8,18 +8,18 @@ import Futvolei from "../../images/futvolei.png";
 import useIsMobile from "../../hooks/useIsMobile";
 
 const modalities = ["Beach Tennis", "Vôlei", "Futvôlei", "Society"];
+const images = [BeachTennis, Volei, Futvolei, Society];
 
 const PlansImages = () => {
   const [imagesIterator, setImagesIterator] = useState(0);
-  const images = [BeachTennis, Volei, Futvolei, Society];
   const isMobile = useIsMobile();
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setImagesIterator((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+      setImagesIterator((prev) => (prev + 1) % images.length);
     }, 3000);
     return () => clearInterval(timer);
-  }, [images.length]);
+  }, []);
 
   return (
     <motion.div
@@ -71,12 +71,12 @@ const PlansImages = () => {
         <Box
           component="img"
           src={images[imagesIterator]}
-          alt="Modalidades"
+          alt={`Imagem da modalidade ${modalities[imagesIterator]}`}
           sx={{
             position: "relative",
             zIndex: 2,
-            height: isMobile ? 320 : 400,
-            width: isMobile ? 320 : 400,
+            height: isMobile ? 310 : 400,
+            width: isMobile ? 310 : 400,
             borderRadius: 8,
           }}
         />

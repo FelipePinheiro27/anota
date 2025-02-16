@@ -9,12 +9,37 @@ import useIsMobile from "../../hooks/useIsMobile";
 const Resources = () => {
   const isMobile = useIsMobile();
 
+  const features = [
+    {
+      img: CalendarLogo,
+      title: "Seu cliente agenda sozinho",
+      description:
+        "Com a nossa plataforma de agendamentos online, seus clientes podem marcar horários de forma rápida e fácil.",
+      alt: "Ícone de calendário representando agendamentos online",
+    },
+    {
+      img: CheckedLogo,
+      title: "Agendamentos fixos",
+      description:
+        "Com o agendamento fixo, você pode reservar horários recorrentes por longos períodos, ideal para clientes fiéis.",
+      alt: "Ícone de check representando agendamentos recorrentes",
+    },
+    {
+      img: ClickLogo,
+      title: "Tela e link personalizados",
+      description:
+        "Com uma tela e um link personalizados, sua marca se destaca, proporcionando uma experiência única.",
+      alt: "Ícone de clique representando personalização de tela",
+    },
+  ];
+
   return (
-    <motion.div
+    <motion.section
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
       viewport={{ once: true }}
+      aria-labelledby="resources-title"
     >
       <Box
         padding={isMobile ? "20px 10px" : "50px 120px"}
@@ -33,21 +58,21 @@ const Resources = () => {
             padding: isMobile ? "0 10px" : "0",
           }}
         >
-          <Box
-            margin="0 auto"
+          <Typography
             width={isMobile ? "100%" : "65%"}
             marginTop={isMobile ? "40px" : "80px"}
+            id="resources-title"
+            component="h2"
+            letterSpacing="0.1px"
+            fontWeight={500}
+            lineHeight={1.2}
+            fontFamily="System-ui"
+            fontSize={isMobile ? "28px" : "57px"}
           >
-            <Typography
-              letterSpacing="0.1px"
-              fontWeight={500}
-              lineHeight={1.2}
-              fontSize={isMobile ? "28px" : "57px"}
-            >
-              Recursos poderosos para impulsionar seus resultados
-            </Typography>
-          </Box>
+            Recursos poderosos para impulsionar seus resultados
+          </Typography>
         </Box>
+
         <Box
           sx={{
             display: "flex",
@@ -58,13 +83,14 @@ const Resources = () => {
             justifyContent: "space-around",
           }}
         >
-          {[CalendarLogo, CheckedLogo, ClickLogo].map((logo, index) => (
-            <motion.div
+          {features.map((feature, index) => (
+            <motion.article
               key={index}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.2 }}
               viewport={{ once: true }}
+              aria-labelledby={`feature-title-${index}`}
             >
               <Box
                 sx={{
@@ -93,27 +119,23 @@ const Resources = () => {
                 >
                   <Box
                     component="img"
-                    src={logo}
-                    alt="Ícone Anota Reservas"
-                    sx={{
-                      position: "relative",
-                      width: "40px",
-                    }}
+                    src={feature.img}
+                    alt={feature.alt}
+                    sx={{ width: "40px" }}
+                    loading="lazy"
                   />
                 </Box>
                 <Box margin={isMobile ? "50px 20px" : "50px 40px"}>
                   <Typography
+                    id={`feature-title-${index}`}
+                    component="h3"
                     letterSpacing="0.1px"
                     fontWeight={500}
                     lineHeight={1.3}
                     fontFamily="System-ui"
                     fontSize={isMobile ? "20px" : "26px"}
                   >
-                    {index === 0
-                      ? "Seu cliente agenda sozinho"
-                      : index === 1
-                      ? "Agendamentos fixos"
-                      : "Tela e link personalizados"}
+                    {feature.title}
                   </Typography>
                   <Typography
                     letterSpacing="0.2px"
@@ -123,19 +145,15 @@ const Resources = () => {
                     marginTop="15px"
                     fontSize={isMobile ? "12px" : "14px"}
                   >
-                    {index === 0
-                      ? "Com a nossa plataforma de agendamentos online, seus clientes podem marcar horários de forma rápida e fácil."
-                      : index === 1
-                      ? "Com o agendamento fixo, você pode reservar horários recorrentes por longos períodos, ideal para clientes fiéis que frequentam sempre no mesmo dia e horário da semana."
-                      : "Com uma tela e um link personalizados, sua marca se destaca, proporcionando uma experiência única e alinhada à sua identidade visual."}
+                    {feature.description}
                   </Typography>
                 </Box>
               </Box>
-            </motion.div>
+            </motion.article>
           ))}
         </Box>
       </Box>
-    </motion.div>
+    </motion.section>
   );
 };
 

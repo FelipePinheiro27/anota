@@ -12,18 +12,16 @@ const Pricing = () => {
   const onShowAnnualPlansChange = (value: boolean) => setShowAnnualPlans(value);
 
   return (
-    <motion.div
+    <motion.section
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
       viewport={{ once: true }}
     >
       <Box
+        component="section"
         padding={isMobile ? "20px 10px" : "50px 120px"}
-        sx={{
-          color: "#22303E",
-          marginTop: isMobile ? "20px" : "70px",
-        }}
+        sx={{ color: "#22303E", marginTop: isMobile ? "20px" : "70px" }}
       >
         <Box
           sx={{
@@ -35,16 +33,20 @@ const Pricing = () => {
         >
           <Box width={isMobile ? "100%" : "65%"}>
             <Typography
+              component="h2"
               letterSpacing="0.1px"
+              fontFamily="system-ui"
               fontWeight={500}
               lineHeight={1.2}
-              fontSize={isMobile ? "28px" : "57px"}
+              fontSize={isMobile ? "28px" : "54px"}
             >
               Comece sua jornada conosco
             </Typography>
             <br />
             <Typography
+              component="p"
               letterSpacing="0.1px"
+              fontFamily="system-ui"
               color="#6B7280"
               fontWeight={400}
               lineHeight={1.2}
@@ -63,6 +65,7 @@ const Pricing = () => {
           gap={isMobile ? "10px" : "0"}
         >
           <Box
+            component="button"
             sx={{
               cursor: "pointer",
               background: !showAnnualPlans
@@ -75,6 +78,7 @@ const Pricing = () => {
             textAlign="center"
             padding="12px 0"
             width={isMobile ? "302px" : "200px"}
+            fontSize="16px"
             fontFamily="system-ui"
             fontWeight={510}
             onClick={() => onShowAnnualPlansChange(false)}
@@ -82,6 +86,7 @@ const Pricing = () => {
             Mensal
           </Box>
           <Box
+            component="button"
             sx={{
               background: showAnnualPlans
                 ? "linear-gradient(to right, #226FE2, #0033FF)"
@@ -93,6 +98,7 @@ const Pricing = () => {
             borderLeft={isMobile ? "1px solid #BCBCBC" : "none"}
             borderRadius={isMobile ? "40px" : "0 40px 40px 0"}
             textAlign="center"
+            fontSize="16px"
             padding="12px 0"
             width={isMobile ? "302px" : "200px"}
             fontFamily="system-ui"
@@ -114,7 +120,7 @@ const Pricing = () => {
           {showAnnualPlans ? <PlansCardYear /> : <PlansCard />}
         </Box>
       </Box>
-    </motion.div>
+    </motion.section>
   );
 };
 

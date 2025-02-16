@@ -6,21 +6,36 @@ import Logo from "../../images/minimalistWhiteLogo.svg";
 import SignUpLogo from "../../images/signUpLogo.svg";
 import LinkLogo from "../../images/link.svg";
 
-const trailDescriptions = [
-  "Faça o cadastro e tenha acesso imediato ao sistema",
-  "Receba o link personalizado da sua empresa e compartilhe-o com seus clientes",
-  "Simplifique o gerenciamento das suas reservas com um sistema intuitivo",
+const trailSteps = [
+  {
+    title: "Cadastro",
+    description: "Faça o cadastro e tenha acesso imediato ao sistema",
+    icon: SignUpLogo,
+  },
+  {
+    title: "Compartilhe",
+    description:
+      "Receba o link personalizado da sua empresa e compartilhe-o com seus clientes",
+    icon: LinkLogo,
+  },
+  {
+    title: "Gerencie",
+    description:
+      "Simplifique o gerenciamento das suas reservas com um sistema intuitivo",
+    icon: SignUpLogo,
+  },
 ];
 
 const Trail = () => {
   const isMobile = useIsMobile();
 
   return (
-    <motion.div
+    <motion.section
       initial={{ opacity: 0.3, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.6 }}
+      aria-label="Passos para utilizar o sistema"
     >
       <Box
         sx={{
@@ -40,14 +55,15 @@ const Trail = () => {
             marginTop: "30px",
           }}
         >
-          <Box>
-            {["Cadastro", "Compartilhe", "Gerencie"].map((title, index) => (
+          <Box component="article" role="list">
+            {trailSteps.map((step, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0.3, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.6 }}
+                role="listitem"
               >
                 <Box
                   display="flex"
@@ -58,17 +74,17 @@ const Trail = () => {
                   {index % 2 === 0 && (
                     <Box
                       component="img"
-                      src={SignUpLogo}
-                      alt="Logo"
+                      src={step.icon}
+                      alt={`Ícone de ${step.title}`}
                       sx={{ width: 130 }}
                     />
                   )}
                   {index % 2 === 1 && (
                     <>
                       <Typography
+                        component="h2"
                         color="#22303E"
                         fontWeight={400}
-                        fontFamily="sans-serif"
                         fontSize={isMobile ? "18px" : "86px"}
                         textAlign={isMobile ? "center" : "left"}
                         mx={isMobile ? "auto" : 0}
@@ -78,14 +94,15 @@ const Trail = () => {
                       </Typography>
                       <Box
                         component="img"
-                        src={LinkLogo}
-                        alt="Logo"
+                        src={step.icon}
+                        alt={`Ícone de ${step.title}`}
                         sx={{ width: 130 }}
                       />
                     </>
                   )}
-                  <Box marginRight="145px">
+                  <Box marginRight={isMobile ? "0" : "145px"}>
                     <Typography
+                      component="h3"
                       color="#22303E"
                       fontWeight={400}
                       letterSpacing={1.6}
@@ -93,25 +110,23 @@ const Trail = () => {
                       fontSize={isMobile ? "18px" : "28px"}
                       textAlign={isMobile ? "center" : "left"}
                     >
-                      {title}
+                      {step.title}
                     </Typography>
                     <Typography
                       color="#6B7280"
                       fontWeight={300}
                       maxWidth={isMobile ? "85%" : "260px"}
-                      fontFamily="system-ui"
                       fontSize={isMobile ? "18px" : "16px"}
                       textAlign={isMobile ? "center" : "left"}
                       mx={isMobile ? "auto" : 0}
                     >
-                      {trailDescriptions[index]}
+                      {step.description}
                     </Typography>
                   </Box>
                   {index % 2 === 0 && (
                     <Typography
                       color="#22303E"
                       fontWeight={400}
-                      fontFamily="sans-serif"
                       fontSize={isMobile ? "18px" : "86px"}
                       textAlign={isMobile ? "center" : "left"}
                       mx={isMobile ? "auto" : 0}
@@ -128,6 +143,8 @@ const Trail = () => {
             animate={{ scale: 1, opacity: 1, transition: { duration: 0.6 } }}
           >
             <Paper
+              component="section"
+              aria-label="Logo do sistema Anota Reservas"
               sx={{
                 height: isMobile ? "70px" : "400px",
                 width: isMobile ? "70px" : "400px",
@@ -156,7 +173,7 @@ const Trail = () => {
           </motion.div>
         </Box>
       </Box>
-    </motion.div>
+    </motion.section>
   );
 };
 

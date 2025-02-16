@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import { motion } from "framer-motion";
 import Arrow from "../../images/arrow.svg";
 import useIsMobile from "../../hooks/useIsMobile";
@@ -44,7 +44,7 @@ const PlansTextInfo = () => {
         <Typography
           color="#6B7280"
           fontWeight={500}
-          maxWidth={isMobile ? "85%" : "360px"}
+          maxWidth={isMobile ? "90%" : "360px"}
           fontFamily="system-ui"
           fontSize={isMobile ? "18px" : "28px"}
           marginTop="20px"
@@ -61,17 +61,16 @@ const PlansTextInfo = () => {
         transition={{ duration: 0.8, delay: 0.6 }}
       >
         <Box
-          onClick={handleScroll}
-          marginTop="50px"
-          width={isMobile ? "100%" : "275px"}
           display="flex"
-          justifyContent="center"
-          sx={{ cursor: "pointer" }}
+          marginTop="50px"
+          justifyContent={isMobile ? "center" : "left"}
+          width={isMobile ? "100%" : "275px"}
         >
-          <Typography
+          <Button
+            onClick={handleScroll}
+            variant="contained"
             sx={{
-              textDecoration: "none",
-              color: "#fff",
+              textTransform: "none",
               fontSize: isMobile ? "14px" : "16px",
               padding: isMobile ? "10px 20px" : "11px 30px",
               borderRadius: "30px",
@@ -83,14 +82,16 @@ const PlansTextInfo = () => {
               gap: "12px",
               cursor: "pointer",
             }}
+            aria-label="Confira nossos planos"
+            role="button"
           >
             Confira nossos planos
             <img
               src={Arrow}
               width={isMobile ? "16px" : "20px"}
-              alt="Nossos planos"
+              alt="Seta indicando mais informações sobre os planos"
             />
-          </Typography>
+          </Button>
         </Box>
       </motion.div>
     </>
