@@ -4,15 +4,12 @@ import { motion } from "framer-motion";
 import Arrow from "../../images/arrow.svg";
 import useIsMobile from "../../hooks/useIsMobile";
 
-const PlansTextInfo = () => {
-  const isMobile = useIsMobile();
+interface PlansTextInfoProps {
+  scrollToPricing: () => void;
+}
 
-  const handleScroll = () => {
-    window.scrollBy({
-      top: isMobile ? window.innerHeight + 1800 : window.innerHeight + 1350,
-      behavior: "smooth",
-    });
-  };
+const PlansTextInfo = ({ scrollToPricing }: PlansTextInfoProps) => {
+  const isMobile = useIsMobile();
 
   return (
     <>
@@ -67,7 +64,7 @@ const PlansTextInfo = () => {
           width={isMobile ? "100%" : "275px"}
         >
           <Button
-            onClick={handleScroll}
+            onClick={scrollToPricing}
             variant="contained"
             sx={{
               textTransform: "none",

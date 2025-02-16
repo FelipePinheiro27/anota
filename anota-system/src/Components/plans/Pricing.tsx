@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, forwardRef } from "react";
 import { motion } from "framer-motion";
 import { Box, Typography } from "@mui/material";
 import useIsMobile from "../../hooks/useIsMobile";
 import PlansCard from "./PlansCard";
 import PlansCardYear from "./PlansCardYear";
 
-const Pricing = () => {
+const Pricing = forwardRef((_, ref) => {
   const isMobile = useIsMobile();
   const [showAnnualPlans, setShowAnnualPlans] = useState(true);
 
@@ -31,7 +31,7 @@ const Pricing = () => {
             padding: isMobile ? "0 10px" : "0",
           }}
         >
-          <Box width={isMobile ? "100%" : "65%"}>
+          <Box width={isMobile ? "100%" : "65%"} ref={ref}>
             <Typography
               component="h2"
               letterSpacing="0.1px"
@@ -122,6 +122,6 @@ const Pricing = () => {
       </Box>
     </motion.section>
   );
-};
+});
 
 export default Pricing;
