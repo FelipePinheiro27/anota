@@ -1,24 +1,24 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
-import Logo from "../../images/LogoHeader.svg";
+import Logo from "../../images/logo_anota.svg";
 import useIsMobile from "../../hooks/useIsMobile";
 
 const PlansHeader = () => {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   return (
     <Box
       sx={{
-        padding: isMobile ? "10px 20px" : "10px 40px",
-        borderTop: "0.2px solid rgba(0, 0, 0, 0.2)",
-        borderBottom: "0.2px solid rgba(0, 0, 0, 0.2)",
+        padding: isMobile ? "15px 20px" : "20px 80px",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        textAlign: isMobile ? "center" : "left",
-        gap: isMobile ? "10px" : "0",
+        // flexDirection: isMobile ? "column" : "row",
+        textAlign: "center",
         color: "#22303E",
+        gap: isMobile ? "10px" : "0",
       }}
     >
       <Box
@@ -26,32 +26,39 @@ const PlansHeader = () => {
           display: "flex",
           alignItems: "center",
           gap: "7px",
-          justifyContent: isMobile ? "center" : "flex-start",
+          justifyContent: "center",
         }}
       >
         <img
           src={Logo}
           alt="logo da empresa"
           style={{
-            width: isMobile ? "45px" : "55px",
-            height: isMobile ? "45px" : "55px",
+            width: isMobile ? "140px" : "160px",
           }}
         />
-        <Typography fontWeight={300} fontSize={isMobile ? "16px" : "18px"}>
-          Anota Reservas
-        </Typography>
       </Box>
-      <Link
-        to="/login"
-        style={{
-          textDecoration: "none",
-          color: "inherit",
-          fontSize: isMobile ? "14px" : "16px",
-          fontWeight: 500,
+      <Box
+        onClick={() => navigate("/login")}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
         }}
       >
-        Acessar minha conta
-      </Link>
+        <Typography
+          sx={{
+            cursor: "pointer",
+            color: "#fff",
+            fontSize: isMobile ? "13px" : "14px",
+            padding: isMobile ? "8px 20px" : "10px 25px",
+            borderRadius: "30px",
+            background: "linear-gradient(to right, #226FE2, #0033FF)",
+            fontWeight: 510,
+            textAlign: "center",
+          }}
+        >
+          {isMobile ? <>Acessar conta</> : <>Acessar minha conta</>}
+        </Typography>
+      </Box>
     </Box>
   );
 };

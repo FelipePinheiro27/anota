@@ -1,133 +1,373 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import Right from "../../images/right.svg";
-import { colors } from "../../constants/Colors";
+import RightWhite from "../../images/rightWhite.svg";
+
+const messageData = [
+  "Olá, gostaria de saber mais sobre o plano básico mensal.",
+  "Olá, gostaria de saber mais sobre o plano avançado mensal.",
+  "Olá, gostaria de saber mais sobre o plano pro mensal.",
+];
 
 const PlansCard = () => {
-  const redirectToWhatsApp = () => {
+  const redirectToWhatsApp = (planType: number) => {
     const phone = "5588992429813";
-    const message = "Olá, gostaria de saber mais sobre o plano mensal.";
+    const message = messageData[planType];
     const encodedMessage = encodeURIComponent(message);
 
     window.location.href = `https://wa.me/${phone}?text=${encodedMessage}`;
   };
 
   return (
-    <Box
-      padding="20px 40px"
-      width="280px"
-      borderRadius="15px"
-      boxShadow="hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px"
-    >
-      <Typography
-        color="#22303E"
-        fontFamily="Manrope"
-        fontWeight={600}
-        fontSize="26px"
+    <>
+      <Box
+        padding="0px 40px"
+        width="220px"
+        height="517px"
+        borderRadius="19px"
+        border="1px solid #BCBCBC"
+        sx={{ background: "#fff", position: "relative" }}
       >
-        Mensal
-      </Typography>
-      <Typography
-        color="#6B7280"
-        fontFamily="Inter"
-        fontWeight={300}
-        fontSize="16px"
-        marginTop="10px"
-      >
-        Ideal para Beach Clubs, proporcione a melhor experiência para o seu
-        cliente
-      </Typography>
-      <Box display="flex" alignItems="center" marginTop="15px">
         <Typography
-          color="#22303E"
-          fontFamily="Manrope"
-          fontWeight={400}
-          fontSize="18px"
+          letterSpacing="0.1px"
+          fontWeight={500}
+          lineHeight={1.2}
+          fontFamily="System-ui"
+          fontSize="34px"
+          marginTop="40px"
         >
-          R$
+          Básico
         </Typography>
         <Typography
-          color="#22303E"
-          fontFamily="Manrope"
-          fontWeight={600}
-          marginLeft="5px"
-          fontSize="28px"
-        >
-          49,90
-        </Typography>
-      </Box>
-      <Typography
-        color="#6B7280"
-        fontFamily="Manrope"
-        fontWeight={300}
-        fontSize="16px"
-        marginTop="-10px"
-      >
-        Com primeiro mês <strong>grátis</strong>
-      </Typography>
-      <Box display="flex" alignItems="center" gap="8px" marginTop="20px">
-        <img src={Right} alt="Correto" style={{ width: "32px" }} />
-        <Typography
-          color="#6B7280"
-          fontFamily="Manrope"
+          fontFamily="System-ui"
           fontWeight={300}
-          fontSize="16px"
+          fontSize="14px"
+          marginTop="10px"
         >
-          <strong>3 quadras </strong> cadastradas
+          Ideal para Beach Clubs, proporcione a melhor experiência para o seu
+          cliente.
         </Typography>
-      </Box>
-      <Box display="flex" alignItems="center" gap="8px" marginTop="-6px">
-        <img src={Right} alt="Correto" style={{ width: "32px" }} />
-        <Typography
-          color="#6B7280"
-          fontFamily="Manrope"
-          fontWeight={300}
-          fontSize="16px"
-          marginTop="18px"
-          width="260px"
-        >
-          Link de agendamento com cores e logo da sua empresa
-        </Typography>
-      </Box>
-      <Box display="flex" alignItems="center" gap="8px" marginTop="10px">
-        <img src={Right} alt="Correto" style={{ width: "32px" }} />
-        <Typography
-          color="#6B7280"
-          fontFamily="Manrope"
-          fontWeight={300}
-          fontSize="16px"
-        >
-          Clientes <strong>ilimitados</strong>
-        </Typography>
-      </Box>
-      <Box display="flex" alignItems="center" gap="8px" marginTop="10px">
-        <img src={Right} alt="Correto" style={{ width: "32px" }} />
-        <Typography
-          color="#6B7280"
-          fontFamily="Manrope"
-          fontWeight={300}
-          fontSize="16px"
-        >
-          Modalidades <strong>costumizáveis</strong>
-        </Typography>
-      </Box>
-      <Box display="flex" justifyContent="center" gap="8px" marginTop="30px">
-        <Box
-          sx={{
-            background: colors.green,
-            color: "#fff",
-            padding: "7px 60px",
-            borderRadius: "10px",
-            cursor: "pointer",
-          }}
-          onClick={redirectToWhatsApp}
-        >
-          <Typography fontFamily="Manrope" fontWeight={600} fontSize="16px">
-            Teste grátis
+        <Box display="flex" alignItems="center" marginTop="25px">
+          <Typography
+            color="#226FE2"
+            fontFamily="System-ui"
+            fontWeight={400}
+            fontSize="22px"
+          >
+            R$
+          </Typography>
+          <Typography
+            color="#226FE2"
+            fontFamily="System-ui"
+            fontWeight={600}
+            marginLeft="8px"
+            marginTop="-10px"
+            fontSize="46px"
+          >
+            49,90
           </Typography>
         </Box>
+        <Typography
+          color="#22303E"
+          fontFamily="System-ui"
+          fontWeight={300}
+          fontSize="16px"
+        >
+          Com 7 dias de teste <strong>grátis</strong>
+        </Typography>
+
+        <Box display="flex" alignItems="center" gap="8px" marginTop="25px">
+          <img src={Right} alt="Correto" style={{ width: "22px" }} />
+          <Typography
+            color="#22303E"
+            fontFamily="System-ui"
+            fontWeight={300}
+            fontSize="14px"
+          >
+            <strong>1 quadra </strong> cadastrada
+          </Typography>
+        </Box>
+
+        <Box display="flex" alignItems="center" gap="8px">
+          <img src={Right} alt="Correto" style={{ width: "22px" }} />
+          <Typography
+            color="#22303E"
+            fontFamily="System-ui"
+            fontWeight={300}
+            fontSize="14px"
+            width="260px"
+          >
+            <strong>Plataforma personalizada</strong>
+          </Typography>
+        </Box>
+
+        <Box
+          display="flex"
+          justifyContent="center"
+          gap="8px"
+          sx={{
+            position: "absolute",
+            bottom: "40px",
+            width: "100%",
+            left: "50%",
+            transform: "translateX(-50%)",
+          }}
+        >
+          <Box
+            sx={{
+              background: "linear-gradient(to right, #226FE2, #0033FF)",
+              color: "#fff",
+              padding: "7px 60px",
+              borderRadius: "43px",
+              cursor: "pointer",
+            }}
+            onClick={() => redirectToWhatsApp(0)}
+          >
+            <Typography fontFamily="System-ui" fontWeight={600} fontSize="14px">
+              Teste grátis
+            </Typography>
+          </Box>
+        </Box>
       </Box>
-    </Box>
+
+      <Box
+        padding="0 40px"
+        width="220px"
+        height="517px"
+        borderRadius="19px"
+        border="1px solid #BCBCBC"
+        sx={{ background: "#fff", position: "relative" }}
+      >
+        <Typography
+          letterSpacing="0.1px"
+          fontWeight={500}
+          lineHeight={1.2}
+          marginTop="40px"
+          fontFamily="System-ui"
+          fontSize="34px"
+        >
+          Avançado
+        </Typography>
+        <Typography
+          fontFamily="System-ui"
+          fontWeight={300}
+          fontSize="14px"
+          marginTop="10px"
+        >
+          Ideal para Beach Clubs, proporcione a melhor experiência para o seu
+          cliente.
+        </Typography>
+        <Box display="flex" alignItems="center" marginTop="25px">
+          <Typography
+            color="#226FE2"
+            fontFamily="System-ui"
+            fontWeight={400}
+            fontSize="22px"
+          >
+            R$
+          </Typography>
+          <Typography
+            color="#226FE2"
+            fontFamily="System-ui"
+            fontWeight={600}
+            marginLeft="8px"
+            marginTop="-10px"
+            fontSize="46px"
+          >
+            69,90
+          </Typography>
+        </Box>
+        <Typography
+          color="#22303E"
+          fontFamily="System-ui"
+          fontWeight={300}
+          fontSize="16px"
+        >
+          Com 7 dias de teste <strong>grátis</strong>
+        </Typography>
+        <Box display="flex" alignItems="center" gap="8px" marginTop="25px">
+          <img src={Right} alt="Correto" style={{ width: "22px" }} />
+          <Typography
+            color="#22303E"
+            fontFamily="System-ui"
+            fontWeight={300}
+            fontSize="14px"
+          >
+            <strong>3 quadras </strong> cadastradas
+          </Typography>
+        </Box>
+        <Box display="flex" alignItems="center" gap="8px">
+          <img src={Right} alt="Correto" style={{ width: "22px" }} />
+          <Typography
+            color="#22303E"
+            fontFamily="System-ui"
+            fontWeight={300}
+            fontSize="14px"
+            width="260px"
+          >
+            <strong>Plataforma personalizada</strong>
+          </Typography>
+        </Box>
+        <Box display="flex" alignItems="center" gap="8px">
+          <img src={Right} alt="Correto" style={{ width: "22px" }} />
+          <Typography
+            color="#22303E"
+            fontFamily="System-ui"
+            fontWeight={300}
+            fontSize="14px"
+            width="260px"
+          >
+            <strong>Agendamento programado</strong>
+          </Typography>
+        </Box>
+        <Box
+          display="flex"
+          justifyContent="center"
+          gap="8px"
+          sx={{
+            position: "absolute",
+            bottom: "40px",
+            width: "100%",
+            left: "50%",
+            transform: "translateX(-50%)",
+          }}
+        >
+          <Box
+            sx={{
+              background: "linear-gradient(to right, #226FE2, #0033FF)",
+              color: "#fff",
+              padding: "7px 60px",
+              borderRadius: "43px",
+              cursor: "pointer",
+            }}
+            onClick={() => redirectToWhatsApp(1)}
+          >
+            <Typography fontFamily="System-ui" fontWeight={600} fontSize="14px">
+              Teste grátis
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+      <Box
+        padding="0 40px"
+        width="220px"
+        height="517px"
+        borderRadius="19px"
+        border="1px solid #BCBCBC"
+        color="#fff"
+        sx={{ background: "#226FE2", position: "relative" }}
+      >
+        <Typography
+          letterSpacing="0.1px"
+          fontWeight={500}
+          lineHeight={1.2}
+          marginTop="40px"
+          fontFamily="System-ui"
+          fontSize="34px"
+        >
+          Pro
+        </Typography>
+        <Typography
+          fontFamily="System-ui"
+          fontWeight={300}
+          fontSize="14px"
+          marginTop="10px"
+        >
+          Ideal para Beach Clubs, proporcione a melhor experiência para o seu
+          cliente.
+        </Typography>
+        <Box display="flex" alignItems="center" marginTop="25px">
+          <Typography
+            color="#fff"
+            fontFamily="System-ui"
+            fontWeight={400}
+            fontSize="22px"
+          >
+            R$
+          </Typography>
+          <Typography
+            color="#fff"
+            fontFamily="System-ui"
+            fontWeight={600}
+            marginLeft="8px"
+            marginTop="-10px"
+            fontSize="46px"
+          >
+            149,90
+          </Typography>
+        </Box>
+        <Typography
+          color="#fff"
+          fontFamily="System-ui"
+          fontWeight={300}
+          fontSize="16px"
+        >
+          Com 7 dias de teste <strong>grátis</strong>
+        </Typography>
+        <Box display="flex" alignItems="center" gap="8px" marginTop="25px">
+          <img src={RightWhite} alt="Correto" style={{ width: "22px" }} />
+          <Typography
+            color="#fff"
+            fontFamily="System-ui"
+            fontWeight={300}
+            fontSize="14px"
+          >
+            <strong>8 quadras </strong> cadastradas
+          </Typography>
+        </Box>
+        <Box display="flex" alignItems="center" gap="8px">
+          <img src={RightWhite} alt="Correto" style={{ width: "22px" }} />
+          <Typography
+            color="#fff"
+            fontFamily="System-ui"
+            fontWeight={300}
+            fontSize="14px"
+            width="260px"
+          >
+            <strong>Plataforma personalizada</strong>
+          </Typography>
+        </Box>
+        <Box display="flex" alignItems="center" gap="8px">
+          <img src={RightWhite} alt="Correto" style={{ width: "22px" }} />
+          <Typography
+            color="#fff"
+            fontFamily="System-ui"
+            fontWeight={300}
+            fontSize="14px"
+            width="260px"
+          >
+            <strong>Agendamento programado</strong>
+          </Typography>
+        </Box>
+        <Box
+          display="flex"
+          justifyContent="center"
+          gap="8px"
+          sx={{
+            position: "absolute",
+            bottom: "40px",
+            width: "100%",
+            left: "50%",
+            transform: "translateX(-50%)",
+          }}
+        >
+          <Box
+            sx={{
+              background: "#fff",
+              color: "#226FE2",
+              padding: "7px 60px",
+              borderRadius: "43px",
+              cursor: "pointer",
+            }}
+            onClick={() => redirectToWhatsApp(2)}
+          >
+            <Typography fontFamily="System-ui" fontWeight={600} fontSize="14px">
+              Teste grátis
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+    </>
   );
 };
 

@@ -64,7 +64,7 @@ const SignUp = () => {
         <img
           src={Logo}
           alt="Anota Logo"
-          style={{ width: "170px", height: "170px", margin: "0 auto" }}
+          style={{ width: "280px", height: "170px", margin: "0 auto" }}
         />
         <FormControl>
           <FormLabel>Nome da Empresa</FormLabel>
@@ -143,9 +143,9 @@ const SignUp = () => {
           fullWidth
           variant="contained"
           sx={{
-            background: colors.green,
+            background: colors.blue,
             "&.Mui-disabled": {
-              background: colors.green,
+              background: colors.blue,
               color: "#ffffff",
               opacity: 0.8,
             },
@@ -165,7 +165,7 @@ const SignUp = () => {
         <Button
           fullWidth
           variant="text"
-          sx={{ marginTop: 2, color: colors.green, fontWeight: 550 }}
+          sx={{ marginTop: 2, color: colors.blue, fontWeight: 550 }}
           onClick={() => navigate("/login")}
         >
           Voltar para Login

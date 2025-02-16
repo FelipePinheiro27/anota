@@ -159,9 +159,9 @@ const DetailsCourtModal = ({
               variant="contained"
               disabled={isDisabled}
               sx={{
-                background: colors.green,
+                background: colors.blue,
                 "&.Mui-disabled": {
-                  background: colors.green,
+                  background: colors.blue,
                   color: "#ffffff",
                   opacity: 0.8,
                 },
