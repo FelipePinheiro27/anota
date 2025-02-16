@@ -23,7 +23,7 @@ const PlansTextInfo = ({ scrollToPricing }: PlansTextInfoProps) => {
           fontWeight={600}
           lineHeight={1.1}
           color="#22303E"
-          maxWidth={isMobile ? "90%" : "400px"}
+          maxWidth={isMobile ? "100%" : "400px"}
           fontFamily="sans-serif"
           fontSize={isMobile ? "28px" : "67px"}
           textAlign={isMobile ? "center" : "left"}
