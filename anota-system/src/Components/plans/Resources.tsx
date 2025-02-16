@@ -42,7 +42,7 @@ const Resources = () => {
       aria-labelledby="resources-title"
     >
       <Box
-        padding={isMobile ? "20px 10px" : "50px 120px"}
+        padding={isMobile ? "20px 10px" : "0px 120px"}
         sx={{
           color: "#22303E",
           margin: "0 auto",

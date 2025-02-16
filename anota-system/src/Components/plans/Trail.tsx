@@ -153,7 +153,7 @@ const Trail = () => {
               sx={{
                 position: "relative",
                 zIndex: 2,
-                width: isMobile ? "310px" : "580px",
+                width: isMobile ? "310px" : "540px",
                 marginTop: isMobile ? "60px" : 0,
                 borderRadius: 2,
               }}
