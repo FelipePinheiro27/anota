@@ -36,7 +36,7 @@ const Pricing = forwardRef((_, ref) => {
               component="h2"
               letterSpacing="0.1px"
               fontFamily="sans-serif"
-              fontWeight={500}
+              fontWeight={600}
               lineHeight={1.2}
               fontSize={isMobile ? "28px" : "54px"}
             >

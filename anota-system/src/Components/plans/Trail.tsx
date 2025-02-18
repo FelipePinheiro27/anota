@@ -108,7 +108,7 @@ const Trail = () => {
                     <Typography
                       component="h3"
                       color="#22303E"
-                      fontWeight={400}
+                      fontWeight={600}
                       letterSpacing={1.6}
                       fontFamily="sans-serif"
                       fontSize={isMobile ? "14px" : "20px"}

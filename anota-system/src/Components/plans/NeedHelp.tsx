@@ -28,7 +28,7 @@ const NeedHelp = () => {
           <h2
             style={{
               letterSpacing: "0.1px",
-              fontWeight: 500,
+              fontWeight: 600,
               lineHeight: 1.1,
               fontSize: isMobile ? "32px" : "60px",
               fontFamily: "sans-serif",
@@ -58,7 +58,7 @@ const NeedHelp = () => {
         <br />
         <MoreInfo
           title="Quais as formas de pagamento?"
-          description="Aceitamos pagamentos via cartão de crédito e Pix. Você pode escolher a melhor opção para você."
+          description="Aceitamos pagamentos via cartão de crédito e Pix. Escolha a melhor opção para você."
         />
         <br />
         <MoreInfo

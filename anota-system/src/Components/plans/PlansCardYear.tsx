@@ -30,7 +30,7 @@ const PlansCardYear = () => {
       >
         <Typography
           letterSpacing="0.1px"
-          fontWeight={500}
+          fontWeight={600}
           lineHeight={1.2}
           fontFamily="sans-serif"
           fontSize="34px"
@@ -71,9 +71,9 @@ const PlansCardYear = () => {
           color="#22303E"
           fontFamily="sans-serif"
           fontWeight={300}
-          fontSize="16px"
+          fontSize="14px"
         >
-          Com 7 dias de teste <strong>grátis</strong>
+          R$ 419,00 ao ano em até 12x no cartão
         </Typography>
 
         <Box display="flex" alignItems="center" gap="8px" marginTop="25px">
@@ -144,7 +144,7 @@ const PlansCardYear = () => {
       >
         <Typography
           letterSpacing="0.1px"
-          fontWeight={500}
+          fontWeight={600}
           lineHeight={1.2}
           marginTop="40px"
           fontFamily="sans-serif"
@@ -185,9 +185,9 @@ const PlansCardYear = () => {
           color="#22303E"
           fontFamily="sans-serif"
           fontWeight={300}
-          fontSize="16px"
+          fontSize="14px"
         >
-          Com 7 dias de teste <strong>grátis</strong>
+          R$ 599,00 ao ano em até 12x no cartão
         </Typography>
         <Box display="flex" alignItems="center" gap="8px" marginTop="25px">
           <img src={Right} alt="Correto" style={{ width: "22px" }} />
@@ -267,7 +267,7 @@ const PlansCardYear = () => {
       >
         <Typography
           letterSpacing="0.1px"
-          fontWeight={500}
+          fontWeight={600}
           lineHeight={1.2}
           marginTop="40px"
           fontFamily="sans-serif"
@@ -308,9 +308,9 @@ const PlansCardYear = () => {
           color="#fff"
           fontFamily="sans-serif"
           fontWeight={300}
-          fontSize="16px"
+          fontSize="14px"
         >
-          Com 7 dias de teste <strong>grátis</strong>
+          R$ 1.259,00 ao ano em até 12x no cartão
         </Typography>
         <Box display="flex" alignItems="center" gap="8px" marginTop="25px">
           <img src={RightWhite} alt="Correto" style={{ width: "22px" }} />

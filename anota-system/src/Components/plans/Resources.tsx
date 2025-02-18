@@ -58,12 +58,12 @@ const Resources = () => {
           }}
         >
           <Typography
-            width={isMobile ? "100%" : "65%"}
+            width={isMobile ? "100%" : "70%"}
             marginTop={isMobile ? "40px" : "80px"}
             id="resources-title"
             component="h2"
             letterSpacing="0.1px"
-            fontWeight={500}
+            fontWeight={600}
             lineHeight={1.2}
             fontFamily="sans-serif"
             fontSize={isMobile ? "28px" : "57px"}
@@ -129,7 +129,7 @@ const Resources = () => {
                     id={`feature-title-${index}`}
                     component="h3"
                     letterSpacing="0.1px"
-                    fontWeight={500}
+                    fontWeight={600}
                     lineHeight={1.3}
                     fontFamily="sans-serif"
                     fontSize={isMobile ? "20px" : "26px"}

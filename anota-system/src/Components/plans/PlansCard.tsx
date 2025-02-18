@@ -30,7 +30,7 @@ const PlansCard = () => {
       >
         <Typography
           letterSpacing="0.1px"
-          fontWeight={500}
+          fontWeight={600}
           lineHeight={1.2}
           fontFamily="sans-serif"
           fontSize="34px"
@@ -144,7 +144,7 @@ const PlansCard = () => {
       >
         <Typography
           letterSpacing="0.1px"
-          fontWeight={500}
+          fontWeight={600}
           lineHeight={1.2}
           marginTop="40px"
           fontFamily="sans-serif"
@@ -267,7 +267,7 @@ const PlansCard = () => {
       >
         <Typography
           letterSpacing="0.1px"
-          fontWeight={500}
+          fontWeight={600}
           lineHeight={1.2}
           marginTop="40px"
           fontFamily="sans-serif"
