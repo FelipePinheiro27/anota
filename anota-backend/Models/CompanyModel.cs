@@ -15,6 +15,7 @@ public class CompanyModel
     public string primaryColor { get; set; }
     public string SecondaryColor { get; set; }
     public bool IsPaid { get; set; }
+    public string Plan { get; set; }
 
     public bool isValidPass(string pass)
     {
