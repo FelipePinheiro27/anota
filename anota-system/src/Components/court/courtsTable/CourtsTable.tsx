@@ -7,22 +7,12 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  useMediaQuery,
+  Box,
+  Typography,
 } from "@mui/material";
 import { CourtTypes } from "../../../types/generalTypes";
 import DetailsCourt from "../detailsCourt/DetailsCourt";
-
-interface Column {
-  id: "name" | "description" | "detail";
-  label: string;
-  minWidth?: number;
-  align?: "right";
-}
-
-const columns: readonly Column[] = [
-  { id: "name", label: "Nome", minWidth: 140 },
-  { id: "description", label: "Descrição", minWidth: 140 },
-  { id: "detail", label: "", minWidth: 100 },
-];
 
 interface CourtsTableProps {
   courts: CourtTypes[];
@@ -30,55 +20,57 @@ interface CourtsTableProps {
 }
 
 const CourtsTable = ({ courts, refetchCourts }: CourtsTableProps) => {
+  const isMobile = useMediaQuery("(max-width:600px)");
+
+  if (isMobile) {
+    return (
+      <Box marginTop="40px" textAlign="center">
+        {courts.map((court, index) => (
+          <Paper
+            key={index}
+            sx={{
+              p: 3,
+              mb: 2,
+              boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+              marginBottom: "40px",
+            }}
+          >
+            <Typography variant="h5" fontWeight={600}>
+              {court.name}
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              {court.description}
+            </Typography>
+            <Box sx={{ mt: 1, color: "blue", cursor: "pointer" }}>
+              <DetailsCourt court={court} refetchCourts={refetchCourts} />
+            </Box>
+          </Paper>
+        ))}
+      </Box>
+    );
+  }
+
   return (
     <Paper>
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth, fontWeight: 600 }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
+              <TableCell style={{ fontWeight: 600 }}>Nome</TableCell>
+              <TableCell style={{ fontWeight: 600 }}>Descrição</TableCell>
+              <TableCell style={{ fontWeight: 600 }}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {courts.map(
-              (
-                row: { [x: string]: any },
-                index: React.Key | null | undefined
-              ) => (
-                <TableRow hover tabIndex={-1} key={index}>
-                  {columns.map((column) => {
-                    const value = row[column.id];
-                    if (column.id === "detail")
-                      return (
-                        <TableCell
-                          key={column.id}
-                          align={column.align}
-                          sx={{ color: "blue", cursor: "pointer" }}
-                        >
-                          <DetailsCourt
-                            court={row as CourtTypes}
-                            refetchCourts={refetchCourts}
-                          />
-                        </TableCell>
-                      );
-
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {value}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              )
-            )}
+            {courts.map((court, index) => (
+              <TableRow hover tabIndex={-1} key={index}>
+                <TableCell>{court.name}</TableCell>
+                <TableCell>{court.description}</TableCell>
+                <TableCell sx={{ color: "blue", cursor: "pointer" }}>
+                  <DetailsCourt court={court} refetchCourts={refetchCourts} />
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>

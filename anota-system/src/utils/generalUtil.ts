@@ -29,3 +29,12 @@ export const formatTime = (dateStr: string) => {
 
   return `${hours}:${minutes}`;
 };
+
+export const getCompanyData = () => {
+  const value = localStorage.getItem("userSession");
+  const companyData: { companyId?: string | number } = value
+    ? JSON.parse(value)
+    : {};
+
+  return companyData;
+};
