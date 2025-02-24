@@ -14,6 +14,7 @@ import {
   createOrUpdateReservationsConfigByCourtId,
   retrieveReservationsConfigByCourtId,
 } from "../../../api/ReservationsConfig";
+import useIsMobile from "../../../hooks/useIsMobile";
 
 interface ModalConfigScheduleCourtProps {
   closeModal: () => void;
@@ -44,6 +45,7 @@ const ModalConfigScheduleCourt = ({
   const [reservationsConfig, setReservationsConfig] = useState<
     ConfigReservations[]
   >([]);
+  const isMobile = useIsMobile();
 
   const onEditScheduleCourt = async () => {
     setLoading(true);
@@ -77,6 +79,7 @@ const ModalConfigScheduleCourt = ({
             sx={{ fontWeight: 600, letterSpacing: "0.2" }}
             fontSize="18px"
             color="#22303E"
+            paddingTop={isMobile ? "50px" : ""}
           >
             Editar Horários
           </Typography>
