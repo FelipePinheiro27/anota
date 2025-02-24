@@ -4,12 +4,17 @@ import api from "./api";
 export const retrieveReservationsConfigByCourtId = async (
   courtId: number | string
 ) => {
-  const { data } =
-    (await api.get<ConfigReservations[]>(
-      `/ReservationConfig/court/${courtId}`
-    )) || [];
+  try {
+    const { data } =
+      (await api.get<ConfigReservations[]>(
+        `/ReservationConfig/court/${courtId}`
+      )) || [];
 
-  return data;
+    return data;
+  } catch (err: any) {
+    console.error(err);
+    return false;
+  }
 };
 
 export const createOrUpdateReservationsConfigByCourtId = async (

@@ -94,3 +94,11 @@ export type ConfigReservations = {
   end_time: string;
   court_id: number | string;
 };
+
+export type CreateCourtPayloadType = {
+  company_id: number | string;
+  name: string;
+  modality: number;
+  description: string;
+  image_url: string;
+};
