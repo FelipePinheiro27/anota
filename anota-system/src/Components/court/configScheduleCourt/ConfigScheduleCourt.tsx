@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
 import { CourtTypes } from "../../../types/generalTypes";
-import DetailsCourtModal from "../../detailsCourtModal/DetailsCourtModal";
 import useIsMobile from "../../../hooks/useIsMobile";
+import { colors } from "../../../constants/Colors";
+import ModalConfigScheduleCourt from "../modalConfigScheduleCourt/ModalConfigScheduleCourt";
 
-interface DetailsCourtProps {
+interface ConfigScheduleCourtProps {
   court: CourtTypes;
   refetchCourts: () => Promise<void>;
 }
 
-const DetailsCourt = ({ court, refetchCourts }: DetailsCourtProps) => {
+const ConfigScheduleCourt = ({
+  court,
+  refetchCourts,
+}: ConfigScheduleCourtProps) => {
   const [open, setOpen] = useState(false);
   const isMobile = useIsMobile();
 
@@ -21,24 +25,23 @@ const DetailsCourt = ({ court, refetchCourts }: DetailsCourtProps) => {
         sx={{
           marginTop: { xs: "16px" },
           padding: { xs: "6px 40px", md: "12px 30px" },
-          background: "#226FE2",
+          background: colors.darkBlue,
           fontWeight: 600,
           textTransform: "capitalize",
         }}
         onClick={() => setOpen(true)}
       >
-        Editar Descrição
+        Editar Horários
       </Button>
       {open && (
-        <DetailsCourtModal
-          open={open}
+        <ModalConfigScheduleCourt
           closeModal={() => setOpen(false)}
-          court={court}
           refetchCourts={refetchCourts}
+          court={court}
         />
       )}
     </>
   );
 };
 
-export default DetailsCourt;
+export default ConfigScheduleCourt;
