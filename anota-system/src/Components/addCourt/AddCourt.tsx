@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Box,
   Button,
+  CircularProgress,
   colors,
   FormControl,
   FormLabel,
@@ -16,6 +17,7 @@ import { createCourt } from "../../api/CourtAPI";
 
 interface AddCourtProps {
   closeModal: () => void;
+  fetchCourts: () => Promise<void>;
 }
 
 const style = {
@@ -34,11 +36,12 @@ const style = {
 
 const DEFAULT_MODALITY = 0;
 
-const AddCourt = ({ closeModal }: AddCourtProps) => {
+const AddCourt = ({ closeModal, fetchCourts }: AddCourtProps) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const isDisabled = name === "" || description === "";
+  const isDisabled = name === "" || description === "" || loading;
 
   const { companyId } = getCompanyData();
 
@@ -52,16 +55,22 @@ const AddCourt = ({ closeModal }: AddCourtProps) => {
 
   const onSaveCourt = async () => {
     if (companyId) {
-      const data: CreateCourtPayloadType = {
-        company_id: companyId,
-        description: description,
-        name: name,
-        modality: DEFAULT_MODALITY,
-        image_url: "",
-      };
+      setLoading(true);
+      try {
+        const data: CreateCourtPayloadType = {
+          company_id: companyId,
+          description: description,
+          name: name,
+          modality: DEFAULT_MODALITY,
+          image_url: "",
+        };
 
-      await createCourt(data);
-      closeModal();
+        await createCourt(data);
+        await fetchCourts();
+        closeModal();
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -91,6 +100,7 @@ const AddCourt = ({ closeModal }: AddCourtProps) => {
               required
               fullWidth
               variant="outlined"
+              disabled={loading}
             />
           </FormControl>
           <FormControl>
@@ -102,6 +112,7 @@ const AddCourt = ({ closeModal }: AddCourtProps) => {
               required
               fullWidth
               variant="outlined"
+              disabled={loading}
             />
           </FormControl>
           <br />
@@ -115,6 +126,7 @@ const AddCourt = ({ closeModal }: AddCourtProps) => {
                 fontWeight: 550,
               }}
               onClick={closeModal}
+              disabled={loading}
             >
               Cancelar
             </Button>
@@ -134,7 +146,11 @@ const AddCourt = ({ closeModal }: AddCourtProps) => {
               }}
               onClick={onSaveCourt}
             >
-              Cadastrar
+              {loading ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : (
+                "Cadastrar"
+              )}
             </Button>
           </Box>
         </Stack>

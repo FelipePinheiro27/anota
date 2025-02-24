@@ -54,7 +54,12 @@ const CompanyCourts = () => {
           <CourtsTable courts={courts} refetchCourts={fetchCourts} />
         )}
       </Box>
-      {openAddCourt && <AddCourt closeModal={() => setOpenAddCourt(false)} />}
+      {openAddCourt && (
+        <AddCourt
+          closeModal={() => setOpenAddCourt(false)}
+          fetchCourts={fetchCourts}
+        />
+      )}
     </Box>
   );
 };

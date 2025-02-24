@@ -8,6 +8,7 @@ import {
   FormControl,
   FormLabel,
   TextField,
+  CircularProgress,
 } from "@mui/material";
 
 import {
@@ -56,6 +57,7 @@ const DetailsCourtModal = ({
   const [reservationsConfig, setReservationsConfig] = useState<
     ConfigReservations[]
   >([]);
+  const [loading, setLoading] = useState(false);
 
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -66,6 +68,7 @@ const DetailsCourtModal = ({
   };
 
   const onEditCourt = async () => {
+    setLoading(true);
     const data: CourtPayloadType = {
       courtId: court.courtId,
       company_id: court.companyId,
@@ -77,15 +80,16 @@ const DetailsCourtModal = ({
     await updateCourt(data);
     await createOrUpdateReservationsConfigByCourtId(reservationsConfig);
     await refetchCourts();
+    setLoading(false);
     closeModal();
   };
 
-  const isDisabled = name === "" || description === "";
+  const isDisabled = name === "" || description === "" || loading;
 
   useEffect(() => {
     const fetchReservationsConfig = async () => {
       const data = await retrieveReservationsConfigByCourtId(court.courtId);
-      setReservationsConfig(data);
+      setReservationsConfig(data || []);
     };
 
     fetchReservationsConfig();
@@ -118,6 +122,7 @@ const DetailsCourtModal = ({
               required
               fullWidth
               variant="outlined"
+              disabled={loading}
             />
           </FormControl>
           <FormControl>
@@ -129,6 +134,7 @@ const DetailsCourtModal = ({
               required
               fullWidth
               variant="outlined"
+              disabled={loading}
             />
           </FormControl>
           <br />
@@ -150,6 +156,7 @@ const DetailsCourtModal = ({
                 fontWeight: 550,
               }}
               onClick={closeModal}
+              disabled={loading}
             >
               Cancelar
             </Button>
@@ -169,7 +176,11 @@ const DetailsCourtModal = ({
               }}
               onClick={onEditCourt}
             >
-              Salvar
+              {loading ? (
+                <CircularProgress size={24} sx={{ color: "white" }} />
+              ) : (
+                "Salvar"
+              )}
             </Button>
           </Box>
         </Stack>
