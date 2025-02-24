@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Modal,
   Typography,
   Stack,
   Button,
-  FormControl,
-  FormLabel,
-  TextField,
   CircularProgress,
+  colors,
 } from "@mui/material";
-import { CourtPayloadType, CourtTypes } from "../../types/generalTypes";
-import { colors } from "../../constants/Colors";
-import { updateCourt } from "../../api/CourtAPI";
+import { ConfigReservations, CourtTypes } from "../../../types/generalTypes";
+import ScheduleEdit from "../../scheduleEdit/ScheduleEdit";
+import {
+  createOrUpdateReservationsConfigByCourtId,
+  retrieveReservationsConfigByCourtId,
+} from "../../../api/ReservationsConfig";
 
-interface DetailsCourtModalProps {
-  open: boolean;
+interface ModalConfigScheduleCourtProps {
   closeModal: () => void;
   court: CourtTypes;
   refetchCourts: () => Promise<void>;
@@ -35,45 +35,38 @@ const style = {
   maxHeight: "90vh",
 };
 
-const DetailsCourtModal = ({
-  court,
-  open,
-  closeModal,
+const ModalConfigScheduleCourt = ({
   refetchCourts,
-}: DetailsCourtModalProps) => {
-  const [name, setName] = useState(court.name);
-  const [description, setDescription] = useState(court.description);
+  closeModal,
+  court,
+}: ModalConfigScheduleCourtProps) => {
   const [loading, setLoading] = useState(false);
+  const [reservationsConfig, setReservationsConfig] = useState<
+    ConfigReservations[]
+  >([]);
 
-  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-  };
-
-  const onChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDescription(e.target.value);
-  };
-
-  const onEditCourt = async () => {
+  const onEditScheduleCourt = async () => {
     setLoading(true);
-    const data: CourtPayloadType = {
-      courtId: court.courtId,
-      company_id: court.companyId,
-      description: description,
-      name: name,
-      modality: court.modality,
-    };
 
-    await updateCourt(data);
+    await createOrUpdateReservationsConfigByCourtId(reservationsConfig);
     await refetchCourts();
     setLoading(false);
     closeModal();
   };
 
-  const isDisabled = name === "" || description === "" || loading;
+  useEffect(() => {
+    const fetchReservationsConfig = async () => {
+      const data = await retrieveReservationsConfigByCourtId(court.courtId);
+      setReservationsConfig(data || []);
+    };
+
+    fetchReservationsConfig();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Modal
-      open={open}
+      open
       onClose={closeModal}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -85,35 +78,16 @@ const DetailsCourtModal = ({
             fontSize="18px"
             color="#22303E"
           >
-            Editar Quadra
+            Editar Horários
           </Typography>
-
-          <FormControl>
-            <FormLabel>Nome</FormLabel>
-            <TextField
-              id="name"
-              value={name}
-              onChange={onChangeName}
-              required
-              fullWidth
-              variant="outlined"
-              disabled={loading}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Descrição</FormLabel>
-            <TextField
-              id="description"
-              value={description}
-              onChange={onChangeDescription}
-              required
-              fullWidth
-              variant="outlined"
-              disabled={loading}
-            />
-          </FormControl>
           <br />
-          <Box sx={{ display: "flex", gap: 2 }}>
+          <ScheduleEdit
+            reservationsConfig={reservationsConfig}
+            setReservationsConfig={setReservationsConfig}
+            courtId={court.courtId}
+          />
+          <br />
+          <Box sx={{ display: "flex", gap: 2, paddingBottom: "80px" }}>
             <Button
               variant="contained"
               fullWidth
@@ -131,7 +105,6 @@ const DetailsCourtModal = ({
               type="submit"
               fullWidth
               variant="contained"
-              disabled={isDisabled}
               sx={{
                 background: colors.blue,
                 "&.Mui-disabled": {
@@ -141,7 +114,7 @@ const DetailsCourtModal = ({
                 },
                 fontWeight: 550,
               }}
-              onClick={onEditCourt}
+              onClick={onEditScheduleCourt}
             >
               {loading ? (
                 <CircularProgress size={24} sx={{ color: "white" }} />
@@ -156,4 +129,4 @@ const DetailsCourtModal = ({
   );
 };
 
-export default DetailsCourtModal;
+export default ModalConfigScheduleCourt;

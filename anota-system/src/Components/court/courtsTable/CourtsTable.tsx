@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { CourtTypes } from "../../../types/generalTypes";
 import DetailsCourt from "../detailsCourt/DetailsCourt";
+import ConfigScheduleCourt from "../configScheduleCourt/ConfigScheduleCourt";
 
 interface CourtsTableProps {
   courts: CourtTypes[];
@@ -44,6 +45,19 @@ const CourtsTable = ({ courts, refetchCourts }: CourtsTableProps) => {
             <Box sx={{ mt: 1, color: "blue", cursor: "pointer" }}>
               <DetailsCourt court={court} refetchCourts={refetchCourts} />
             </Box>
+            <Box
+              sx={{
+                mt: 1,
+                color: "blue",
+                cursor: "pointer",
+                marginTop: "-5px",
+              }}
+            >
+              <ConfigScheduleCourt
+                court={court}
+                refetchCourts={refetchCourts}
+              />
+            </Box>
           </Paper>
         ))}
       </Box>
@@ -66,8 +80,21 @@ const CourtsTable = ({ courts, refetchCourts }: CourtsTableProps) => {
               <TableRow hover tabIndex={-1} key={index}>
                 <TableCell>{court.name}</TableCell>
                 <TableCell>{court.description}</TableCell>
-                <TableCell sx={{ color: "blue", cursor: "pointer" }}>
-                  <DetailsCourt court={court} refetchCourts={refetchCourts} />
+                <TableCell>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      gap: "20px",
+                    }}
+                  >
+                    <DetailsCourt court={court} refetchCourts={refetchCourts} />
+                    <ConfigScheduleCourt
+                      court={court}
+                      refetchCourts={refetchCourts}
+                    />
+                  </Box>
                 </TableCell>
               </TableRow>
             ))}

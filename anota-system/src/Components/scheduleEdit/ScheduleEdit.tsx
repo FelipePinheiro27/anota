@@ -74,6 +74,7 @@ const ScheduleEdit = ({
               <Typography variant="h6" gutterBottom>
                 {day}
               </Typography>
+              <br />
               <Box
                 sx={{
                   display: "flex",
@@ -82,13 +83,14 @@ const ScheduleEdit = ({
                 }}
               >
                 <TextField
-                  label="Horário de início"
+                  label="Abertura Quadra"
                   type="time"
                   value={data?.start_time || ""}
                   onChange={(e) =>
                     handleChange(index, "start_time", e.target.value + ":00")
                   }
                   fullWidth
+                  sx={{ textAlign: "left" }}
                   InputLabelProps={{ shrink: true }}
                   InputProps={{
                     sx: { textAlign: "left", "& input": { textAlign: "left" } },
@@ -96,16 +98,14 @@ const ScheduleEdit = ({
                 />
 
                 <TextField
-                  label="Horário Final"
+                  label="Fechamento Quadra"
                   type="time"
-                  value={data?.end_time || ""}
+                  value={data?.end_time || null}
+                  sx={{ textAlign: "left" }}
                   onChange={(e) =>
                     handleChange(index, "end_time", e.target.value + ":00")
                   }
                   fullWidth
-                  InputProps={{
-                    sx: { textAlign: "left", "& input": { textAlign: "left" } },
-                  }}
                   InputLabelProps={{ shrink: true }}
                 />
                 <TextField
