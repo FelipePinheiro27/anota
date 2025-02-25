@@ -1,6 +1,19 @@
 import { CompanyFormType, CompanyType } from "../types/generalTypes";
 import api from "./api";
 
+export const getCompanyById = async (
+  id: string
+): Promise<CompanyType | null> => {
+  try {
+    const { data } = await api.get<CompanyType | null>(`/Companies/${id}`);
+
+    return data;
+  } catch (error: any) {
+    console.error(error.response?.data?.message || "Erro ao resgatar empresa");
+    return null;
+  }
+};
+
 export const getCompanyByPathRouteKey = async (
   pathRouteKey: string
 ): Promise<CompanyType | null> => {
@@ -11,7 +24,7 @@ export const getCompanyByPathRouteKey = async (
 
     return data;
   } catch (error: any) {
-    console.error(error.response?.data?.message || "Erro ao acessar empresa");
+    console.error(error.response?.data?.message || "Erro ao trazer empresa");
     return null;
   }
 };

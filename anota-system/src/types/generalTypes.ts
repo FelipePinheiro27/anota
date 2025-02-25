@@ -65,6 +65,7 @@ export type CompanyType = {
   primaryColor: string;
   secondaryColor: string;
   pathRouteKey: string;
+  plan: "BASICO" | "AVANCADO" | "PRO" | "";
 };
 
 export type CompanyFormType = {
