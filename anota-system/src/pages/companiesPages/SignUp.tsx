@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
+import CircularProgress from "@mui/material/CircularProgress";
 import Logo from "../../images/logo_anota.svg";
 import { colors } from "../../constants/Colors";
 import { CardComponent } from "../../Components/card/Card";
@@ -21,10 +22,12 @@ const SignUp = () => {
     primaryColor: "",
     secondaryColor: "",
     isPaid: false,
+    plan: "",
   });
   const [confirmPass, setConfirmPass] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [isCreated, setIsCreated] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,8 +46,13 @@ const SignUp = () => {
       return;
     }
 
-    const isCompayCreated = await createCompany(companyForm);
-    setIsCreated(isCompayCreated);
+    setLoading(true);
+    try {
+      const isCompanyCreated = await createCompany(companyForm);
+      setIsCreated(isCompanyCreated);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onCloseConfirmationModal = () => {
@@ -153,6 +161,7 @@ const SignUp = () => {
           }}
           onClick={handleSubmit}
           disabled={
+            loading ||
             passwordError ||
             !companyForm.user ||
             !companyForm.email ||
@@ -160,7 +169,11 @@ const SignUp = () => {
             !confirmPass
           }
         >
-          Criar Empresa
+          {loading ? (
+            <CircularProgress size={24} sx={{ color: "white" }} />
+          ) : (
+            "Criar Empresa"
+          )}
         </Button>
         <Button
           fullWidth

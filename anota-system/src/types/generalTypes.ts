@@ -76,6 +76,7 @@ export type CompanyFormType = {
   primaryColor: string;
   secondaryColor: string;
   isPaid: boolean;
+  plan: string;
 };
 
 export type CourtPayloadType = {
