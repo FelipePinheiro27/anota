@@ -22,28 +22,10 @@ export const useClientReservation = () => {
     setScheduledTime(data);
   };
 
-  const fetchCompany = async (
-    dynamicPath: string,
-    maxRetries = 4,
-    delay = 2000
-  ) => {
-    let attempts = 0;
+  const fetchCompany = async (dynamicPath: string) => {
+    const data = await getCompanyByPathRouteKey(dynamicPath);
 
-    while (attempts < maxRetries) {
-      const data = await getCompanyByPathRouteKey(dynamicPath);
-      if (!data) {
-        attempts++;
-        if (attempts >= maxRetries) {
-          return;
-        }
-
-        await new Promise((resolve) => setTimeout(resolve, delay));
-      } else {
-        setCompany(data);
-
-        return;
-      }
-    }
+    setCompany(data);
   };
 
   return {

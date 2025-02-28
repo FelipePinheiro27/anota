@@ -22,7 +22,7 @@ const SignUp = () => {
     primaryColor: "",
     secondaryColor: "",
     isPaid: false,
-    plan: "",
+    plan: "AVANCADO",
   });
   const [confirmPass, setConfirmPass] = useState("");
   const [passwordError, setPasswordError] = useState(false);

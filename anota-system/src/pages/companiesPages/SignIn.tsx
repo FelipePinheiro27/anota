@@ -30,30 +30,26 @@ const SignIn = () => {
   };
 
   const onSubmitLogin = async () => {
+    if (user === "" || pass === "") {
+      setErrorMessage("Preencha todos os campos.");
+      return;
+    }
+
     setLoading(true);
     setErrorMessage("");
     try {
-      let attempts = 0;
+      const response = await login(user, pass);
 
-      while (attempts < 4) {
-        const response = await login(user, pass);
+      if (!response) {
+        setErrorMessage("Usuário ou senha inválidos.");
+        setLoading(false);
+        return;
+      } else {
+        localStorage.setItem("userSession", JSON.stringify(response));
 
-        if (!response) {
-          attempts++;
-          if (attempts >= 4) {
-            setErrorMessage("Usuário ou senha inválidos.");
-            setLoading(false);
-            return;
-          }
-
-          await new Promise((resolve) => setTimeout(resolve, 2000));
-        } else {
-          localStorage.setItem("userSession", JSON.stringify(response));
-
-          navigate("/empresa");
-          setLoading(false);
-          return;
-        }
+        navigate("/empresa");
+        setLoading(false);
+        return;
       }
     } catch (error) {
       console.error("Erro no login:", error);
