@@ -45,7 +45,7 @@ const Footer = () => {
             }}
           >
             <a
-              href="https://www.linkedin.com/anota_reservas"
+              href="https://www.linkedin.com/in/anota-reservas-2405ba354"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn da Anota Reservas"
