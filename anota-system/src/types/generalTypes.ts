@@ -65,6 +65,7 @@ export type CompanyType = {
   primaryColor: string;
   secondaryColor: string;
   pathRouteKey: string;
+  isPaid: boolean;
   plan: "BASICO" | "AVANCADO" | "PRO" | "";
 };
 

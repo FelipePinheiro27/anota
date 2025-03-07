@@ -138,6 +138,15 @@ namespace anota_backend.Controllers
                 return Unauthorized(new { message = "Senha incorreta.", success = false });
             }
 
+            if (company.IsPaid == false)
+            {
+                return Ok(new
+                {
+                    message = "Seu plano expirou. Renove sua assinatura para continuar acessando a plataforma.",
+                    success = false
+                });
+            }
+
             return Ok(new
             {
                 message = "Login realizado com sucesso.",

@@ -45,6 +45,12 @@ const SignIn = () => {
         setLoading(false);
         return;
       } else {
+        if (!response.success) {
+          setErrorMessage(response.message);
+          setLoading(false);
+
+          return;
+        }
         localStorage.setItem("userSession", JSON.stringify(response));
 
         navigate("/empresa");

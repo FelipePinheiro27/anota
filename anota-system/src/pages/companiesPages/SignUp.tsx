@@ -21,7 +21,7 @@ const SignUp = () => {
     pathRouteKey: "",
     primaryColor: "",
     secondaryColor: "",
-    isPaid: false,
+    isPaid: true,
     plan: "AVANCADO",
   });
   const [confirmPass, setConfirmPass] = useState("");
