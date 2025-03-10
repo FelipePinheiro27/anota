@@ -83,7 +83,7 @@ const Confirmation = () => {
 
   const date = useMemo(() => {
     const rawDate = scheduledTime?.date || "";
-    return new Date(`${rawDate}T00:00:00Z`); // Garante UTC
+    return new Date(`${rawDate}T10:00:00Z`);
   }, [scheduledTime?.date]);
 
   const onCloseModal = () => {
