@@ -64,24 +64,24 @@ const ConfirmationDeleteModal = ({
               variant="contained"
               sx={{
                 textTransform: "capitalize",
-                background: "#c10015",
-                fontWeight: 550,
-              }}
-              onClick={onRemoveReservation}
-            >
-              Desmarcar
-            </Button>
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{
-                textTransform: "capitalize",
                 background: "#0C927D",
                 fontWeight: 550,
               }}
               onClick={closeModal}
             >
               Manter
+            </Button>
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{
+                textTransform: "capitalize",
+                background: "#c10015",
+                fontWeight: 550,
+              }}
+              onClick={onRemoveReservation}
+            >
+              Desmarcar
             </Button>
           </Box>
         </Stack>
