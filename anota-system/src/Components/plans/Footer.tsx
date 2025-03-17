@@ -58,7 +58,7 @@ const Footer = () => {
               />
             </a>
             <a
-              href="https://www.instagram.com/anota_reservas"
+              href="https://www.instagram.com/anotareservas"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram da Anota Reservas"
