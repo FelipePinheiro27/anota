@@ -1,13 +1,18 @@
 import React, { useState, forwardRef } from "react";
 import { motion } from "framer-motion";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Chip } from "@mui/material";
 import useIsMobile from "../../hooks/useIsMobile";
 import PlansCard from "./PlansCard";
 import PlansCardYear from "./PlansCardYear";
+import DiscountIcon from "@mui/icons-material/LocalOffer";
+import { useSearchParams } from "react-router-dom";
 
 const Pricing = forwardRef((_, ref) => {
   const isMobile = useIsMobile();
-  const [showAnnualPlans, setShowAnnualPlans] = useState(true);
+  const [showAnnualPlans, setShowAnnualPlans] = useState(false);
+  const [searchParams] = useSearchParams();
+  const promoCode = searchParams.get("promo");
+  const isValidCode = promoCode === "MNTV10";
 
   const onShowAnnualPlansChange = (value: boolean) => setShowAnnualPlans(value);
 
@@ -22,7 +27,48 @@ const Pricing = forwardRef((_, ref) => {
         component="section"
         padding={isMobile ? "20px 10px" : "50px 120px"}
         sx={{ color: "#22303E", marginTop: isMobile ? "20px" : "70px" }}
+        ref={ref}
       >
+        {isValidCode && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+          >
+            <Box
+              sx={{
+                background: "linear-gradient(to right, #3f51b5, #1e88e5)",
+                borderRadius: "12px",
+                padding: "16px",
+                color: "#fff",
+                textAlign: "center",
+                marginBottom: "40px",
+              }}
+            >
+              <Typography
+                fontSize={isMobile ? "18px" : "22px"}
+                fontWeight={600}
+              >
+                🎉 Código Promocional Aplicado:{" "}
+                <Chip
+                  label={promoCode}
+                  color="secondary"
+                  icon={<DiscountIcon />}
+                  sx={{
+                    fontWeight: "bold",
+                    background: "#ffffff",
+                    color: "#1e88e5",
+                    marginLeft: "8px",
+                  }}
+                />
+              </Typography>
+              <Typography fontSize={isMobile ? "14px" : "18px"} marginTop="6px">
+                Você ganhou <strong>10% de desconto</strong> nos planos!
+              </Typography>
+            </Box>
+          </motion.div>
+        )}
+
         <Box
           sx={{
             display: "flex",
@@ -31,7 +77,7 @@ const Pricing = forwardRef((_, ref) => {
             padding: isMobile ? "0 10px" : "0",
           }}
         >
-          <Box width={isMobile ? "100%" : "65%"} ref={ref}>
+          <Box width={isMobile ? "100%" : "65%"}>
             <Typography
               component="h2"
               letterSpacing="0.1px"
@@ -56,7 +102,8 @@ const Pricing = forwardRef((_, ref) => {
             </Typography>
           </Box>
         </Box>
-        <Box
+
+        {/* <Box
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -107,7 +154,8 @@ const Pricing = forwardRef((_, ref) => {
           >
             Anual -30% OFF
           </Box>
-        </Box>
+        </Box> */}
+
         <Box
           display="flex"
           flexDirection={isMobile ? "column" : "row"}
@@ -116,7 +164,11 @@ const Pricing = forwardRef((_, ref) => {
           marginTop={isMobile ? "40px" : "80px"}
           gap={isMobile ? "20px" : "80px"}
         >
-          {showAnnualPlans ? <PlansCardYear /> : <PlansCard />}
+          {showAnnualPlans ? (
+            <PlansCardYear hasPromoCod={isValidCode} />
+          ) : (
+            <PlansCard hasPromoCod={isValidCode} />
+          )}
         </Box>
       </Box>
     </motion.section>

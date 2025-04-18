@@ -9,7 +9,11 @@ const messageData = [
   "Olá, gostaria de saber mais sobre o plano pro anual.",
 ];
 
-const PlansCardYear = () => {
+interface PlansCardYearProps {
+  hasPromoCod: boolean;
+}
+
+const PlansCardYear = ({ hasPromoCod }: PlansCardYearProps) => {
   const redirectToWhatsApp = (planType: number) => {
     const phone = "5588992429813";
     const message = messageData[planType];
@@ -17,6 +21,26 @@ const PlansCardYear = () => {
 
     window.location.href = `https://wa.me/${phone}?text=${encodedMessage}`;
   };
+
+  const renderDiscountTag = () =>
+    hasPromoCod && (
+      <Box
+        sx={{
+          position: "absolute",
+          top: "-10px",
+          right: "-10px",
+          background: "#FF4F4F",
+          color: "#fff",
+          fontSize: "12px",
+          fontWeight: 700,
+          padding: "5px 10px",
+          borderRadius: "20px",
+          zIndex: 1,
+        }}
+      >
+        10% OFF
+      </Box>
+    );
 
   return (
     <>
@@ -28,6 +52,7 @@ const PlansCardYear = () => {
         border="1px solid #BCBCBC"
         sx={{ background: "#fff", position: "relative" }}
       >
+        {renderDiscountTag()}
         <Typography
           letterSpacing="0.1px"
           fontWeight={600}
@@ -142,6 +167,7 @@ const PlansCardYear = () => {
         border="1px solid #BCBCBC"
         sx={{ background: "#fff", position: "relative" }}
       >
+        {renderDiscountTag()}
         <Typography
           letterSpacing="0.1px"
           fontWeight={600}
@@ -265,6 +291,7 @@ const PlansCardYear = () => {
         color="#fff"
         sx={{ background: "#226FE2", position: "relative" }}
       >
+        {renderDiscountTag()}
         <Typography
           letterSpacing="0.1px"
           fontWeight={600}
