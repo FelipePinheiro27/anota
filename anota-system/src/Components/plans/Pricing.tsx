@@ -98,7 +98,7 @@ const Pricing = forwardRef((_, ref) => {
               lineHeight={1.2}
               fontSize={isMobile ? "18px" : "24px"}
             >
-              Escolha o plano ideal para você
+              Escolha o plano <strong>mensal</strong> ideal para você
             </Typography>
           </Box>
         </Box>
