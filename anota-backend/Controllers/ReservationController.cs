@@ -98,6 +98,38 @@ public class ReservationController : ControllerBase
         return NoContent();
     }
 
+    [HttpPut("{id}")]
+    public async Task<ActionResult<ReservationModel>> UpdateReservation(string id, [FromBody] ReservationsDTO dto)
+    {
+        var reservation = await _context.Reservations.FindAsync(id);
+        if (reservation == null)
+        {
+            return NotFound();
+        }
+
+        var conflictingReservation = await _context.Reservations
+            .Where(r => r.Court_id == dto.Court_id && 
+                       r.Id != id &&
+                       r.Created_date.Date == dto.Created_date.Date &&
+                       ((r.Created_date < dto.End_date && r.End_date > dto.Created_date)))
+            .FirstOrDefaultAsync();
+
+        if (conflictingReservation != null)
+        {
+            return BadRequest("A quadra selecionada não está disponível neste horário.");
+        }
+
+        reservation.Court_id = dto.Court_id;
+        reservation.Created_date = dto.Created_date;
+        reservation.End_date = dto.End_date;
+        reservation.Price = dto.Price;
+        reservation.modality = dto.Modality;
+
+        await _context.SaveChangesAsync();
+
+        return Ok(reservation);
+    }
+
     [HttpGet("scheduled/{companyId}/{date}")]
     public async Task<ActionResult<IEnumerable<ScheduledReservationDTO>>> GetReservationScheduled(long companyId, DateTime date)
     {

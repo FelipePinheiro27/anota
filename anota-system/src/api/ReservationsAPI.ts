@@ -94,3 +94,16 @@ export const getMyReservations = async (
 export const removeReservation = async (reservationId: string | number) => {
   return await api.delete(`/Reservation/${reservationId}`);
 };
+
+export const updateReservation = async (
+  reservationId: string | number,
+  payload: ReservationPayloadType
+) => {
+  try {
+    const { data } = await api.put(`/Reservation/${reservationId}`, payload);
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

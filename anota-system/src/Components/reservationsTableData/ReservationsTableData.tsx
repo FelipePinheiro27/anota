@@ -26,11 +26,29 @@ const ReservationsTableData = () => {
   >();
   const [isLoading, setIsLoading] = useState(true);
   const [calendarView, setCalendarView] = useState(true);
+  const [companyId, setCompanyId] = useState<string | number>(0);
 
   const handleDateChange = (value: Dayjs | null) => {
     if (value) {
       setDate(value);
     }
+  };
+
+  const fetchReservations = async () => {
+    setIsLoading(true);
+    const value = localStorage.getItem("userSession");
+    const companyData: { companyId?: string | number } = JSON.parse(
+      value || ""
+    );
+    const companyIdValue = companyData?.companyId || 0;
+    setCompanyId(companyIdValue);
+    
+    const reservationsData = await getReservationsByDate(
+      companyIdValue,
+      date.format("YYYY-MM-DD")
+    );
+    setIsLoading(false);
+    setReservations(reservationsData);
   };
 
   const onSelectReservation = (reservationId?: string | number) => {
@@ -56,20 +74,6 @@ const ReservationsTableData = () => {
   };
 
   useEffect(() => {
-    const fetchReservations = async () => {
-      setIsLoading(true);
-      const value = localStorage.getItem("userSession");
-      const companyData: { companyId?: string | number } = JSON.parse(
-        value || ""
-      );
-      const reservationsData = await getReservationsByDate(
-        companyData?.companyId || 0,
-        date.format("YYYY-MM-DD")
-      );
-      setIsLoading(false);
-      setReservations(reservationsData);
-    };
-
     fetchReservations();
   }, [date]);
 
@@ -133,6 +137,8 @@ const ReservationsTableData = () => {
             <ScheduledHours
               reservations={reservations}
               displayedDate={date.toDate()}
+              companyId={companyId}
+              onReservationUpdate={fetchReservations}
             />
           ) : (
             <ReservationsTable
