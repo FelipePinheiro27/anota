@@ -12,9 +12,9 @@ const Resources = () => {
   const features = [
     {
       img: CalendarLogo,
-      title: "Seu cliente agenda sozinho",
+      title: "Mais reservas, Menos menos dor de cabeça",
       description:
-        "Com a nossa plataforma de agendamentos online, seus clientes podem marcar horários de forma rápida e fácil.",
+        "Pare de anotar reservas em papel. Com seu link exclusivo, o cliente vê os horários livres e agenda sozinho.",
       alt: "Ícone de calendário representando agendamentos online",
     },
     {
@@ -26,9 +26,9 @@ const Resources = () => {
     },
     {
       img: ClickLogo,
-      title: "Tela e link personalizados",
+      title: "Sua Marca, Suas Regras, Seu Link",
       description:
-        "Com uma tela e um link personalizados, sua marca se destaca, proporcionando uma experiência única.",
+        "Esqueça links genéricos. Seu cliente acessa uma página com seu logo e suas cores. É a imagem profissional que seu negócio merece, transmitindo muito mais confiança.",
       alt: "Ícone de clique representando personalização de tela",
     },
   ];

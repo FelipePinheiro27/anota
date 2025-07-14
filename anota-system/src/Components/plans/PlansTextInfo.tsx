@@ -25,11 +25,11 @@ const PlansTextInfo = ({ scrollToPricing }: PlansTextInfoProps) => {
           color="#22303E"
           maxWidth={isMobile ? "100%" : "400px"}
           fontFamily="sans-serif"
-          fontSize={isMobile ? "28px" : "67px"}
+          fontSize={isMobile ? "28px" : "40px"}
           textAlign={isMobile ? "center" : "left"}
           mx={isMobile ? "auto" : 0}
         >
-          Sistema de agendamentos de quadras
+          Sua quadra lotada, sem o telefone tocar a cada 5 minutos
         </Typography>
       </motion.div>
 
@@ -43,12 +43,14 @@ const PlansTextInfo = ({ scrollToPricing }: PlansTextInfoProps) => {
           fontWeight={500}
           maxWidth={isMobile ? "90%" : "360px"}
           fontFamily="sans-serif"
-          fontSize={isMobile ? "18px" : "28px"}
+          fontSize={isMobile ? "18px" : "20px"}
           marginTop="20px"
           textAlign={isMobile ? "center" : "left"}
           mx={isMobile ? "auto" : 0}
         >
-          Gerencie suas reservas de forma simples e eficiente!
+          Chega de perder tempo com o WhatsApp e caderno. Com a Anota Reservas,
+          seu cliente agenda sozinho e você só se preocupa em gerenciar seu
+          negócio.
         </Typography>
       </motion.div>
 

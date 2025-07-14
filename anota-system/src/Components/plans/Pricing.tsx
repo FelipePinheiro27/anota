@@ -86,7 +86,7 @@ const Pricing = forwardRef((_, ref) => {
               lineHeight={1.2}
               fontSize={isMobile ? "28px" : "54px"}
             >
-              Comece sua jornada conosco
+              Organize suas quadras hoje mesmo.
             </Typography>
             <br />
             <Typography

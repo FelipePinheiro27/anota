@@ -57,8 +57,8 @@ const NeedHelp = () => {
         />
         <br />
         <MoreInfo
-          title="Quais as formas de pagamento?"
-          description="Aceitamos pagamentos via cartão de crédito e Pix. Escolha a melhor opção para você."
+          title="Como eu pago pela assinatura do Anota Reservas?"
+          description="Você pode pagar sua mensalidade via Cartão de Crédito ou Pix, com total segurança. A cobrança é recorrente para sua comodidade."
         />
         <br />
         <MoreInfo
@@ -67,8 +67,8 @@ const NeedHelp = () => {
         />
         <br />
         <MoreInfo
-          title="A Anota Reservas é confiável?"
-          description="Sim! Utilizamos tecnologia segura para garantir a proteção dos seus dados e das reservas dos seus clientes. Além disso, já ajudamos diversas empresas a simplificar sua gestão."
+          title="Meu cliente precisa pagar online para fazer a reserva?"
+          description="Não. Pensamos em um modelo simples para não criar barreiras. Seu cliente agenda de graça e o acerto é feito diretamente com você no local. Com um clique, você pode marcar a reserva como 'Paga' no sistema para seu controle."
         />
       </Box>
     </section>

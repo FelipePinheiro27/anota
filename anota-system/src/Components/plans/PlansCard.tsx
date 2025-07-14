@@ -37,7 +37,7 @@ const PlansCard = ({ hasPromoCod }: PlansCardProps) => {
     {
       name: "Básico",
       description:
-        "Ideal para Beach Clubs, proporcione a melhor experiência para o seu cliente.",
+        "Perfeito para quem está começando e quer organizar uma única quadra com profissionalismo, saindo do papel.",
       price: 49.9,
       benefits: ["1 quadra cadastrada", "Plataforma personalizada"],
       bgColor: "#fff",
@@ -48,7 +48,7 @@ const PlansCard = ({ hasPromoCod }: PlansCardProps) => {
     {
       name: "Avançado",
       description:
-        "Ideal para Beach Clubs, proporcione a melhor experiência para o seu cliente.",
+        "Ideal para pequenos complexos que precisam gerenciar múltiplos horários e clientes fixos de forma eficiente.",
       price: 69.9,
       benefits: [
         "3 quadras cadastradas",
@@ -63,7 +63,7 @@ const PlansCard = ({ hasPromoCod }: PlansCardProps) => {
     {
       name: "Pro",
       description:
-        "Ideal para Beach Clubs, proporcione a melhor experiência para o seu cliente.",
+        "A solução completa para negócios com maior volume, que gerenciam várias quadras e precisam de controle total sobre suas operações.",
       price: 149.9,
       benefits: [
         "8 quadras cadastradas",
