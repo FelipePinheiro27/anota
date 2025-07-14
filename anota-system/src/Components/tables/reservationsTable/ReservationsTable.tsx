@@ -13,9 +13,12 @@ import {
   useTheme,
 } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import { ReservationScheduledResponse } from "../../../types/generalTypes";
 import useIsMobile from "../../../hooks/useIsMobile";
 import { modalitiesConstant } from "../../../constants/Global";
+import { Snackbar, Alert } from "@mui/material";
 
 interface Column {
   id:
@@ -26,6 +29,7 @@ interface Column {
     | "price"
     | "date"
     | "time"
+    | "paid"
     | "delete";
   label: string;
   minWidth?: number;
@@ -40,6 +44,7 @@ const columns: readonly Column[] = [
   { id: "price", label: "Valor", minWidth: 100 },
   { id: "date", label: "Data", minWidth: 100 },
   { id: "time", label: "Horário", minWidth: 140 },
+  { id: "paid", label: "Pago", minWidth: 50 },
   { id: "delete", label: "", minWidth: 30 },
 ];
 
@@ -53,22 +58,34 @@ type ReservationType = {
   date: string;
   time: string;
   dateTime: Date;
+  isPaid: boolean;
   delete: any;
 };
 
 interface ReservationsTableProps {
   reservations: ReservationScheduledResponse[];
   onSelectReservation: (reservation?: string | number) => void;
+  onTogglePaid: (id: string | number, currentPaid: boolean) => void;
 }
 
 const ReservationsTable = ({
   reservations,
   onSelectReservation,
+  onTogglePaid,
 }: ReservationsTableProps) => {
   const theme = useTheme();
   const isMobile = useIsMobile();
   const [orderBy, setOrderBy] = useState<keyof ReservationType>("dateTime");
   const [orderDirection, setOrderDirection] = useState<"asc" | "desc">("asc");
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: "success" | "error" | "info" | "warning";
+  }>({
+    open: false,
+    message: "",
+    severity: "info",
+  });
 
   const reservationsParsed: ReservationType[] = reservations.map(
     (reservation) => {
@@ -101,6 +118,7 @@ const ReservationsTable = ({
         date: formattedDate,
         time: formattedTime,
         dateTime: date,
+        isPaid: !!reservation.isPaid,
         delete: (
           <DeleteOutlinedIcon
             onClick={() => onSelectReservation(reservation.id)}
@@ -138,6 +156,7 @@ const ReservationsTable = ({
                 padding: 2,
                 backgroundColor: theme.palette.background.default,
                 color: "#22303E",
+                border: reservation.isPaid ? "2px solid #1B5E20" : undefined,
               }}
             >
               <Box
@@ -168,15 +187,38 @@ const ReservationsTable = ({
                     <strong>Horário:</strong> {reservation.time}
                   </Typography>
                 </Box>
-                <DeleteOutlinedIcon
-                  onClick={() => {
-                    onSelectReservation(reservation.id);
-                  }}
-                  sx={{
-                    fontSize: "34px",
-                    cursor: "pointer",
-                  }}
-                />
+                <Box display="flex" flexDirection="column" alignItems="center">
+                  <Box
+                    onClick={() =>
+                      reservation.id !== undefined &&
+                      onTogglePaid(reservation.id, reservation.isPaid)
+                    }
+                    sx={{ cursor: "pointer" }}
+                  >
+                    {reservation.isPaid ? (
+                      <CheckCircleIcon
+                        sx={{ color: "#1B5E20", fontSize: 34 }}
+                      />
+                    ) : (
+                      <RadioButtonUncheckedIcon
+                        sx={{
+                          color: theme.palette.text.secondary,
+                          fontSize: 34,
+                        }}
+                      />
+                    )}
+                  </Box>
+                  <DeleteOutlinedIcon
+                    onClick={() => {
+                      onSelectReservation(reservation.id);
+                    }}
+                    sx={{
+                      fontSize: "34px",
+                      cursor: "pointer",
+                      mt: 1,
+                    }}
+                  />
+                </Box>
               </Box>
             </Paper>
           ))}
@@ -198,7 +240,9 @@ const ReservationsTable = ({
                         direction={
                           orderBy === column.id ? orderDirection : "asc"
                         }
-                        onClick={() => handleSort(column.id)}
+                        onClick={() =>
+                          handleSort(column.id as keyof ReservationType)
+                        }
                       >
                         {column.label}
                       </TableSortLabel>
@@ -208,9 +252,38 @@ const ReservationsTable = ({
               </TableHead>
               <TableBody>
                 {sortedReservations.map((row, index) => (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={index}
+                    sx={{
+                      border: row.isPaid ? "2px solid #1B5E20" : undefined,
+                    }}
+                  >
                     {columns.map((column) => {
-                      const value = row[column.id];
+                      if (column.id === "paid") {
+                        return (
+                          <TableCell key={column.id} align={column.align}>
+                            <Box
+                              onClick={() =>
+                                row.id !== undefined &&
+                                onTogglePaid(row.id, row.isPaid)
+                              }
+                              sx={{ cursor: "pointer" }}
+                            >
+                              {row.isPaid ? (
+                                <CheckCircleIcon sx={{ color: "#1B5E20" }} />
+                              ) : (
+                                <RadioButtonUncheckedIcon
+                                  sx={{ color: theme.palette.text.secondary }}
+                                />
+                              )}
+                            </Box>
+                          </TableCell>
+                        );
+                      }
+                      const value = row[column.id as keyof ReservationType];
                       return (
                         <TableCell key={column.id} align={column.align}>
                           {value}
@@ -224,6 +297,19 @@ const ReservationsTable = ({
           </TableContainer>
         </Paper>
       )}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

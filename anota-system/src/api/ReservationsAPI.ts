@@ -22,6 +22,7 @@ export const getReservationsByDate = async (
       courtName: value.court_name,
       createdDate: value.created_date,
       endDate: value.end_date,
+      isPaid: value.isPaid,
     }));
 
     return reponse;
@@ -101,6 +102,25 @@ export const updateReservation = async (
 ) => {
   try {
     const { data } = await api.put(`/Reservation/${reservationId}`, payload);
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const markReservationAsPaid = async (
+  reservationId: string | number,
+  isPaid: boolean
+) => {
+  try {
+    const { data } = await api.put(
+      `/Reservation/mark-paid/${reservationId}`,
+      isPaid,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
     return data;
   } catch (error) {
     console.error(error);

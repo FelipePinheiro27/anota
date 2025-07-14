@@ -147,7 +147,8 @@ public class ReservationController : ControllerBase
             Modality = r.modality,
             Price = r.Price,
             Created_date = r.Created_date,
-            End_date = r.End_date
+            End_date = r.End_date,
+            IsPaid = r.IsPaid
         }).ToList();
 
         return Ok(scheduledReservations);
@@ -268,6 +269,19 @@ public class ReservationController : ControllerBase
         }
 
         return Ok(new { message = "Reservas fixadas com sucesso!", reservations });
+    }
+
+    [HttpPut("mark-paid/{id}")]
+    public async Task<ActionResult> MarkReservationAsPaid(string id, [FromBody] bool isPaid)
+    {
+        var reservation = await _context.Reservations.FindAsync(id);
+        if (reservation == null)
+        {
+            return NotFound();
+        }
+        reservation.IsPaid = isPaid;
+        await _context.SaveChangesAsync();
+        return Ok(new { reservation.Id, reservation.IsPaid });
     }
 
 }

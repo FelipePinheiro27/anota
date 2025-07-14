@@ -8,12 +8,14 @@ import { ReservationScheduledResponse } from "../../types/generalTypes";
 import {
   getReservationsByDate,
   removeReservation,
+  markReservationAsPaid,
 } from "../../api/ReservationsAPI";
 import LoadingSpinner from "../loadingSpinner/LoadingSpinner";
 import NoData from "../noData/NodaData";
 import ScheduledHours from "../scheduledHours/ScheduledHours";
 import ConfirmationDeleteModal from "../confirmationModal/ConfirmationDeleteModal";
 import ReservationsTable from "../tables/reservationsTable/ReservationsTable";
+import { Snackbar, Alert } from "@mui/material";
 
 const ReservationsTableData = () => {
   const [date, setDate] = useState(dayjs());
@@ -27,6 +29,15 @@ const ReservationsTableData = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [calendarView, setCalendarView] = useState(true);
   const [companyId, setCompanyId] = useState<string | number>(0);
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: "success" | "error" | "info" | "warning";
+  }>({
+    open: false,
+    message: "",
+    severity: "info",
+  });
 
   const handleDateChange = (value: Dayjs | null) => {
     if (value) {
@@ -42,11 +53,12 @@ const ReservationsTableData = () => {
     );
     const companyIdValue = companyData?.companyId || 0;
     setCompanyId(companyIdValue);
-    
+
     const reservationsData = await getReservationsByDate(
       companyIdValue,
       date.format("YYYY-MM-DD")
     );
+
     setIsLoading(false);
     setReservations(reservationsData);
   };
@@ -70,6 +82,28 @@ const ReservationsTableData = () => {
         reservations.filter((res) => res.id !== reservationToRemove.id)
       );
       onCloseConfirmationModal();
+    }
+  };
+
+  const onTogglePaid = async (id: string | number, currentPaid: boolean) => {
+    try {
+      await markReservationAsPaid(id, !currentPaid);
+      setReservations((prev) =>
+        prev.map((r) =>
+          r.id === id ? { ...r, isPaid: !currentPaid } : r
+        )
+      );
+      setSnackbar({
+        open: true,
+        message: !currentPaid ? "Reserva marcada como paga!" : "Reserva marcada como não paga!",
+        severity: "success",
+      });
+    } catch (error) {
+      setSnackbar({
+        open: true,
+        message: "Erro ao atualizar status de pagamento.",
+        severity: "error",
+      });
     }
   };
 
@@ -136,6 +170,7 @@ const ReservationsTableData = () => {
           {calendarView ? (
             <ScheduledHours
               reservations={reservations}
+              setReservations={setReservations}
               displayedDate={date.toDate()}
               companyId={companyId}
               onReservationUpdate={fetchReservations}
@@ -144,6 +179,7 @@ const ReservationsTableData = () => {
             <ReservationsTable
               reservations={reservations}
               onSelectReservation={onSelectReservation}
+              onTogglePaid={onTogglePaid}
             />
           )}
         </Box>
@@ -154,6 +190,19 @@ const ReservationsTableData = () => {
         reservationToRemove={reservationToRemove}
         onRemoveReservation={onRemoveReservation}
       />
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

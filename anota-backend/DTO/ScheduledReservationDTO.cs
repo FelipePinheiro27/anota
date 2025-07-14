@@ -12,4 +12,5 @@ public class ScheduledReservationDTO
     public double Price { get; set; }
     public DateTime Created_date { get; set; }
     public DateTime End_date { get; set; }
+    public bool IsPaid { get; set; } = false;
 }

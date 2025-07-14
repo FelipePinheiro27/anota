@@ -51,6 +51,7 @@ export type ReservationScheduledResponse = {
   createdDate: string;
   endDate: string;
   modality: ModalityEnum;
+  isPaid?: boolean;
 };
 
 export enum ModalityEnum {

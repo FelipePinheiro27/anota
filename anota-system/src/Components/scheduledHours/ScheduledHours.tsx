@@ -1,16 +1,32 @@
 import React, { useMemo, useEffect, useRef, useState } from "react";
-import { Box, Typography, useTheme, Snackbar, Alert } from "@mui/material";
+import {
+  Box,
+  Typography,
+  useTheme,
+  Snackbar,
+  Alert,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import {
   ReservationScheduledResponse,
   CourtTypes,
 } from "../../types/generalTypes";
 import { modalitiesConstant } from "../../constants/Global";
 import useIsMobile from "../../hooks/useIsMobile";
-import { updateReservation } from "../../api/ReservationsAPI";
+import {
+  updateReservation,
+  markReservationAsPaid,
+} from "../../api/ReservationsAPI";
 import { getCourtsByCompany } from "../../api/CourtAPI";
 
 interface ScheduledHoursProps {
   reservations: ReservationScheduledResponse[];
+  setReservations: React.Dispatch<
+    React.SetStateAction<ReservationScheduledResponse[]>
+  >;
   startHour?: number;
   endHour?: number;
   displayedDate: Date;
@@ -20,6 +36,7 @@ interface ScheduledHoursProps {
 
 const ScheduledHours = ({
   reservations,
+  setReservations,
   startHour = 12,
   endHour = 24,
   displayedDate,
@@ -81,7 +98,6 @@ const ScheduledHours = ({
     theme.palette.success.light,
   ];
 
-  // Carregar quadras da empresa
   useEffect(() => {
     if (companyId) {
       getCourtsByCompany(companyId).then(setCourts);
@@ -126,7 +142,6 @@ const ScheduledHours = ({
   const { rowIndex: currentRow, offsetPercentage: currentMinutesOffset } =
     calculateRedLinePosition();
 
-  // Função para verificar se uma quadra está disponível no horário
   const isCourtAvailable = (
     courtName: string,
     startDate: Date,
@@ -151,7 +166,6 @@ const ScheduledHours = ({
     return `${date.getHours()}:${String(date.getMinutes()).padStart(2, "0")}`;
   };
 
-  // Handlers para drag and drop
   const handleDragStart = (
     e: React.DragEvent,
     reservation: ReservationScheduledResponse
@@ -194,7 +208,6 @@ const ScheduledHours = ({
 
     if (!draggedReservation || !companyId) return;
 
-    // Verificar se está tentando mover para a mesma quadra
     if (draggedReservation.courtName === targetCourtName) {
       setSnackbar({
         open: true,
@@ -218,7 +231,6 @@ const ScheduledHours = ({
     const startDate = new Date(draggedReservation.createdDate);
     const endDate = new Date(draggedReservation.endDate);
 
-    // Garantir que as datas estão no timezone local
     const localStartDate = new Date(
       startDate.getTime() - startDate.getTimezoneOffset() * 60000
     );
@@ -226,20 +238,6 @@ const ScheduledHours = ({
       endDate.getTime() - endDate.getTimezoneOffset() * 60000
     );
 
-    console.log("Debug - Horário original:", {
-      originalCreatedDate: draggedReservation.createdDate,
-      originalEndDate: draggedReservation.endDate,
-      startDate: startDate.toISOString(),
-      endDate: endDate.toISOString(),
-      startTime: formatTime(startDate),
-      endTime: formatTime(endDate),
-      startDateLocal: startDate.toString(),
-      endDateLocal: endDate.toString(),
-      localStartDate: localStartDate.toISOString(),
-      localEndDate: localEndDate.toISOString(),
-    });
-
-    // Verificar se a quadra de destino está disponível no mesmo horário
     if (
       !isCourtAvailable(
         targetCourtName,
@@ -301,6 +299,44 @@ const ScheduledHours = ({
       start: formatTime(startDate),
       end: formatTime(endDate),
     };
+  };
+
+  console.log(reservations);
+
+  const handleTogglePaid = async (
+    reservation: ReservationScheduledResponse
+  ) => {
+    if (reservation.id) {
+      setReservations((prev) =>
+        prev.map((r) =>
+          r.id === reservation.id ? { ...r, isPaid: !reservation.isPaid } : r
+        )
+      );
+    }
+    try {
+      await markReservationAsPaid(reservation.id!, !reservation.isPaid);
+      setSnackbar({
+        open: true,
+        message: !reservation.isPaid
+          ? "Reserva marcada como paga!"
+          : "Reserva marcada como não paga!",
+        severity: "success",
+      });
+      if (onReservationUpdate) onReservationUpdate();
+    } catch (error) {
+      setSnackbar({
+        open: true,
+        message: "Erro ao atualizar status de pagamento.",
+        severity: "error",
+      });
+      if (reservation.id) {
+        setReservations((prev) =>
+          prev.map((r) =>
+            r.id === reservation.id ? { ...r, isPaid: reservation.isPaid } : r
+          )
+        );
+      }
+    }
   };
 
   useEffect(() => {
@@ -452,12 +488,16 @@ const ScheduledHours = ({
                 borderRadius: 1,
                 marginBottom: "5px",
                 marginRight: "5px",
-                opacity: 0.9,
+                opacity: 0.95,
                 color: theme.palette.getContrastText(
                   colors[courtIndex % colors.length]
                 ),
                 zIndex: 1,
                 cursor: "grab",
+                border: reservation.isPaid ? `1px solid #4CAF50` : undefined,
+                boxShadow: reservation.isPaid
+                  ? `0 0 2px 2px #4CAF50`
+                  : undefined,
                 "&:hover": {
                   opacity: 1,
                   transform: "scale(1.02)",
@@ -468,18 +508,46 @@ const ScheduledHours = ({
                 },
               }}
             >
-              <Typography variant="body2">
-                <strong>Cliente:</strong> {reservation.client}
-              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography variant="body2">
+                  <strong>Cliente:</strong> {reservation.client}
+                </Typography>
+                <Tooltip
+                  title={reservation.isPaid ? "Pago" : "Marcar como pago"}
+                >
+                  <IconButton
+                    size="small"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleTogglePaid(reservation);
+                    }}
+                    sx={{
+                      color: reservation.isPaid
+                        ? theme.palette.success.dark
+                        : theme.palette.text.secondary,
+                    }}
+                  >
+                    {reservation.isPaid ? (
+                      <CheckCircleIcon />
+                    ) : (
+                      <RadioButtonUncheckedIcon />
+                    )}
+                  </IconButton>
+                </Tooltip>
+              </Box>
               <Typography variant="body2">
                 <strong>Valor:</strong> R$ {reservation.price},00 |{" "}
                 {modalitiesConstant[reservation.modality || 0]}
               </Typography>
               <Typography variant="body2">
-                <strong>Horário:</strong> {startDate.getHours()}:
-                {String(startDate.getMinutes()).padStart(2, "0")} às{" "}
-                {endDate.getHours()}:
-                {String(endDate.getMinutes()).padStart(2, "0")}
+                <strong>Horário:</strong> {formatTime(startDate)} às{" "}
+                {formatTime(endDate)}
               </Typography>
             </Box>
           );
@@ -565,10 +633,8 @@ const ScheduledHours = ({
           </Box>
         )}
 
-        {/* Linha de tempo visual para indicar posição */}
         {draggedReservation && dragPosition && (
           <>
-            {/* Indicador de início */}
             <Box
               sx={{
                 gridColumn: courtNames.indexOf(dragPosition.courtName) + 2,

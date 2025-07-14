@@ -15,7 +15,7 @@ var connectionString = $"server={dbServer};port={dbPort};database={db};uid=root;
 builder.Services.AddDbContext<ContextData>(options =>
     options.UseMySql(
         connectionString,
-        new MySqlServerVersion(new Version(9, 1, 0))
+        new MariaDbServerVersion(new Version(10, 6, 0))
     )
 );
 

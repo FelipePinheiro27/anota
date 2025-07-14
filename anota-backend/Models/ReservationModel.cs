@@ -17,6 +17,7 @@ public class ReservationModel
     public DateTime Created_date { get; set; }
     public DateTime End_date { get; set; }
     public ModalityEnum modality { get; set; }
+    public bool IsPaid { get; set; } = false;
 
     public static string GenerateUniqueId()
     {
