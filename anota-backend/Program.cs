@@ -15,7 +15,13 @@ var connectionString = $"server={dbServer};port={dbPort};database={db};uid=root;
 builder.Services.AddDbContext<ContextData>(options =>
     options.UseMySql(
         connectionString,
-        new MariaDbServerVersion(new Version(10, 6, 0))
+        new MariaDbServerVersion(new Version(10, 6, 0)),
+        mySqlOptions => mySqlOptions
+            .EnableRetryOnFailure(
+                maxRetryCount: 3,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorNumbersToAdd: null)
+            .UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)
     )
 );
 

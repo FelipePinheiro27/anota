@@ -87,15 +87,24 @@ public class ReservationController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult<bool>> DeleteReservation(string id)
     {
-        var reservation = await _context.Reservations.FindAsync(id);
-        if (reservation == null)
+        try
         {
-            return NotFound();
-        }
+            var result = await _context.Database.ExecuteSqlRawAsync(
+                "DELETE FROM Reservation WHERE Id = {0}", id);
 
-        _context.Reservations.Remove(reservation);
-        await _context.SaveChangesAsync();
-        return NoContent();
+            if (result > 0)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return NotFound("Reserva não encontrada.");
+            }
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erro interno do servidor: {ex.Message}");
+        }
     }
 
     [HttpPut("{id}")]
@@ -108,7 +117,7 @@ public class ReservationController : ControllerBase
         }
 
         var conflictingReservation = await _context.Reservations
-            .Where(r => r.Court_id == dto.Court_id && 
+            .Where(r => r.Court_id == dto.Court_id &&
                        r.Id != id &&
                        r.Created_date.Date == dto.Created_date.Date &&
                        ((r.Created_date < dto.End_date && r.End_date > dto.Created_date)))

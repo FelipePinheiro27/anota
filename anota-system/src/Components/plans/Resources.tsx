@@ -12,7 +12,7 @@ const Resources = () => {
   const features = [
     {
       img: CalendarLogo,
-      title: "Mais reservas, Menos menos dor de cabeça",
+      title: "Mais reservas, Menos dor de cabeça",
       description:
         "Pare de anotar reservas em papel. Com seu link exclusivo, o cliente vê os horários livres e agenda sozinho.",
       alt: "Ícone de calendário representando agendamentos online",
