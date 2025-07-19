@@ -60,13 +60,38 @@ namespace anota_backend.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<CompanyModel>> CreateCompany(CompanyModel company)
+        public async Task<ActionResult<CompanyModel>> CreateCompany([FromBody] CompanyModel company)
         {
-            company.parsePassToHash();
-            _context.Companies.Add(company);
-            await _context.SaveChangesAsync();
+            try
+            {
+                // Inserção direta via SQL para evitar RETURNING
+                var sql = @"INSERT INTO Company (Name, Email, User, Pass, PathRouteKey, primaryColor, SecondaryColor, Plan, IsPaid)
+                             VALUES ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8})";
+                var result = await _context.Database.ExecuteSqlRawAsync(sql,
+                    company.Name,
+                    company.Email,
+                    company.User,
+                    company.Pass,
+                    company.PathRouteKey,
+                    company.primaryColor,
+                    company.SecondaryColor,
+                    company.Plan,
+                    company.IsPaid
+                );
 
-            return CreatedAtAction(nameof(GetCompany), new { id = company.Id }, company);
+                if (result > 0)
+                {
+                    return Ok(company);
+                }
+                else
+                {
+                    return BadRequest("Falha ao criar a empresa.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro interno do servidor: {ex.Message}");
+            }
         }
 
         [HttpPut("{id}")]
