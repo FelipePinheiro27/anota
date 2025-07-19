@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import ClientHeader from "../../Components/header/clientHeader/ClientHeader";
 import ConfirmationModal from "../../Components/confirmationModal/ConfirmationModal";
+import PaymentInfo from "../../Components/paymentInfo/PaymentInfo";
 import { ClientReservationContext } from "../../context/ClientReservationProvider";
 import { parseReservationDataToPayload } from "../../utils/clientReservationUtil";
 import { createReservation } from "../../api/ReservationsAPI";
@@ -41,6 +42,9 @@ const Confirmation = () => {
     phoneNumer: localStorage.getItem("clientPhone") || "",
     clientName: localStorage.getItem("clientName") || "",
   });
+  const [paymentDeclared, setPaymentDeclared] = useState(
+    false || company?.id !== 15
+  );
   const { primaryColor, secondaryColor } = company || {};
   const value =
     scheduledTime?.time?.reduce((acc, current) => {
@@ -79,7 +83,8 @@ const Confirmation = () => {
   const isDisabled =
     formData.clientName === "" ||
     !isValidPhoneNumber(formData.phoneNumer) ||
-    isSubmitting;
+    isSubmitting ||
+    !paymentDeclared;
 
   const date = useMemo(() => {
     const rawDate = scheduledTime?.date || "";
@@ -160,6 +165,10 @@ const Confirmation = () => {
             Valor: R$ {value},00
           </Typography>
         </Box>
+        {company?.id === 15 && (
+          <PaymentInfo value={value} onPaymentDeclared={setPaymentDeclared} />
+        )}
+
         <Box marginTop="40px">
           <FormControl sx={{ width: { xs: "100%", md: "50%" } }}>
             <FormLabel>Nome do Responsável</FormLabel>
@@ -198,7 +207,20 @@ const Confirmation = () => {
             </InputMask>
           </FormControl>
         </Box>
-        <Box sx={{ marginTop: { xs: "100px", md: "200px" } }}>
+        <Box sx={{ marginTop: { xs: "30px", md: "100px" } }}>
+          {company?.id === 15 && !paymentDeclared && (
+            <Typography
+              sx={{
+                textAlign: "center",
+                marginBottom: "10px",
+                fontSize: "14px",
+                color: "#d32f2f",
+                fontWeight: 500,
+              }}
+            >
+              ⚠️ É necessário declarar o pagamento antes de confirmar a reserva
+            </Typography>
+          )}
           <Button
             fullWidth
             variant="contained"
