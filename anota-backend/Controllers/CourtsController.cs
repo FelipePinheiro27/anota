@@ -87,24 +87,17 @@ public class CourtController : ControllerBase
     {
         try
         {
-            var sql = @"INSERT INTO Court (Company_id, Name, Modality, Description, Image_url)
-                         VALUES ({0}, {1}, {2}, {3}, {4})";
-            var result = await _context.Database.ExecuteSqlRawAsync(sql,
-                dto.Company_id,
-                dto.Name,
-                dto.Modality,
-                dto.Description,
-                dto.Image_url
-            );
-
-            if (result > 0)
+            CourtModel court = new CourtModel
             {
-                return Ok(dto);
-            }
-            else
-            {
-                return BadRequest("Falha ao criar a quadra.");
-            }
+                Company_id = dto.Company_id,
+                Name = dto.Name,
+                Modality = dto.Modality,
+                Description = dto.Description,
+                Image_url = dto.Image_url
+            };
+            _context.Courts.Add(court);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetCourt), new { id = court.Id }, court);
         }
         catch (Exception ex)
         {
