@@ -102,7 +102,16 @@ public class ReservationConfigController : ControllerBase
             }
             else
             {
-                _context.ReservationsConfig.Add(config);
+                // Insert via SQL direto para evitar RETURNING
+                var sql = @"INSERT INTO ReservationsConfig (Court_id, Day_of_week, Start_time, End_time, Price)
+                             VALUES ({0}, {1}, {2}, {3}, {4})";
+                await _context.Database.ExecuteSqlRawAsync(sql,
+                    config.Court_id,
+                    config.Day_of_week,
+                    config.Start_time,
+                    config.End_time,
+                    config.Price
+                );
             }
         }
 

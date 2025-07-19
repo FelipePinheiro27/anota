@@ -64,7 +64,8 @@ namespace anota_backend.Controllers
         {
             try
             {
-                // Inserção direta via SQL para evitar RETURNING
+                company.Pass = anota_backend.Helper.Encryption.generateHash(company.Pass);
+
                 var sql = @"INSERT INTO Company (Name, Email, User, Pass, PathRouteKey, primaryColor, SecondaryColor, Plan, IsPaid)
                              VALUES ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8})";
                 var result = await _context.Database.ExecuteSqlRawAsync(sql,

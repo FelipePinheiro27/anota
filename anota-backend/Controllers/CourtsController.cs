@@ -85,17 +85,30 @@ public class CourtController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateCourt(CourtsDTO dto)
     {
-        CourtModel court = new CourtModel
+        try
         {
-            Company_id = dto.Company_id,
-            Name = dto.Name,
-            Modality = dto.Modality,
-            Description = dto.Description,
-            Image_url = dto.Image_url
-        };
-        _context.Courts.Add(court);
-        await _context.SaveChangesAsync();
+            var sql = @"INSERT INTO Court (Company_id, Name, Modality, Description, Image_url)
+                         VALUES ({0}, {1}, {2}, {3}, {4})";
+            var result = await _context.Database.ExecuteSqlRawAsync(sql,
+                dto.Company_id,
+                dto.Name,
+                dto.Modality,
+                dto.Description,
+                dto.Image_url
+            );
 
-        return CreatedAtAction(nameof(GetCourt), new { id = court.Id }, court);
+            if (result > 0)
+            {
+                return Ok(dto);
+            }
+            else
+            {
+                return BadRequest("Falha ao criar a quadra.");
+            }
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erro interno do servidor: {ex.Message}");
+        }
     }
 }
