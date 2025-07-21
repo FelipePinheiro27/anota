@@ -159,7 +159,6 @@ const PaymentInfo: React.FC<PaymentInfoProps> = ({
           Após o pagamento, sua reserva será confirmada.
         </Typography>
 
-        {/* Botão de Declaração de Pagamento */}
         <Box
           sx={{ marginTop: { xs: "15px", md: "20px" }, textAlign: "center" }}
         >
