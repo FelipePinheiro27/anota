@@ -49,6 +49,7 @@ export const login = async (
   message: string;
   companyId?: number;
   companyName?: string;
+  token?: string;
   success: boolean;
 } | null> => {
   try {

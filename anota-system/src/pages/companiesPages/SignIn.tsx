@@ -52,7 +52,9 @@ const SignIn = () => {
           return;
         }
         localStorage.setItem("userSession", JSON.stringify(response));
-
+        if (response.token) {
+          localStorage.setItem("token", response.token);
+        }
         navigate("/empresa");
         setLoading(false);
         return;
