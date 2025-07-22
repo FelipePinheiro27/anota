@@ -53,7 +53,6 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<anota_backend.Services.EmailService>();
 
 builder.Services.AddCors(options =>
 {
