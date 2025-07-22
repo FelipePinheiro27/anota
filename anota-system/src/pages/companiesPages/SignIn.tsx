@@ -52,7 +52,9 @@ const SignIn = () => {
           return;
         }
         localStorage.setItem("userSession", JSON.stringify(response));
-
+        if (response.token) {
+          localStorage.setItem("token", response.token);
+        }
         navigate("/empresa");
         setLoading(false);
         return;
@@ -61,6 +63,12 @@ const SignIn = () => {
       console.error("Erro no login:", error);
       setErrorMessage("Erro ao tentar realizar o login.");
       setLoading(false);
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      onSubmitLogin();
     }
   };
 
@@ -88,6 +96,7 @@ const SignIn = () => {
             required
             fullWidth
             variant="outlined"
+            onKeyDown={handleKeyDown}
           />
         </FormControl>
         <FormControl>
@@ -102,6 +111,7 @@ const SignIn = () => {
             fullWidth
             variant="outlined"
             sx={{ ariaLabel: "senha" }}
+            onKeyDown={handleKeyDown}
           />
         </FormControl>
 

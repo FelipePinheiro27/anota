@@ -2,6 +2,9 @@ using anota_backend.Context;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +22,38 @@ builder.Services.AddDbContext<ContextData>(options =>
     )
 );
 
+var jwtKey = Environment.GetEnvironmentVariable("JWT_SECRET");
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+        ClockSkew = TimeSpan.Zero
+    };
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            return Task.CompletedTask;
+        },
+        OnChallenge = context =>
+        {
+            return Task.CompletedTask;
+        }
+    };
+});
+
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<anota_backend.Services.EmailService>();
 
 builder.Services.AddCors(options =>
 {
@@ -66,6 +100,7 @@ app.UseCors(builder.Environment.IsDevelopment() ? "AllowAll" : "AllowSpecificOri
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
