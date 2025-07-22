@@ -23,7 +23,6 @@ builder.Services.AddDbContext<ContextData>(options =>
 );
 
 var jwtKey = builder.Configuration["Jwt:Key"];
-Console.WriteLine("jwtKey: " + jwtKey);
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -44,12 +43,10 @@ builder.Services.AddAuthentication(options =>
     {
         OnAuthenticationFailed = context =>
         {
-            Console.WriteLine($"[JWT] Token inválido: {context.Exception.Message}");
             return Task.CompletedTask;
         },
         OnChallenge = context =>
         {
-            Console.WriteLine($"[JWT] Challenge: {context.ErrorDescription}");
             return Task.CompletedTask;
         }
     };
