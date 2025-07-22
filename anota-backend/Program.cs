@@ -22,7 +22,7 @@ builder.Services.AddDbContext<ContextData>(options =>
     )
 );
 
-var jwtKey = builder.Configuration["Jwt:Key"];
+var jwtKey = Environment.GetEnvironmentVariable("JWT_SECRET");
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -53,6 +53,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<anota_backend.Services.EmailService>();
 
 builder.Services.AddCors(options =>
 {
