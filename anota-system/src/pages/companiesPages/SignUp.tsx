@@ -11,6 +11,10 @@ import { CompanyFormType } from "../../types/generalTypes";
 import { createCompany } from "../../api/CompanyAPI";
 import ConfirmationModal from "../../Components/confirmationModal/ConfirmationModal";
 import { useNavigate } from "react-router-dom";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const SignUp = () => {
   const [companyForm, setCompanyForm] = useState<CompanyFormType>({
@@ -29,15 +33,40 @@ const SignUp = () => {
   const [isCreated, setIsCreated] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [activeField, setActiveField] = useState<string>("");
+  const [showPass, setShowPass] = useState(false);
+  const [showConfirmPass, setShowConfirmPass] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setCompanyForm({ ...companyForm, [name]: value });
+    setFieldErrors((prev) => ({
+      ...prev,
+      [name]: value ? "" : "Campo obrigatório.",
+    }));
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFieldErrors((prev) => ({
+      ...prev,
+      [name]: value ? "" : "Campo obrigatório.",
+    }));
+    setActiveField("");
+  };
+
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    setActiveField(e.target.name);
   };
 
   const handleConfirmPassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setConfirmPass(e.target.value);
     setPasswordError(companyForm.pass !== e.target.value);
+    setFieldErrors((prev) => ({
+      ...prev,
+      confirmPass: e.target.value ? "" : "Campo obrigatório.",
+    }));
   };
 
   const handleSubmit = async () => {
@@ -86,12 +115,23 @@ const SignUp = () => {
             variant="outlined"
             value={companyForm.name}
             onChange={handleInputChange}
+            onBlur={handleBlur}
+            onFocus={handleFocus}
+            error={!!fieldErrors.name}
+            helperText={fieldErrors.name}
+            sx={{
+              borderColor: activeField === "name" ? colors.blue : undefined,
+              boxShadow:
+                activeField === "name"
+                  ? `0 0 0 2px ${colors.blue}33`
+                  : undefined,
+            }}
           />
         </FormControl>
         <FormControl>
           <FormLabel>Insira o Login</FormLabel>
           <TextField
-            id="empresa"
+            id="user"
             type="text"
             name="user"
             placeholder="Digite seu login"
@@ -100,6 +140,17 @@ const SignUp = () => {
             variant="outlined"
             value={companyForm.user}
             onChange={handleInputChange}
+            onBlur={handleBlur}
+            onFocus={handleFocus}
+            error={!!fieldErrors.user}
+            helperText={fieldErrors.user}
+            sx={{
+              borderColor: activeField === "user" ? colors.blue : undefined,
+              boxShadow:
+                activeField === "user"
+                  ? `0 0 0 2px ${colors.blue}33`
+                  : undefined,
+            }}
           />
         </FormControl>
         <FormControl>
@@ -115,13 +166,24 @@ const SignUp = () => {
             variant="outlined"
             value={companyForm.email}
             onChange={handleInputChange}
+            onBlur={handleBlur}
+            onFocus={handleFocus}
+            error={!!fieldErrors.email}
+            helperText={fieldErrors.email}
+            sx={{
+              borderColor: activeField === "email" ? colors.blue : undefined,
+              boxShadow:
+                activeField === "email"
+                  ? `0 0 0 2px ${colors.blue}33`
+                  : undefined,
+            }}
           />
         </FormControl>
         <FormControl>
           <FormLabel>Senha</FormLabel>
           <TextField
             id="senha"
-            type="password"
+            type={showPass ? "text" : "password"}
             name="pass"
             placeholder="Sua senha aqui"
             required
@@ -129,21 +191,72 @@ const SignUp = () => {
             variant="outlined"
             value={companyForm.pass}
             onChange={handleInputChange}
+            onBlur={handleBlur}
+            onFocus={handleFocus}
+            error={!!fieldErrors.pass}
+            helperText={fieldErrors.pass}
+            sx={{
+              borderColor: activeField === "pass" ? colors.blue : undefined,
+              boxShadow:
+                activeField === "pass"
+                  ? `0 0 0 2px ${colors.blue}33`
+                  : undefined,
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowPass((show) => !show)}
+                    edge="end"
+                  >
+                    {showPass ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         </FormControl>
         <FormControl>
           <FormLabel>Confirme a Senha</FormLabel>
           <TextField
             id="confirm-senha"
-            type="password"
+            type={showConfirmPass ? "text" : "password"}
             placeholder="Confirme sua senha"
             required
             fullWidth
             variant="outlined"
             value={confirmPass}
             onChange={handleConfirmPassChange}
-            error={passwordError}
-            helperText={passwordError ? "As senhas não coincidem." : ""}
+            onBlur={handleBlur}
+            onFocus={() => setActiveField("confirmPass")}
+            error={passwordError || !!fieldErrors.confirmPass}
+            helperText={
+              passwordError
+                ? "As senhas não coincidem."
+                : fieldErrors.confirmPass
+            }
+            sx={{
+              borderColor:
+                activeField === "confirmPass" ? colors.blue : undefined,
+              boxShadow:
+                activeField === "confirmPass"
+                  ? `0 0 0 2px ${colors.blue}33`
+                  : undefined,
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowConfirmPass((show) => !show)}
+                    edge="end"
+                  >
+                    {showConfirmPass ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         </FormControl>
         <Button
@@ -158,6 +271,7 @@ const SignUp = () => {
               opacity: 0.8,
             },
             fontWeight: 550,
+            animation: isCreated ? "pulse 0.5s" : undefined,
           }}
           onClick={handleSubmit}
           disabled={
@@ -166,7 +280,8 @@ const SignUp = () => {
             !companyForm.user ||
             !companyForm.email ||
             !companyForm.pass ||
-            !confirmPass
+            !confirmPass ||
+            Object.values(fieldErrors).some((v) => !!v)
           }
         >
           {loading ? (

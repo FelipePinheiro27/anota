@@ -161,7 +161,7 @@ namespace anota_backend.Controllers
                 });
             }
 
-            var jwtKey = HttpContext.RequestServices.GetService<IConfiguration>()?["Jwt:Key"] ?? "SUA_CHAVE_SECRETA_FORTE_AQUI";
+            var jwtKey = HttpContext.RequestServices.GetService<IConfiguration>()?["Jwt:Key"];
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(jwtKey);
             var tokenDescriptor = new SecurityTokenDescriptor

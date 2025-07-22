@@ -66,6 +66,12 @@ const SignIn = () => {
     }
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      onSubmitLogin();
+    }
+  };
+
   return (
     <div
       style={{
@@ -90,6 +96,7 @@ const SignIn = () => {
             required
             fullWidth
             variant="outlined"
+            onKeyDown={handleKeyDown}
           />
         </FormControl>
         <FormControl>
@@ -104,6 +111,7 @@ const SignIn = () => {
             fullWidth
             variant="outlined"
             sx={{ ariaLabel: "senha" }}
+            onKeyDown={handleKeyDown}
           />
         </FormControl>
 
