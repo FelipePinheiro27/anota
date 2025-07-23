@@ -1,15 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Box, IconButton, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Tooltip,
+  Typography,
+  Button,
+  Chip,
+} from "@mui/material";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import FilterListIcon from "@mui/icons-material/FilterList";
 import DateButton from "../dateButton/DateButton";
 import dayjs, { Dayjs } from "dayjs";
-import { ReservationScheduledResponse } from "../../types/generalTypes";
+import {
+  ReservationScheduledResponse,
+  CourtTypes,
+} from "../../types/generalTypes";
 import {
   getReservationsByDate,
   removeReservation,
   markReservationAsPaid,
 } from "../../api/ReservationsAPI";
+import { getCourtsByCompany } from "../../api/CourtAPI";
 import LoadingSpinner from "../loadingSpinner/LoadingSpinner";
 import NoData from "../noData/NodaData";
 import ScheduledHours from "../scheduledHours/ScheduledHours";
@@ -23,12 +35,18 @@ const ReservationsTableData = () => {
   const [reservations, setReservations] = useState<
     ReservationScheduledResponse[]
   >([]);
+  const [allReservations, setAllReservations] = useState<
+    ReservationScheduledResponse[]
+  >([]);
   const [reservationToRemove, setReservationToRemove] = useState<
     ReservationScheduledResponse | undefined
   >();
   const [isLoading, setIsLoading] = useState(true);
   const [calendarView, setCalendarView] = useState(true);
   const [companyId, setCompanyId] = useState<string | number>(0);
+  const [courts, setCourts] = useState<CourtTypes[]>([]);
+  const [selectedCourts, setSelectedCourts] = useState<string[]>([]);
+  const [showCourtFilter, setShowCourtFilter] = useState(true);
   const [snackbar, setSnackbar] = useState<{
     open: boolean;
     message: string;
@@ -60,7 +78,44 @@ const ReservationsTableData = () => {
     );
 
     setIsLoading(false);
+    setAllReservations(reservationsData);
     setReservations(reservationsData);
+  };
+
+  const fetchCourts = async () => {
+    const value = localStorage.getItem("userSession");
+    const companyData: { companyId?: string | number } = JSON.parse(
+      value || ""
+    );
+    const companyIdValue = companyData?.companyId || 0;
+
+    const courtsData = await getCourtsByCompany(companyIdValue);
+    setCourts(courtsData);
+  };
+
+  const handleCourtToggle = (courtName: string) => {
+    setSelectedCourts((prev) => {
+      if (prev.includes(courtName)) {
+        return prev.filter((name) => name !== courtName);
+      } else {
+        return [...prev, courtName];
+      }
+    });
+  };
+
+  const handleSelectAll = () => {
+    setSelectedCourts(courts.map((court) => court.name));
+  };
+
+  const filterReservationsByCourts = () => {
+    if (selectedCourts.length === 0) {
+      setReservations([]);
+    } else {
+      const filtered = allReservations.filter((reservation) =>
+        selectedCourts.includes(reservation.courtName)
+      );
+      setReservations(filtered);
+    }
   };
 
   const onSelectReservation = (reservationId?: string | number) => {
@@ -81,6 +136,9 @@ const ReservationsTableData = () => {
       setReservations(
         reservations.filter((res) => res.id !== reservationToRemove.id)
       );
+      setAllReservations(
+        allReservations.filter((res) => res.id !== reservationToRemove.id)
+      );
       onCloseConfirmationModal();
     }
   };
@@ -89,13 +147,16 @@ const ReservationsTableData = () => {
     try {
       await markReservationAsPaid(id, !currentPaid);
       setReservations((prev) =>
-        prev.map((r) =>
-          r.id === id ? { ...r, isPaid: !currentPaid } : r
-        )
+        prev.map((r) => (r.id === id ? { ...r, isPaid: !currentPaid } : r))
+      );
+      setAllReservations((prev) =>
+        prev.map((r) => (r.id === id ? { ...r, isPaid: !currentPaid } : r))
       );
       setSnackbar({
         open: true,
-        message: !currentPaid ? "Reserva marcada como paga!" : "Reserva marcada como não paga!",
+        message: !currentPaid
+          ? "Reserva marcada como paga!"
+          : "Reserva marcada como não paga!",
         severity: "success",
       });
     } catch (error) {
@@ -109,7 +170,18 @@ const ReservationsTableData = () => {
 
   useEffect(() => {
     fetchReservations();
+    fetchCourts();
   }, [date]);
+
+  useEffect(() => {
+    if (courts.length > 0 && selectedCourts.length === 0) {
+      setSelectedCourts(courts.map((court) => court.name));
+    }
+  }, [courts, selectedCourts.length]);
+
+  useEffect(() => {
+    filterReservationsByCourts();
+  }, [selectedCourts, allReservations]);
 
   return (
     <>
@@ -135,6 +207,14 @@ const ReservationsTableData = () => {
         >
           <DateButton date={date} handleDateChange={handleDateChange} />
           <Box display="flex" gap={1}>
+            <Tooltip title="Filtrar por Quadras">
+              <IconButton
+                onClick={() => setShowCourtFilter(!showCourtFilter)}
+                color={showCourtFilter ? "primary" : "default"}
+              >
+                <FilterListIcon fontSize="large" />
+              </IconButton>
+            </Tooltip>
             <Tooltip title="Visão em Calendário">
               <IconButton
                 onClick={() => setCalendarView(true)}
@@ -154,17 +234,117 @@ const ReservationsTableData = () => {
           </Box>
         </Box>
       </Box>
-      {reservations.length === 0 ? (
-        isLoading ? (
-          <Box marginTop="180px">
-            <LoadingSpinner />
+
+      {showCourtFilter && (
+        <Box sx={{ marginTop: 2, marginBottom: 2 }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 1,
+            }}
+          >
+            <Typography
+              sx={{
+                fontWeight: 600,
+                fontSize: "14px",
+                color: "#666",
+              }}
+            >
+              Filtrar por Quadras:
+            </Typography>
+            <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+              {selectedCourts.length > 0 && (
+                <Chip
+                  label={`${selectedCourts.length} selecionada${
+                    selectedCourts.length > 1 ? "s" : ""
+                  }`}
+                  size="small"
+                  sx={{
+                    backgroundColor: "#e3f2fd",
+                    color: "#1976d2",
+                    fontSize: "11px",
+                    height: "24px",
+                  }}
+                />
+              )}
+              <Button
+                size="small"
+                variant="text"
+                onClick={handleSelectAll}
+                sx={{
+                  fontSize: "12px",
+                  color: "#226FE2",
+                  textTransform: "none",
+                  fontWeight: 600,
+                  "&:hover": {
+                    backgroundColor: "#f0f8ff",
+                  },
+                }}
+              >
+                Selecionar Todas
+              </Button>
+            </Box>
           </Box>
-        ) : (
-          <NoData
-            title="Sem Horários Reservados"
-            description="Esta data não possui horários reservados"
-          />
-        )
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+            {courts
+              .slice()
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map((court) => {
+                const isSelected = selectedCourts.includes(court.name);
+                return (
+                  <Button
+                    key={court.courtId}
+                    variant={isSelected ? "contained" : "outlined"}
+                    size="small"
+                    onClick={() => handleCourtToggle(court.name)}
+                    sx={{
+                      borderRadius: "25px",
+                      textTransform: "none",
+                      fontWeight: 600,
+                      fontSize: "13px",
+                      padding: "8px 20px",
+                      minWidth: "auto",
+                      border: isSelected ? "none" : "2px solid #e0e0e0",
+                      backgroundColor: isSelected ? "#226FE2" : "#fafafa",
+                      color: isSelected ? "#fff" : "#555",
+                      boxShadow: isSelected
+                        ? "0 2px 8px rgba(34, 111, 226, 0.3)"
+                        : "none",
+                      "&:hover": {
+                        backgroundColor: isSelected ? "#1A5ACB" : "#f0f0f0",
+                        borderColor: isSelected ? "#1A5ACB" : "#d0d0d0",
+                        transform: "translateY(-1px)",
+                        boxShadow: isSelected
+                          ? "0 4px 12px rgba(34, 111, 226, 0.4)"
+                          : "0 2px 4px rgba(0,0,0,0.1)",
+                      },
+                      transition: "all 0.2s ease-in-out",
+                    }}
+                  >
+                    {court.name}
+                  </Button>
+                );
+              })}
+          </Box>
+        </Box>
+      )}
+
+      {isLoading ? (
+        <Box marginTop="180px">
+          <LoadingSpinner />
+        </Box>
+      ) : selectedCourts.length === 0 ? (
+        <NoData
+          title="Selecione as Quadras"
+          description="Selecione pelo menos uma quadra para visualizar os agendamentos"
+        />
+      ) : reservations.length === 0 ? (
+        <NoData
+          title="Sem Horários Reservados"
+          description="Nenhuma reserva encontrada para as quadras selecionadas"
+        />
       ) : (
         <Box sx={{ paddingTop: "30px" }}>
           {calendarView ? (
@@ -174,6 +354,8 @@ const ReservationsTableData = () => {
               displayedDate={date.toDate()}
               companyId={companyId}
               onReservationUpdate={fetchReservations}
+              selectedCourts={selectedCourts}
+              allCourts={courts}
             />
           ) : (
             <ReservationsTable

@@ -32,6 +32,8 @@ interface ScheduledHoursProps {
   displayedDate: Date;
   companyId?: string | number;
   onReservationUpdate?: () => void;
+  selectedCourts?: string[];
+  allCourts?: CourtTypes[];
 }
 
 const ScheduledHours = ({
@@ -42,6 +44,8 @@ const ScheduledHours = ({
   displayedDate,
   companyId,
   onReservationUpdate,
+  selectedCourts,
+  allCourts,
 }: ScheduledHoursProps) => {
   const theme = useTheme();
   const isMobile = useIsMobile();
@@ -86,9 +90,19 @@ const ScheduledHours = ({
     return qttResercedCourts === 1;
   }, [reservations]);
 
-  const courtNames = Array.from(
-    new Set(reservations.map((reservation) => reservation.courtName))
-  );
+  const courtNames = useMemo(() => {
+    if (selectedCourts && selectedCourts.length > 0) {
+      return selectedCourts;
+    } else if (allCourts && allCourts.length > 0) {
+      return allCourts.map((court) => court.name);
+    } else {
+      return [];
+    }
+  }, [selectedCourts, allCourts]);
+
+  const sortedCourtNames = useMemo(() => {
+    return [...courtNames].sort((a, b) => a.localeCompare(b));
+  }, [courtNames]);
 
   const colors = [
     "#369BE5",
@@ -97,6 +111,12 @@ const ScheduledHours = ({
     theme.palette.warning.light,
     theme.palette.success.light,
   ];
+
+  const getCourtColor = (index: number) => {
+    if (index < 0) return "#369BE5";
+    const color = colors[index % colors.length];
+    return color || "#369BE5";
+  };
 
   useEffect(() => {
     if (companyId) {
@@ -364,7 +384,7 @@ const ScheduledHours = ({
           display: "grid",
           width: "100%",
           textAlign: "left",
-          gridTemplateColumns: `70px repeat(${courtNames.length}, ${
+          gridTemplateColumns: `70px repeat(${sortedCourtNames.length}, ${
             isMobile && !hasOnlyOneReservation ? "155px" : "1fr"
           })`,
           overflowX: isMobile ? "scroll" : "",
@@ -404,7 +424,7 @@ const ScheduledHours = ({
           </Box>
         ))}
 
-        {courtNames.map((court, index) => (
+        {sortedCourtNames.map((court, index) => (
           <Box
             key={court}
             sx={{
@@ -418,13 +438,11 @@ const ScheduledHours = ({
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              backgroundColor: colors[index % colors.length],
+              backgroundColor: getCourtColor(index),
               borderBottom: `1px solid ${theme.palette.divider}`,
               borderLeft:
                 index !== 0 ? `1px solid ${theme.palette.divider}` : "none",
-              color: theme.palette.getContrastText(
-                colors[index % colors.length]
-              ),
+              color: theme.palette.getContrastText(getCourtColor(index)),
             }}
           >
             <Typography variant={isMobile ? "subtitle2" : "subtitle1"}>
@@ -433,7 +451,7 @@ const ScheduledHours = ({
           </Box>
         ))}
 
-        {courtNames.map((_, courtIndex) =>
+        {sortedCourtNames.map((_, courtIndex) =>
           generateTimeBlocks().map((_, timeIndex) => (
             <Box
               key={`court-${courtIndex}-time-${timeIndex}`}
@@ -469,9 +487,13 @@ const ScheduledHours = ({
           const endDate = new Date(reservation.endDate);
           const startRow = calculateGridRow(startDate);
           const rowSpan = calculateGridRowSpan(startDate, endDate);
-          const courtIndex = courtNames.indexOf(reservation.courtName);
+          const courtIndex = sortedCourtNames.indexOf(reservation.courtName);
 
-          if (startRow < 0 || startRow >= (endHour - startHour) * 2)
+          if (
+            startRow < 0 ||
+            startRow >= (endHour - startHour) * 2 ||
+            courtIndex === -1
+          )
             return null;
 
           return (
@@ -484,14 +506,12 @@ const ScheduledHours = ({
                 gridRow: `${startRow} / span ${rowSpan}`,
                 position: "relative",
                 padding: "10px",
-                backgroundColor: colors[courtIndex % colors.length],
+                backgroundColor: getCourtColor(courtIndex),
                 borderRadius: 1,
                 marginBottom: "5px",
                 marginRight: "5px",
                 opacity: 0.95,
-                color: theme.palette.getContrastText(
-                  colors[courtIndex % colors.length]
-                ),
+                color: theme.palette.getContrastText(getCourtColor(courtIndex)),
                 zIndex: 1,
                 cursor: "grab",
                 border: reservation.isPaid ? `1px solid #4CAF50` : undefined,
@@ -553,7 +573,7 @@ const ScheduledHours = ({
           );
         })}
 
-        {courtNames.map((courtName, courtIndex) => (
+        {sortedCourtNames.map((courtName, courtIndex) => (
           <Box
             key={`drop-${courtName}`}
             onDragOver={(e) => handleDragOver(e, courtName)}
@@ -584,7 +604,7 @@ const ScheduledHours = ({
         {draggedReservation && dragPosition && (
           <Box
             sx={{
-              gridColumn: courtNames.indexOf(dragPosition.courtName) + 2,
+              gridColumn: sortedCourtNames.indexOf(dragPosition.courtName) + 2,
               gridRow: `${dragPosition.startRow} / span ${dragPosition.rowSpan}`,
               position: "relative",
               padding: "10px",
@@ -637,7 +657,8 @@ const ScheduledHours = ({
           <>
             <Box
               sx={{
-                gridColumn: courtNames.indexOf(dragPosition.courtName) + 2,
+                gridColumn:
+                  sortedCourtNames.indexOf(dragPosition.courtName) + 2,
                 gridRow: dragPosition.startRow,
                 position: "relative",
                 zIndex: 15,
@@ -674,10 +695,10 @@ const ScheduledHours = ({
               </Typography>
             </Box>
 
-            {/* Indicador de fim */}
             <Box
               sx={{
-                gridColumn: courtNames.indexOf(dragPosition.courtName) + 2,
+                gridColumn:
+                  sortedCourtNames.indexOf(dragPosition.courtName) + 2,
                 gridRow: dragPosition.startRow + dragPosition.rowSpan - 1,
                 position: "relative",
                 zIndex: 15,
