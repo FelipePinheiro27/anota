@@ -43,6 +43,7 @@ namespace anota_backend.Controllers
             return company;
         }
 
+        [AllowAnonymous]
         [HttpGet("routeKey/{pathRouteKey}")]
         public async Task<ActionResult<CompanyDTO>> GetCompanyByPathRouteKey(string pathRouteKey)
         {
