@@ -28,6 +28,7 @@ import ScheduledHours from "../scheduledHours/ScheduledHours";
 import ConfirmationDeleteModal from "../confirmationModal/ConfirmationDeleteModal";
 import ReservationsTable from "../tables/reservationsTable/ReservationsTable";
 import { Snackbar, Alert } from "@mui/material";
+import useIsMobile from "../../hooks/useIsMobile";
 
 const ReservationsTableData = () => {
   const [date, setDate] = useState(dayjs());
@@ -56,6 +57,8 @@ const ReservationsTableData = () => {
     message: "",
     severity: "info",
   });
+
+  const isMobile = useIsMobile();
 
   const handleDateChange = (value: Dayjs | null) => {
     if (value) {
@@ -171,6 +174,7 @@ const ReservationsTableData = () => {
   useEffect(() => {
     fetchReservations();
     fetchCourts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date]);
 
   useEffect(() => {
@@ -181,20 +185,22 @@ const ReservationsTableData = () => {
 
   useEffect(() => {
     filterReservationsByCourts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCourts, allReservations]);
 
   return (
     <>
       <Box
         display="flex"
-        flexDirection={{ xs: "column" }}
+        flexDirection={isMobile ? "column" : { xs: "column" }}
         justifyContent="space-between"
-        textAlign="center"
-        alignItems="start"
+        textAlign={isMobile ? "left" : "center"}
+        alignItems={isMobile ? "stretch" : "start"}
+        sx={{ gap: isMobile ? 1.5 : 0, padding: isMobile ? "10px 8px" : 0 }}
       >
         <Typography
           sx={{ fontWeight: 600, letterSpacing: "0.2" }}
-          fontSize="18px"
+          fontSize={isMobile ? "16px" : "18px"}
           color="#22303E"
         >
           Agendamentos Realizados
@@ -202,33 +208,38 @@ const ReservationsTableData = () => {
         <Box
           display="flex"
           width="100%"
+          flexDirection={isMobile ? "column" : "row"}
           justifyContent="space-between"
-          alignItems="center"
+          alignItems={isMobile ? "stretch" : "center"}
+          sx={{ gap: isMobile ? 1.5 : 0 }}
         >
           <DateButton date={date} handleDateChange={handleDateChange} />
-          <Box display="flex" gap={1}>
+          <Box display="flex" gap={1} justifyContent={isMobile ? "flex-end" : undefined}>
             <Tooltip title="Filtrar por Quadras">
               <IconButton
                 onClick={() => setShowCourtFilter(!showCourtFilter)}
                 color={showCourtFilter ? "primary" : "default"}
+                size={isMobile ? "small" : "medium"}
               >
-                <FilterListIcon fontSize="large" />
+                <FilterListIcon fontSize={isMobile ? "medium" : "large"} />
               </IconButton>
             </Tooltip>
             <Tooltip title="Visão em Calendário">
               <IconButton
                 onClick={() => setCalendarView(true)}
                 color={calendarView ? "primary" : "default"}
+                size={isMobile ? "small" : "medium"}
               >
-                <CalendarMonthOutlinedIcon fontSize="large" />
+                <CalendarMonthOutlinedIcon fontSize={isMobile ? "medium" : "large"} />
               </IconButton>
             </Tooltip>
             <Tooltip title="Visão em Lista">
               <IconButton
                 onClick={() => setCalendarView(false)}
                 color={!calendarView ? "primary" : "default"}
+                size={isMobile ? "small" : "medium"}
               >
-                <FormatListBulletedIcon fontSize="large" />
+                <FormatListBulletedIcon fontSize={isMobile ? "medium" : "large"} />
               </IconButton>
             </Tooltip>
           </Box>
@@ -236,36 +247,36 @@ const ReservationsTableData = () => {
       </Box>
 
       {showCourtFilter && (
-        <Box sx={{ marginTop: 2, marginBottom: 2 }}>
+        <Box sx={{ marginTop: isMobile ? 1 : 2, marginBottom: isMobile ? 1 : 2 }}>
           <Box
             sx={{
               display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              flexDirection: isMobile ? "column" : "row",
+              justifyContent: isMobile ? "flex-start" : "space-between",
+              alignItems: isMobile ? "stretch" : "center",
               marginBottom: 1,
+              gap: isMobile ? 1 : 0,
             }}
           >
             <Typography
               sx={{
                 fontWeight: 600,
-                fontSize: "14px",
+                fontSize: isMobile ? "12px" : "14px",
                 color: "#666",
               }}
             >
               Filtrar por Quadras:
             </Typography>
-            <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+            <Box sx={{ display: "flex", gap: 1, alignItems: "center", marginTop: isMobile ? 1 : 0 }}>
               {selectedCourts.length > 0 && (
                 <Chip
-                  label={`${selectedCourts.length} selecionada${
-                    selectedCourts.length > 1 ? "s" : ""
-                  }`}
+                  label={`${selectedCourts.length} selecionada${selectedCourts.length > 1 ? "s" : ""}`}
                   size="small"
                   sx={{
                     backgroundColor: "#e3f2fd",
                     color: "#1976d2",
-                    fontSize: "11px",
-                    height: "24px",
+                    fontSize: isMobile ? "10px" : "11px",
+                    height: isMobile ? "20px" : "24px",
                   }}
                 />
               )}
@@ -274,10 +285,12 @@ const ReservationsTableData = () => {
                 variant="text"
                 onClick={handleSelectAll}
                 sx={{
-                  fontSize: "12px",
+                  fontSize: isMobile ? "11px" : "12px",
                   color: "#226FE2",
                   textTransform: "none",
                   fontWeight: 600,
+                  minWidth: isMobile ? "auto" : undefined,
+                  padding: isMobile ? "2px 8px" : undefined,
                   "&:hover": {
                     backgroundColor: "#f0f8ff",
                   },
@@ -287,7 +300,7 @@ const ReservationsTableData = () => {
               </Button>
             </Box>
           </Box>
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: isMobile ? 0.5 : 1 }}>
             {courts
               .slice()
               .sort((a, b) => a.name.localeCompare(b.name))
@@ -303,8 +316,8 @@ const ReservationsTableData = () => {
                       borderRadius: "25px",
                       textTransform: "none",
                       fontWeight: 600,
-                      fontSize: "13px",
-                      padding: "8px 20px",
+                      fontSize: isMobile ? "11px" : "13px",
+                      padding: isMobile ? "6px 10px" : "8px 20px",
                       minWidth: "auto",
                       border: isSelected ? "none" : "2px solid #e0e0e0",
                       backgroundColor: isSelected ? "#226FE2" : "#fafafa",
@@ -312,6 +325,7 @@ const ReservationsTableData = () => {
                       boxShadow: isSelected
                         ? "0 2px 8px rgba(34, 111, 226, 0.3)"
                         : "none",
+                      marginBottom: isMobile ? "4px" : 0,
                       "&:hover": {
                         backgroundColor: isSelected ? "#1A5ACB" : "#f0f0f0",
                         borderColor: isSelected ? "#1A5ACB" : "#d0d0d0",
