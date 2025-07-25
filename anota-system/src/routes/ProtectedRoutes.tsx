@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import { getCompanyById } from "../api/CompanyAPI";
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const [isAuth, setIsAuth] = useState<boolean | null>(null);
@@ -23,11 +22,7 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
           return;
         }
 
-        const companyValue = await getCompanyById(
-          companyData.companyId.toString()
-        );
-
-        setIsAuth(!!companyValue?.isPaid);
+        setIsAuth(true);
       } catch (error) {
         console.error("Erro ao buscar dados da empresa:", error);
         setIsAuth(false);

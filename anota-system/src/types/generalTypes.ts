@@ -78,8 +78,6 @@ export type CompanyFormType = {
   pathRouteKey: string;
   primaryColor: string;
   secondaryColor: string;
-  isPaid: boolean;
-  plan: string;
 };
 
 export type CourtPayloadType = {
