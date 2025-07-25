@@ -53,6 +53,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<anota_backend.Services.SendGridEmailService>();
 
 builder.Services.AddCors(options =>
 {

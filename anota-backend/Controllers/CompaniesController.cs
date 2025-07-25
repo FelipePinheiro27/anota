@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using anota_backend.Services;
 
 namespace anota_backend.Controllers
 {
@@ -17,10 +18,12 @@ namespace anota_backend.Controllers
     public class CompaniesController : ControllerBase
     {
         private readonly ContextData _context;
+        private readonly SendGridEmailService _sendGridEmailService;
 
-        public CompaniesController(ContextData context)
+        public CompaniesController(ContextData context, SendGridEmailService sendGridEmailService)
         {
             _context = context;
+            _sendGridEmailService = sendGridEmailService;
         }
 
         [HttpGet]
@@ -75,6 +78,7 @@ namespace anota_backend.Controllers
                 company.Pass = anota_backend.Helper.Encryption.generateHash(company.Pass);
                 _context.Companies.Add(company);
                 await _context.SaveChangesAsync();
+                await _sendGridEmailService.SendWelcomeEmailAsync(company.Email, company.Name);
                 return CreatedAtAction(nameof(GetCompany), new { id = company.Id }, company);
             }
             catch (Exception ex)
