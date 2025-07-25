@@ -13,4 +13,7 @@ public class ContextData : DbContext
     public DbSet<CourtModel> Courts { get; set; }
     public DbSet<ReservationModel> Reservations { get; set; }
     public DbSet<ReservationConfigModel> ReservationsConfig { get; set; }
+    public DbSet<PlanModel> Plans { get; set; }
+    public DbSet<SubscriptionModel> Subscriptions { get; set; }
+    public DbSet<PaymentModel> Payments { get; set; }
 }

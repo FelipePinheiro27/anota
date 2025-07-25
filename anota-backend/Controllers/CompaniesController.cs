@@ -153,14 +153,15 @@ namespace anota_backend.Controllers
                 return Unauthorized(new { message = "Senha incorreta.", success = false });
             }
 
-            if (company.IsPaid == false)
-            {
-                return Ok(new
-                {
-                    message = "Seu plano expirou. Renove sua assinatura para continuar acessando a plataforma.",
-                    success = false
-                });
-            }
+            // TODO: Implement subscription status check here (trialing, active, past_due, canceled)
+            // if (company.IsPaid == false)
+            // {
+            //     return Ok(new
+            //     {
+            //         message = "Seu plano expirou. Renove sua assinatura para continuar acessando a plataforma.",
+            //         success = false
+            //     });
+            // }
 
             var jwtKey = Environment.GetEnvironmentVariable("JWT_SECRET");
             var tokenHandler = new JwtSecurityTokenHandler();
