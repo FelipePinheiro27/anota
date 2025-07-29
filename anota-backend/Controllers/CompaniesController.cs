@@ -65,6 +65,35 @@ namespace anota_backend.Controllers
             });
         }
 
+        [HttpPatch("{id}/pathRouteKey")]
+        public async Task<IActionResult> UpdatePathRouteKey(long id, [FromBody] UpdatePathRouteKeyDTO dto)
+        {
+            var company = await _context.Companies.FindAsync(id);
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            var existingCompany = await _context.Companies
+                .FirstOrDefaultAsync(c => c.PathRouteKey == dto.PathRouteKey && c.Id != id);
+
+            if (existingCompany != null)
+            {
+                return BadRequest(new { message = "Este link personalizado já está em uso." });
+            }
+
+            company.PathRouteKey = dto.PathRouteKey;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Link personalizado atualizado com sucesso." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Erro interno do servidor: {ex.Message}" });
+            }
+        }
 
         [AllowAnonymous]
         [HttpPost]
@@ -75,6 +104,20 @@ namespace anota_backend.Controllers
                 company.Pass = anota_backend.Helper.Encryption.generateHash(company.Pass);
                 _context.Companies.Add(company);
                 await _context.SaveChangesAsync();
+
+                var now = DateTime.UtcNow;
+                var subscription = new SubscriptionModel
+                {
+                    CompanyId = company.Id,
+                    Status = SubscriptionStatus.trialing,
+                    TrialStartsAt = now,
+                    TrialEndsAt = now.AddDays(7),
+                    CreatedAt = now
+                };
+
+                _context.Subscriptions.Add(subscription);
+                await _context.SaveChangesAsync();
+
                 return CreatedAtAction(nameof(GetCompany), new { id = company.Id }, company);
             }
             catch (Exception ex)
@@ -153,15 +196,32 @@ namespace anota_backend.Controllers
                 return Unauthorized(new { message = "Senha incorreta.", success = false });
             }
 
-            // TODO: Implement subscription status check here (trialing, active, past_due, canceled)
-            // if (company.IsPaid == false)
-            // {
-            //     return Ok(new
-            //     {
-            //         message = "Seu plano expirou. Renove sua assinatura para continuar acessando a plataforma.",
-            //         success = false
-            //     });
-            // }
+            var subscription = await _context.Subscriptions
+                .Where(s => s.CompanyId == company.Id)
+                .OrderByDescending(s => s.CreatedAt)
+                .FirstOrDefaultAsync();
+
+            if (subscription == null)
+            {
+                return StatusCode(500, new { message = "Não foi possível localizar a assinatura da empresa.", success = false });
+            }
+
+            if (subscription.Status == SubscriptionStatus.past_due)
+            {
+                return Ok(new
+                {
+                    message = "Seu pagamento está em atraso. Regularize sua assinatura para continuar acessando a plataforma.",
+                    success = false
+                });
+            }
+            if (subscription.Status == SubscriptionStatus.canceled)
+            {
+                return Ok(new
+                {
+                    message = "Sua assinatura foi cancelada. Entre em contato para reativar ou escolha um novo plano.",
+                    success = false
+                });
+            }
 
             var jwtKey = Environment.GetEnvironmentVariable("JWT_SECRET");
             var tokenHandler = new JwtSecurityTokenHandler();

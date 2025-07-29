@@ -42,6 +42,39 @@ export const createCompany = async (payload: CompanyFormType) => {
   }
 };
 
+export const updateCompany = async (
+  id: string | number,
+  payload: Partial<CompanyType>
+): Promise<boolean> => {
+  try {
+    await api.put(`/Companies/${id}`, {
+      ...payload,
+    });
+
+    return true;
+  } catch (error: any) {
+    console.error(error.response?.data?.message || "Erro ao atualizar empresa");
+    return false;
+  }
+};
+
+export const updatePathRouteKey = async (
+  id: string | number,
+  pathRouteKey: string
+): Promise<{ success: boolean; message?: string }> => {
+  try {
+    const { data } = await api.patch(`/Companies/${id}/pathRouteKey`, {
+      pathRouteKey,
+    });
+
+    return { success: true, message: data.message };
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.message || "Erro ao atualizar link personalizado";
+    console.error(errorMessage);
+    return { success: false, message: errorMessage };
+  }
+};
+
 export const login = async (
   emailOrUser: string,
   password: string
