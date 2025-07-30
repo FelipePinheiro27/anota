@@ -5,6 +5,7 @@ import { CompanyType } from "../types/generalTypes";
 
 interface OnboardingState {
   stepsCompleted: {
+    step0: boolean;
     step1: boolean;
     step2: boolean;
     step3: boolean;
@@ -20,6 +21,7 @@ interface OnboardingState {
 export const useOnboarding = () => {
   const [state, setState] = useState<OnboardingState>({
     stepsCompleted: {
+      step0: false,
       step1: false,
       step2: false,
       step3: false,
@@ -43,7 +45,7 @@ export const useOnboarding = () => {
     fetchCompanyData();
   }, []);
 
-  const completeStep = (stepNumber: 1 | 2 | 3) => {
+  const completeStep = (stepNumber: 0 | 1 | 2 | 3) => {
     setState(prev => ({
       ...prev,
       stepsCompleted: {

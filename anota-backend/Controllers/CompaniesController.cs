@@ -95,6 +95,29 @@ namespace anota_backend.Controllers
             }
         }
 
+        [HttpPatch("{id}/colors")]
+        public async Task<IActionResult> UpdateCompanyColors(long id, [FromBody] UpdateCompanyColorsDTO dto)
+        {
+            var company = await _context.Companies.FindAsync(id);
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            company.primaryColor = dto.PrimaryColor;
+            company.SecondaryColor = dto.SecondaryColor;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Cores da empresa atualizadas com sucesso." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Erro interno do servidor: {ex.Message}" });
+            }
+        }
+
         [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<CompanyModel>> CreateCompany([FromBody] CompanyModel company)
@@ -218,34 +241,37 @@ namespace anota_backend.Controllers
             {
                 return Ok(new
                 {
-                    message = "Sua assinatura foi cancelada. Entre em contato para reativar ou escolha um novo plano.",
+                    message = "Sua assinatura foi cancelada. Renove sua assinatura para continuar acessando a plataforma.",
                     success = false
                 });
             }
 
-            var jwtKey = Environment.GetEnvironmentVariable("JWT_SECRET");
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(jwtKey);
+            var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET") ?? "default_secret_key_here");
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim("companyId", company.Id.ToString()),
-                    new Claim("companyName", company.Name ?? "")
+                    new Claim(ClaimTypes.NameIdentifier, company.Id.ToString()),
+                    new Claim(ClaimTypes.Name, company.Name)
                 }),
                 Expires = DateTime.UtcNow.AddHours(8),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
+
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            var jwt = tokenHandler.WriteToken(token);
+            var tokenString = tokenHandler.WriteToken(token);
 
             return Ok(new
             {
-                message = "Login realizado com sucesso.",
+                message = "Login realizado com sucesso!",
+                success = true,
+                token = tokenString,
                 companyId = company.Id,
                 companyName = company.Name,
-                token = jwt,
-                success = true
+                pathRouteKey = company.PathRouteKey,
+                primaryColor = company.primaryColor,
+                secondaryColor = company.SecondaryColor
             });
         }
     }

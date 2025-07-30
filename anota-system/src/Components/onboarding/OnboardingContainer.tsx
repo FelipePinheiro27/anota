@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Typography, Snackbar, Alert } from "@mui/material";
 import { useOnboarding } from "../../hooks/useOnboarding";
 import OnboardingStep from "./OnboardingStep";
+import BrandingStep from "./BrandingStep";
 import CustomLinkStep from "./CustomLinkStep";
 import CourtStep from "./CourtStep";
 import ScheduleStep from "./ScheduleStep";
@@ -21,6 +22,11 @@ const OnboardingContainer = ({ onComplete }: OnboardingContainerProps) => {
     showSnackbar,
     hideSnackbar,
   } = useOnboarding();
+
+  const handleStep0Complete = (updatedCompany: any) => {
+    completeStep(0);
+    updateCompany(updatedCompany);
+  };
 
   const handleStep1Complete = (updatedCompany: any) => {
     completeStep(1);
@@ -99,6 +105,19 @@ const OnboardingContainer = ({ onComplete }: OnboardingContainerProps) => {
         </Typography>
         <OnboardingStep
           stepNumber={1}
+          title="Personalize sua marca"
+          isCompleted={stepsCompleted.step0}
+        >
+          {!stepsCompleted.step0 && (
+            <BrandingStep
+              onComplete={handleStep0Complete}
+              onError={handleError}
+              onSuccess={handleSuccess}
+            />
+          )}
+        </OnboardingStep>
+        <OnboardingStep
+          stepNumber={2}
           title="Escolha seu link personalizado"
           isCompleted={stepsCompleted.step1}
         >
@@ -111,7 +130,7 @@ const OnboardingContainer = ({ onComplete }: OnboardingContainerProps) => {
           )}
         </OnboardingStep>
         <OnboardingStep
-          stepNumber={2}
+          stepNumber={3}
           title="Cadastre sua primeira quadra"
           isCompleted={stepsCompleted.step2}
         >
@@ -125,7 +144,7 @@ const OnboardingContainer = ({ onComplete }: OnboardingContainerProps) => {
           )}
         </OnboardingStep>
         <OnboardingStep
-          stepNumber={3}
+          stepNumber={4}
           title="Defina seus horários e preços"
           isCompleted={stepsCompleted.step3}
         >
@@ -133,16 +152,18 @@ const OnboardingContainer = ({ onComplete }: OnboardingContainerProps) => {
             <ScheduleStep
               onComplete={handleStep3Complete}
               onSuccess={handleSuccess}
+              onError={handleError}
               isEnabled={stepsCompleted.step2}
             />
           )}
         </OnboardingStep>
-        {stepsCompleted.step1 &&
+        {stepsCompleted.step0 &&
+          stepsCompleted.step1 &&
           stepsCompleted.step2 &&
           stepsCompleted.step3 &&
           company && (
             <OnboardingStep
-              stepNumber={4}
+              stepNumber={5}
               title="Receba seu link mágico!"
               isCompleted={true}
             >
@@ -155,7 +176,6 @@ const OnboardingContainer = ({ onComplete }: OnboardingContainerProps) => {
             </OnboardingStep>
           )}
       </Box>
-
       <Snackbar
         open={snackbar.open}
         autoHideDuration={4000}

@@ -20,7 +20,11 @@ interface CustomLinkStepProps {
   onSuccess: (message: string) => void;
 }
 
-const CustomLinkStep = ({ onComplete, onError, onSuccess }: CustomLinkStepProps) => {
+const CustomLinkStep = ({
+  onComplete,
+  onError,
+  onSuccess,
+}: CustomLinkStepProps) => {
   const [customLink, setCustomLink] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -36,23 +40,33 @@ const CustomLinkStep = ({ onComplete, onError, onSuccess }: CustomLinkStepProps)
     }
 
     if (!validateCustomLink(customLink)) {
-      onError("Link deve conter apenas letras minúsculas, números e hífens (3-20 caracteres)");
+      onError(
+        "Link deve conter apenas letras minúsculas, números e hífens (3-20 caracteres)"
+      );
       return;
     }
 
     setLoading(true);
     try {
       const companyData = getCompanyData();
-      const result = await updatePathRouteKey(companyData.companyId || 0, customLink);
+      const result = await updatePathRouteKey(
+        companyData?.companyId || 0,
+        customLink
+      );
 
       if (result.success) {
         onSuccess(result.message || "Link personalizado salvo com sucesso!");
-        const updatedCompany = await getCompanyById(companyData?.companyId?.toString() ?? "");
+        const updatedCompany = await getCompanyById(
+          companyData?.companyId?.toString() ?? ""
+        );
         if (updatedCompany) {
           onComplete(updatedCompany);
         }
       } else {
-        onError(result.message || "Erro ao salvar link personalizado. Tente novamente.");
+        onError(
+          result.message ||
+            "Erro ao salvar link personalizado. Tente novamente."
+        );
       }
     } catch (error) {
       onError("Erro ao salvar link personalizado. Tente novamente.");
@@ -103,7 +117,9 @@ const CustomLinkStep = ({ onComplete, onError, onSuccess }: CustomLinkStepProps)
       <Button
         variant="contained"
         onClick={handleSaveCustomLink}
-        disabled={loading || !customLink.trim() || !validateCustomLink(customLink)}
+        disabled={
+          loading || !customLink.trim() || !validateCustomLink(customLink)
+        }
         sx={{
           backgroundColor: colors.blue,
           "&:hover": {
@@ -122,4 +138,4 @@ const CustomLinkStep = ({ onComplete, onError, onSuccess }: CustomLinkStepProps)
   );
 };
 
-export default CustomLinkStep; 
+export default CustomLinkStep;
