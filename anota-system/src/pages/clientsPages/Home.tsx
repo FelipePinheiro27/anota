@@ -5,6 +5,7 @@ import { useRetrieveCompany } from "../../hooks/useRetrieveCompany";
 import { ClientReservationContext } from "../../context/ClientReservationProvider";
 import useIsMobile from "../../hooks/useIsMobile";
 import LoadingSpinner from "../../Components/loadingSpinner/LoadingSpinner";
+import CompanyLogo from "../../Components/companyLogo/CompanyLogo";
 
 const theme = createTheme({
   typography: {
@@ -15,9 +16,8 @@ const theme = createTheme({
 const Home = () => {
   const isMobile = useIsMobile();
   const { company } = useContext(ClientReservationContext) || {};
-  const { primaryColor, secondaryColor, pathRouteKey } = company || {};
+  const { primaryColor, secondaryColor, id, name } = company || {};
   useRetrieveCompany();
-  const route = `/images/${pathRouteKey}.png`;
 
   const isPrimaryColorWhite = primaryColor === "#FFFFFF";
 
@@ -50,13 +50,12 @@ const Home = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <div>
-          <img
-            src={route}
-            width={isMobile ? "230px" : "300px"}
-            alt="Logo da empresa"
-          />
-        </div>
+        <CompanyLogo
+          companyId={id}
+          companyName={name}
+          width={isMobile ? "230px" : "300px"}
+          height={isMobile ? "230px" : "300px"}
+        />
         <ThemeProvider theme={theme}>
           <Typography
             sx={{ fontWeight: 700, letterSpacing: "0.2" }}

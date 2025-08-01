@@ -6,6 +6,7 @@ import ClientHeaderMobile from "./ClientHeaderMobile";
 import { ClientReservationContext } from "../../../context/ClientReservationProvider";
 import { useContext } from "react";
 import { useRetrieveCompany } from "../../../hooks/useRetrieveCompany";
+import CompanyLogo from "../../companyLogo/CompanyLogo";
 
 interface ClientHeaderProps {
   previewsPage: string;
@@ -15,9 +16,7 @@ const ClientHeader = ({ previewsPage }: ClientHeaderProps) => {
   const isMobile = useIsMobile();
   const { company } = useContext(ClientReservationContext) || {};
   useRetrieveCompany();
-  const { primaryColor, pathRouteKey } = company || {};
-
-  const CompanyLogo = `/images/${pathRouteKey}.png`;
+  const { primaryColor, pathRouteKey, id, name } = company || {};
 
   if (isMobile) {
     return (
@@ -26,6 +25,7 @@ const ClientHeader = ({ previewsPage }: ClientHeaderProps) => {
         companyName={company?.name || ""}
         primaryColor={primaryColor || ""}
         pathRouteKey={pathRouteKey || ""}
+        companyId={id}
       />
     );
   }
@@ -69,10 +69,12 @@ const ClientHeader = ({ previewsPage }: ClientHeaderProps) => {
           gap: "20px",
         }}
       >
-        <img
+        <CompanyLogo
+          companyId={id}
+          companyName={name}
           width={isMobile ? 50 : 61}
-          src={CompanyLogo}
-          alt="Logo da empresa"
+          height={isMobile ? 50 : 61}
+          showFallback={false}
         />
         <Typography
           sx={{ fontWeight: 500, letterSpacing: "0.2" }}
