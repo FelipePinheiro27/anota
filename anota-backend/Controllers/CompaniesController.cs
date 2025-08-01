@@ -24,14 +24,25 @@ namespace anota_backend.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CompanyModel>>> GetCompanies()
+        public async Task<ActionResult<IEnumerable<CompanyDTO>>> GetCompanies()
         {
-            return await _context.Companies.ToListAsync();
+            var companies = await _context.Companies.ToListAsync();
+            var companyDtos = companies.Select(c => new CompanyDTO
+            {
+                Id = c.Id,
+                Name = c.Name,
+                PathRouteKey = c.PathRouteKey,
+                PrimaryColor = c.primaryColor,
+                SecondaryColor = c.SecondaryColor,
+                LogoUrl = c.LogoUrl,
+            }).ToList();
+            
+            return Ok(companyDtos);
         }
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<CompanyModel>> GetCompany(long id)
+        public async Task<ActionResult<CompanyDTO>> GetCompany(long id)
         {
             var company = await _context.Companies.FindAsync(id);
 
@@ -40,7 +51,15 @@ namespace anota_backend.Controllers
                 return NotFound();
             }
 
-            return company;
+            return Ok(new CompanyDTO
+            {
+                Id = company.Id,
+                Name = company.Name,
+                PathRouteKey = company.PathRouteKey,
+                PrimaryColor = company.primaryColor,
+                SecondaryColor = company.SecondaryColor,
+                LogoUrl = company.LogoUrl,
+            });
         }
 
         [AllowAnonymous]
@@ -62,6 +81,7 @@ namespace anota_backend.Controllers
                 PathRouteKey = company.PathRouteKey,
                 PrimaryColor = company.primaryColor,
                 SecondaryColor = company.SecondaryColor,
+                LogoUrl = company.LogoUrl,
             });
         }
 
@@ -118,6 +138,28 @@ namespace anota_backend.Controllers
             }
         }
 
+        [HttpPatch("{id}/logo")]
+        public async Task<IActionResult> UpdateCompanyLogo(long id, [FromBody] UpdateCompanyLogoDTO dto)
+        {
+            var company = await _context.Companies.FindAsync(id);
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            company.LogoUrl = dto.LogoUrl;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Logo da empresa atualizado com sucesso." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Erro interno do servidor: {ex.Message}" });
+            }
+        }
+
         [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<CompanyModel>> CreateCompany([FromBody] CompanyModel company)
@@ -141,7 +183,15 @@ namespace anota_backend.Controllers
                 _context.Subscriptions.Add(subscription);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction(nameof(GetCompany), new { id = company.Id }, company);
+                return CreatedAtAction(nameof(GetCompany), new { id = company.Id }, new CompanyDTO
+                {
+                    Id = company.Id,
+                    Name = company.Name,
+                    PathRouteKey = company.PathRouteKey,
+                    PrimaryColor = company.primaryColor,
+                    SecondaryColor = company.SecondaryColor,
+                    LogoUrl = company.LogoUrl,
+                });
             }
             catch (Exception ex)
             {

@@ -1,11 +1,26 @@
 import { CompanyFormType, CompanyType } from "../types/generalTypes";
 import api from "./api";
+import { getCompanyLogoByUrl } from "../utils/firebaseStorage";
 
 export const getCompanyById = async (
   id: string
 ): Promise<CompanyType | null> => {
   try {
     const { data } = await api.get<CompanyType | null>(`/Companies/${id}`);
+
+    if (data) {
+      try {
+        const firebaseLogoUrl = await getCompanyLogoByUrl(
+          data.logoUrl || null,
+          id
+        );
+        if (firebaseLogoUrl) {
+          data.logoUrl = firebaseLogoUrl;
+        }
+      } catch (error) {
+        console.log("Logo não encontrada no Firebase para empresa:", id);
+      }
+    }
 
     return data;
   } catch (error: any) {
@@ -21,6 +36,21 @@ export const getCompanyByPathRouteKey = async (
     const { data } = await api.get<CompanyType | null>(
       `/Companies/routeKey/${pathRouteKey}`
     );
+
+    if (data) {
+      // Buscar logo do Firebase usando logoUrl ou ID da empresa
+      try {
+        const firebaseLogoUrl = await getCompanyLogoByUrl(
+          data.logoUrl || null,
+          data.id
+        );
+        if (firebaseLogoUrl) {
+          data.logoUrl = firebaseLogoUrl;
+        }
+      } catch (error) {
+        console.log("Logo não encontrada no Firebase para empresa:", data.id);
+      }
+    }
 
     return data;
   } catch (error: any) {
@@ -116,8 +146,34 @@ export const updateCompanyColors = async (
     return {
       success: false,
       message:
-        error.response?.data?.message ||
-        "Erro ao atualizar cores da empresa.",
+        error.response?.data?.message || "Erro ao atualizar cores da empresa.",
+    };
+  }
+};
+
+export const updateCompanyLogo = async (
+  companyId: number | string,
+  logoUrl: string
+): Promise<{
+  success: boolean;
+  message: string;
+}> => {
+  try {
+    const { data } = await api.patch(`/Companies/${companyId}/logo`, {
+      logoUrl,
+    });
+    return {
+      success: true,
+      message: data.message || "Logo da empresa atualizado com sucesso.",
+    };
+  } catch (error: any) {
+    console.error(
+      error.response?.data?.message || "Erro ao atualizar logo da empresa"
+    );
+    return {
+      success: false,
+      message:
+        error.response?.data?.message || "Erro ao atualizar logo da empresa.",
     };
   }
 };

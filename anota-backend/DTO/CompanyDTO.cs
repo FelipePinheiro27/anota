@@ -7,5 +7,6 @@ public class CompanyDTO
     public string PathRouteKey { get; set; }
     public string PrimaryColor { get; set; }
     public string SecondaryColor { get; set; }
+    public string? LogoUrl { get; set; }
 
 }

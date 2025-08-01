@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -10,8 +10,17 @@ import {
 } from "@mui/material";
 import { colors } from "../../constants/Colors";
 import { CompanyType } from "../../types/generalTypes";
-import { updateCompanyColors, getCompanyById } from "../../api/CompanyAPI";
+import {
+  updateCompanyColors,
+  updateCompanyLogo,
+  getCompanyById,
+} from "../../api/CompanyAPI";
 import { getCompanyData } from "../../utils/generalUtil";
+import {
+  uploadCompanyLogo,
+  getCompanyLogoByUrl,
+} from "../../utils/firebaseStorage";
+import FileUpload from "../fileUpload/FileUpload";
 
 interface BrandingStepProps {
   onComplete: (company: CompanyType) => void;
@@ -27,6 +36,46 @@ const BrandingStep = ({
   const [primaryColor, setPrimaryColor] = useState("#1976d2");
   const [secondaryColor, setSecondaryColor] = useState("#dc004e");
   const [loading, setLoading] = useState(false);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoUrl, setLogoUrl] = useState<string>("");
+  const [uploadingLogo, setUploadingLogo] = useState(false);
+
+  // Buscar logo existente do Firebase quando o componente carregar
+  useEffect(() => {
+    const loadExistingLogo = async () => {
+      const companyData = getCompanyData();
+      if (companyData.companyId) {
+        try {
+          const existingLogoUrl = await getCompanyLogoByUrl(
+            null,
+            companyData.companyId
+          );
+          if (existingLogoUrl) {
+            setLogoUrl(existingLogoUrl);
+          }
+        } catch (error) {
+          console.log("Nenhum logo encontrado para a empresa");
+        }
+      }
+    };
+
+    loadExistingLogo();
+  }, []);
+
+  const handleFileSelect = (file: File) => {
+    setLogoFile(file);
+    // Criar uma URL temporária para preview imediato
+    const tempUrl = URL.createObjectURL(file);
+    setLogoUrl(tempUrl);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (logoUrl && logoUrl.startsWith("blob:")) {
+        URL.revokeObjectURL(logoUrl);
+      }
+    };
+  }, [logoUrl]);
 
   const handleSaveBranding = async () => {
     if (!primaryColor || !secondaryColor) {
@@ -37,28 +86,53 @@ const BrandingStep = ({
     setLoading(true);
     try {
       const companyData = getCompanyData();
-      const result = await updateCompanyColors(
+
+      const colorsResult = await updateCompanyColors(
         companyData.companyId || 0,
         primaryColor,
         secondaryColor
       );
 
-      if (result.success) {
-        onSuccess(result.message || "Cores da empresa salvas com sucesso!");
-        const updatedCompany = await getCompanyById(
-          companyData?.companyId?.toString() ?? ""
-        );
-        if (updatedCompany) {
-          onComplete(updatedCompany);
-        }
-      } else {
+      if (!colorsResult.success) {
         onError(
-          result.message ||
+          colorsResult.message ||
             "Erro ao salvar cores da empresa. Tente novamente."
         );
+        return;
+      }
+
+      if (logoFile) {
+        try {
+          const uploadedUrl = await uploadCompanyLogo(
+            logoFile,
+            companyData.companyId || 0
+          );
+          const logoResult = await updateCompanyLogo(
+            companyData.companyId || 0,
+            uploadedUrl
+          );
+
+          if (!logoResult.success) {
+            onError(logoResult.message || "Erro ao salvar logo da empresa.");
+            return;
+          }
+
+          setLogoUrl(uploadedUrl);
+        } catch (error) {
+          onError("Erro ao fazer upload do logo. Tente novamente.");
+          return;
+        }
+      }
+
+      onSuccess("Configurações da empresa salvas com sucesso!");
+      const updatedCompany = await getCompanyById(
+        companyData?.companyId?.toString() ?? ""
+      );
+      if (updatedCompany) {
+        onComplete(updatedCompany);
       }
     } catch (error) {
-      onError("Erro ao salvar cores da empresa. Tente novamente.");
+      onError("Erro ao salvar configurações da empresa. Tente novamente.");
     } finally {
       setLoading(false);
     }
@@ -73,9 +147,42 @@ const BrandingStep = ({
           marginBottom: "16px",
         }}
       >
-        Personalize as cores da sua empresa
+        Personalize a marca da sua empresa
       </Typography>
-      
+
+      <Typography
+        sx={{
+          fontSize: "16px",
+          fontWeight: 600,
+          color: "#333",
+          marginBottom: "12px",
+        }}
+      >
+        Logo da empresa
+      </Typography>
+
+      <Box sx={{ marginBottom: "24px" }}>
+        <FileUpload
+          onFileSelect={handleFileSelect}
+          onError={onError}
+          loading={uploadingLogo}
+          currentImageUrl={logoUrl}
+          accept="image/*"
+          maxSize={5}
+        />
+      </Box>
+
+      <Typography
+        sx={{
+          fontSize: "16px",
+          fontWeight: 600,
+          color: "#333",
+          marginBottom: "12px",
+        }}
+      >
+        Cores da empresa
+      </Typography>
+
       <FormControl fullWidth sx={{ marginBottom: "16px" }}>
         <FormLabel>Cor Primária</FormLabel>
         <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -150,4 +257,4 @@ const BrandingStep = ({
   );
 };
 
-export default BrandingStep; 
+export default BrandingStep;

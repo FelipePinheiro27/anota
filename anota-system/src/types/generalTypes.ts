@@ -68,6 +68,7 @@ export type CompanyType = {
   pathRouteKey: string;
   isPaid: boolean;
   plan: "BASICO" | "AVANCADO" | "PRO" | "";
+  logoUrl?: string;
 };
 
 export type CompanyFormType = {
