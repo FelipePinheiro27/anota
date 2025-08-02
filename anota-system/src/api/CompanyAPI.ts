@@ -177,3 +177,30 @@ export const updateCompanyLogo = async (
     };
   }
 };
+
+export const updateCompanyName = async (
+  companyId: number | string,
+  name: string
+): Promise<{
+  success: boolean;
+  message: string;
+}> => {
+  try {
+    const { data } = await api.patch(`/Companies/${companyId}/name`, {
+      name,
+    });
+    return {
+      success: true,
+      message: data.message || "Nome da empresa atualizado com sucesso.",
+    };
+  } catch (error: any) {
+    console.error(
+      error.response?.data?.message || "Erro ao atualizar nome da empresa"
+    );
+    return {
+      success: false,
+      message:
+        error.response?.data?.message || "Erro ao atualizar nome da empresa.",
+    };
+  }
+};

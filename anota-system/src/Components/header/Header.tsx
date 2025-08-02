@@ -4,7 +4,11 @@ import LogoHeader from "../../images/logo_anota.svg";
 import ButtonDropDown from "../buttonDropdown/ButtonDropDown";
 import useIsMobile from "../../hooks/useIsMobile";
 
-export type activeItemType = "Agendamentos" | "Quadras" | "Horários";
+export type activeItemType =
+  | "Agendamentos"
+  | "Quadras"
+  | "Horários"
+  | "Configurações";
 
 interface HeaderProps {
   activeItem: activeItemType;
@@ -13,7 +17,7 @@ interface HeaderProps {
 
 const Header = ({ activeItem, setActiveItem }: HeaderProps) => {
   const isMobile = useIsMobile();
-  const optionsMenu = ["Agendamentos", "Quadras", "Horários"];
+  const optionsMenu = ["Agendamentos", "Quadras", "Horários", "Configurações"];
 
   const handleItemClick = (item: string) => {
     setActiveItem(item as activeItemType);

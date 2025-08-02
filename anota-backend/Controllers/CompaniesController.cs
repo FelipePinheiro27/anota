@@ -160,6 +160,33 @@ namespace anota_backend.Controllers
             }
         }
 
+        [HttpPatch("{id}/name")]
+        public async Task<IActionResult> UpdateCompanyName(long id, [FromBody] UpdateCompanyNameDTO dto)
+        {
+            var company = await _context.Companies.FindAsync(id);
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            if (string.IsNullOrWhiteSpace(dto.Name))
+            {
+                return BadRequest(new { message = "Nome da empresa é obrigatório." });
+            }
+
+            company.Name = dto.Name.Trim();
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Nome da empresa atualizado com sucesso." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Erro interno do servidor: {ex.Message}" });
+            }
+        }
+
         [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<CompanyModel>> CreateCompany([FromBody] CompanyModel company)

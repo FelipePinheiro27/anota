@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
+import { useLocation } from "react-router-dom";
 import Header, { activeItemType } from "../../Components/header/Header";
 import ReservationsTableData from "../../Components/reservationsTableData/ReservationsTableData";
 import CompanyCourts from "../../Components/companyCourts/CompanyCourts";
 import ScheduleFix from "../../Components/scheduleFix/ScheduleFix";
+import CompanySettings from "./CompanySettings";
 import OnboardingChecklist from "../../Components/OnboardingChecklist";
 import { getCompanyData } from "../../utils/generalUtil";
 import { getCompanyById } from "../../api/CompanyAPI";
@@ -12,6 +14,7 @@ import { CompanyType } from "../../types/generalTypes";
 import LoadingSpinner from "../../Components/loadingSpinner/LoadingSpinner";
 
 const Company = () => {
+  const location = useLocation();
   const [activeItem, setActiveItem] = useState<activeItemType>("Agendamentos");
   const [company, setCompany] = useState<CompanyType | null>(null);
   const [loading, setLoading] = useState(true);
@@ -51,6 +54,7 @@ const Company = () => {
     Agendamentos: <ReservationsTableData />,
     Quadras: <CompanyCourts />,
     Horários: <ScheduleFix setActiveItem={setActiveItem} />,
+    Configurações: <CompanySettings />,
   };
 
   if (loading) {

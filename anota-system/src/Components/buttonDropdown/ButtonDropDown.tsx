@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Menu, MenuItem, Typography } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import SettingsIcon from "@mui/icons-material/Settings";
 import { colors } from "../../constants/Colors";
 import { useNavigate } from "react-router-dom";
 
@@ -62,10 +63,16 @@ const ButtonDropDown = ({
           <MenuItem
             key={item}
             onClick={() => {
-              handleItemClick(item);
-              handleClose();
+              if (item === "Configurações") {
+                navigate("/empresa/configuracoes");
+                handleClose();
+              } else {
+                handleItemClick(item);
+                handleClose();
+              }
             }}
           >
+            {item === "Configurações"}
             {item}
           </MenuItem>
         ))}
